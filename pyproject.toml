@@ -7,7 +7,10 @@ name = "poc"
 version = "0.0.0"
 description = "PoC: intervention-grounded infeasibility + structured repair"
 requires-python = ">=3.11"
-dependencies = ["numpy"]
+dependencies = [
+    "numpy",
+    "mujoco==3.10.0",  # Stage 4 oracle; signed-distance semantics validated on this version
+]
 
 [project.optional-dependencies]
 dev = ["pytest"]

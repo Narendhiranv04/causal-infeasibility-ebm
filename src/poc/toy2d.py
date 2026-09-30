@@ -21,6 +21,7 @@ from functools import reduce
 
 import numpy as np
 
+from poc.oracle import oracle_repair_cost  # noqa: F401  (single J* implementation, re-exported)
 from poc.types import ActionSpec, Entity, EntityRole, Intervention, InterventionKind, RepairResult
 
 CONTACT_TOL = 1e-6   # [m] intrusion <= this is touching contact, not blocking
@@ -152,13 +153,6 @@ def graded_conflict(c: np.ndarray, form: str = G_FORM) -> float:
 def feasibility(c: np.ndarray) -> int:
     """F: 0 if the action is feasible (no intrusion beyond CONTACT_TOL), else 1."""
     return int(np.any(np.asarray(c) > CONTACT_TOL))
-
-
-def oracle_repair_cost(F: int, K: int, k_max: int) -> int:
-    """J* = B F + K with B = K_max + 1, so every feasible S beats every infeasible S."""
-    if F not in (0, 1) or not 0 <= K <= k_max:
-        raise ValueError(f"need F in {{0,1}} and 0 <= K <= K_max, got F={F}, K={K}, K_max={k_max}")
-    return (k_max + 1) * F + K
 
 
 def apply_intervention(scene: Scene2D, iv: Intervention) -> Scene2D:
