@@ -12,7 +12,8 @@ PRE-REGISTERED RULES (fixed before any Stage-5 interaction result was inspected)
                 max(10 |a_b - a_f|, COEF_FLOOR)  [energy.significant].
                 COEF_FLOOR = 1e-6 m: three orders above the certified distance
                 resolution (<= 1e-9 m), a hundred times below CONTACT_TOL_3D.
-  Representation order  smallest k with max_S |G(S) - G_k(S)| <= eps_repr, where
+  Representation order  smallest k with max_S |G(S) - G_k(S)| <= eps_repr ("resolution-exact":
+                representable within the registered numerical tolerance, not algebraically exact), where
                 eps_repr = max(10 max_S |G_base(S) - G_fine(S)|, COEF_FLOOR); computed at
                 both resolutions, an order that changes under refinement is not claimed.
   Decision-sufficient order  smallest k for which the admissible argmin of
@@ -20,9 +21,10 @@ PRE-REGISTERED RULES (fixed before any Stage-5 interaction result was inspected)
   QUBO          H = kappa G_2 + B_V (1 - V)_2 + lambda K with lambda = 1 (repair actions),
                 kappa = B / COEF_FLOOR (any infeasible S with G > COEF_FLOOR costs more than
                 every repair), B_V = B = K_max + 1 (an invalid state never beats a valid
-                feasible one). Categories: exact (G and 1 - V both order <= 2), decision-
-                sufficient (argmin H = S* although not exact), failure (otherwise).
-  Hopfield      secondary: unchanged Stage-3 solver on exact/decision-sufficient QUBOs,
+                feasible one). Categories: resolution_exact (G and 1 - V both representable at
+                order <= 2 within eps_repr), decision_sufficient (argmin H = S* although not
+                resolution-exact), failure (otherwise).
+  Hopfield      secondary: unchanged Stage-3 solver on resolution-exact/decision-sufficient QUBOs,
                 R in {1, 4, 16} as prefixes of one seeded 16-restart run.
   Verdict       RED if the oracle / S* is unstable under refinement or S* disagrees with the
                 manual expectation; else YELLOW-C if pairwise fails a decision; else YELLOW-A
@@ -88,13 +90,19 @@ def coefficients(case, a_b, a_f, sig) -> dict:
     return out
 
 
-def qubo_block(case, idx, a_b, V, F, K, S_star) -> dict:
+def qubo_terms(case, a_b, V) -> dict:
+    """Pre-registered QUBO H = kappa G_2 + B_V (1 - V)_2 + lambda K on every subset."""
     B = oracle_repair_cost(1, 0, case.k_max)
     kappa, lam = e.qubo_weights(B, COEF_FLOOR)
     a_inv = e.mobius(1 - V)
     lengths = [iv.length for iv in case.candidates]
     Q, q, c = e.qubo(kappa * e.truncate(a_b, 2) + B * e.truncate(a_inv, 2), lengths, 1.0, lam)
-    H = e.qubo_energy(Q, q, c)
+    return {"B": B, "kappa": kappa, "lam": lam, "a_inv": a_inv, "Q": Q, "q": q, "c": c, "H": e.qubo_energy(Q, q, c)}
+
+
+def qubo_block(case, idx, a_b, V, F, K, S_star) -> dict:
+    t = qubo_terms(case, a_b, V)
+    B, kappa, lam, a_inv, Q, q, c, H = (t[k] for k in ("B", "kappa", "lam", "a_inv", "Q", "q", "c", "H"))
     opt = e.argmin_sets(H)
     good = (F == 0) & (V == 1)
     out = {"kappa": kappa, "lambda": lam, "B_V": B, "validity_order": e.degree(a_inv, 0.5),
@@ -153,7 +161,8 @@ def analyse(case, idx: int) -> dict:
     if r_order <= 2 or (decision["base"] or 99) <= 2:
         row["qubo"] = qubo_block(case, idx, a_b, V, Fb, K, S_b)
         exact = r_order <= 2 and row["qubo"]["validity_order"] <= 2
-        row["qubo_category"] = "exact" if exact else ("decision_sufficient" if row["qubo"]["argmin_matches_S_star"] else "failure")
+        row["qubo_category"] = ("resolution_exact" if exact else
+                                "decision_sufficient" if row["qubo"]["argmin_matches_S_star"] else "failure")
     else:
         row["qubo_category"] = "failure"
     return row
@@ -181,9 +190,22 @@ def scaling(rows: list[dict], key: str) -> dict:
     return out
 
 
+def high_cardinality(rows: list[dict], k_min: int = 4) -> dict:
+    """|S*| >= k_min scenes by structure: blocker count and interaction order reported separately."""
+    hi = [r for r in rows if r["minimal_cardinality"] >= k_min and r["structure"] != "perturbed"]
+    order = {r["name"]: {"structure": r["structure"], "S_star_size": r["minimal_cardinality"],
+                         "representation_order": max(r["representation_order"].values())} for r in hi}
+    indep = [o for o in order.values() if o["structure"] == "independent"]
+    other = {n: o for n, o in order.items() if o["structure"] != "independent"}
+    return {"scenes": order, "all_independent_high_cardinality_unary": all(o["representation_order"] == 1 for o in indep),
+            "non_independent_high_cardinality": other,
+            "conclusion": "all independent high-cardinality scenes are unary; a high-cardinality scene is pairwise "
+                          "only when it contains a local coupled motif (the mixed scene)"}
+
+
 def verdict(rows: list[dict], s4: dict) -> dict:
     core = [r for r in rows if r["structure"] != "perturbed"]
-    hop = [r["qubo"]["hopfield"][16] for r in rows if r.get("qubo_category") in ("exact", "decision_sufficient")]
+    hop = [r["qubo"]["hopfield"][16] for r in rows if r.get("qubo_category") in ("resolution_exact", "decision_sufficient")]
     evidence = {
         "oracle_stable": all(r["S_star_stable"] and r["label_flips_base_fine"] == 0 for r in rows)
         and s4["label_flips_base_fine"] == 0,
@@ -294,6 +316,7 @@ def main() -> None:
         "verdict": verdict(rows, s4), "stage4_recheck": s4,
         "scaling_by_minimal_cardinality": scaling(rows, "minimal_cardinality"),
         "scaling_by_P": scaling(rows, "P"),
+        "high_cardinality_vs_order": high_cardinality(rows),
         "cases": rows, "runtime_s": round(time.perf_counter() - t0, 2),
     }
     (OUT / "metrics.json").write_text(json.dumps(metrics, indent=1, default=str))

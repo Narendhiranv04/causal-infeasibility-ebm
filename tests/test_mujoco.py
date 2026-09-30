@@ -3,6 +3,7 @@
 import io
 import math
 import tokenize
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -269,3 +270,29 @@ def test_shift_target_moves_the_fixture_with_the_target():
     moved = cs.do(case.scene, [case.candidates[0]])
     assert moved.fixture[0].center[0] == pytest.approx(case.scene.fixture[0].center[0] - 0.12)
     assert moved.motion.pivot[0] == pytest.approx(case.scene.motion.pivot[0] - 0.12)
+
+
+def _fixture_into_structure_case():
+    """Front shelf forces moving the box back 12 cm, but a low STRUCTURAL block sits where the box body would go."""
+    block = cs._ent("block", EntityRole.STRUCTURAL, (-0.10, 0.0, 0.05), (0.03, 0.10, 0.05))  # below the lid pivot
+    scene = replace(cs.lid_scene(cs.front_shelf(), block, cs.item("d1", -0.30, 0.15, 0.30)), fixture=(cs.BASE,))
+    cands = (cs.shift("lid", (-0.12, 0.0, 0.0)), cs.staged(scene.entities[2], -0.35, -0.45))
+    return cs.Stage5Case("fixture_probe", "validity", scene, cands, frozenset())
+
+
+def test_shifted_target_fixture_penetrating_structure_is_invalid():
+    case = _fixture_into_structure_case()
+    moved = cs.do(case.scene, [case.candidates[0]])
+    assert cs.validity(case.scene)[0] == 1 and cs.validity(moved)[0] == 0
+    T = cs.exhaustive_table(case)
+    x_shift = 1
+    assert T.F[x_shift] == 0 and T.V[x_shift] == 0 and T.margin[x_shift] < -CONTACT_TOL_3D
+    assert x_shift not in admissible_minimal_repairs(T.F, T.V, T.K, case.k_max)
+    assert admissible_minimal_repairs(T.F, T.V, T.K, case.k_max) == frozenset()  # no admissible repair exists
+
+
+@pytest.mark.parametrize("r1, r2, checked", [
+    ("movable", "movable", True), ("movable", "structural", True), ("target", "movable", True),
+    ("target", "structural", True), ("structural", "structural", False)])
+def test_validity_pair_rule_by_role(r1, r2, checked):
+    assert cs.checked_pair(Entity("a", EntityRole(r1)), Entity("b", EntityRole(r2))) is checked

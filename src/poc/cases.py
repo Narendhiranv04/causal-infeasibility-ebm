@@ -211,13 +211,19 @@ def _pair_distance(world: GeomWorld, ga, gb) -> float:
     return min(world.signed_distance(a, b) for a in ga for b in gb)
 
 
+def checked_pair(a: Entity, b: Entity) -> bool:
+    """Static validity checks MOVABLE-MOVABLE, MOVABLE-STRUCTURAL, TARGET-MOVABLE and
+    TARGET-STRUCTURAL pairs; only STRUCTURAL-STRUCTURAL is exempt (neither body ever changes)."""
+    return not (a.role is EntityRole.STRUCTURAL and b.role is EntityRole.STRUCTURAL)
+
+
 def validity(scene: Scene3D) -> tuple[int, float]:
-    """(V, margin): movable entities and the target fixture must not penetrate any other static body."""
+    """(V, margin): no checked static pair (see checked_pair) may penetrate beyond CONTACT_TOL_3D."""
     bodies = scene.entities + ((Entity3D(Entity(FIXTURE, EntityRole.TARGET), scene.fixture),) if scene.fixture else ())
     world = GeomWorld(bodies, scene.moving)
     world.set_pose(PARK, IDENTITY)
     d = [_pair_distance(world, world.entity_geoms[i], world.entity_geoms[j]) for i, j in combinations(range(len(bodies)), 2)
-         if bodies[i].entity.movable or bodies[j].entity.movable]
+         if checked_pair(bodies[i].entity, bodies[j].entity)]
     return is_valid(d), min(d, default=DISTMAX)
 
 
@@ -300,7 +306,7 @@ def exhaustive_table(case: Stage5Case, step: float = ENVELOPE_STEP) -> Table:
             rows[key].append(arr[cols])
         bodies = cols + ([len(flat) + m] if fixtures else [])
         for a, b in combinations(bodies, 2):
-            if (a, b) not in pair and (static[a].entity.movable or static[b].entity.movable):
+            if (a, b) not in pair and checked_pair(static[a].entity, static[b].entity):
                 pair[(a, b)] = _pair_distance(world, world.entity_geoms[a], world.entity_geoms[b])
         dist = [pair[(a, b)] for a, b in combinations(bodies, 2) if (a, b) in pair]
         rows["V"].append(is_valid(dist))
