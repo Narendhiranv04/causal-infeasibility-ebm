@@ -8,11 +8,14 @@ DELTA on either side of an analytically known envelope boundary.
 
 import math
 from dataclasses import dataclass, replace
-from functools import reduce
+from functools import cached_property, reduce
+from itertools import combinations
+
+import numpy as np
 
 from poc.envelope import ENVELOPE_STEP, HingeMotion, LinearMotion, Sweep, shifted, sweep
-from poc.mj_scene import Box3D, Composite, Entity3D, GeomWorld
-from poc.oracle import Assessment, assess
+from poc.mj_scene import DISTMAX, IDENTITY, Box3D, Composite, Entity3D, GeomWorld
+from poc.oracle import Assessment, assess, is_valid
 from poc.types import ActionSpec, Entity, EntityRole, Intervention, InterventionKind
 
 STRUCTURAL, MOVABLE = EntityRole.STRUCTURAL, EntityRole.MOVABLE
@@ -28,6 +31,7 @@ class Scene3D:
     moving: Composite
     motion: LinearMotion | HingeMotion
     entities: tuple[Entity3D, ...]
+    fixture: tuple[Box3D, ...] = ()  # static target geometry that moves with SHIFT_TARGET (not a conflict entity)
 
 
 def apply_intervention(scene: Scene3D, iv: Intervention) -> Scene3D:
@@ -37,7 +41,9 @@ def apply_intervention(scene: Scene3D, iv: Intervention) -> Scene3D:
     if iv.kind is InterventionKind.SHIFT_TARGET:
         if iv.entity_id != scene.action.target_id:
             raise ValueError(f"SHIFT_TARGET must act on target {scene.action.target_id!r}")
-        return replace(scene, motion=shifted(scene.motion, iv.params))
+        # pre-action repositioning macro: the target (and its fixture) moves, then the same skill is retried
+        fixture = tuple(replace(b, center=tuple(c + o for c, o in zip(b.center, iv.params))) for b in scene.fixture)
+        return replace(scene, motion=shifted(scene.motion, iv.params), fixture=fixture)
     ids = [e.eid for e in scene.entities]
     i = ids.index(iv.entity_id)
     ent = scene.entities[i]
@@ -188,3 +194,223 @@ def canonical_cases() -> list[Case3D]:
         Case3D("C4_immovable_cause", "immovable_cause", lid_scene(front_shelf()),
                ("shelf",), (shift("lid", (-0.12, 0.0, 0.0)),)),
     ]
+
+
+# ================================================================ Stage 5
+# Interpretation boundaries. The oracle certifies that the PRESCRIBED next-action
+# envelope is (in)feasible; it does not prove that no other motion exists.
+# RELOCATE and SHIFT_TARGET are high-level corrective macros: Stage 5 validates
+# their resulting static geometry (V), their combinatorics and whether they
+# restore target-action feasibility, not the low-level motion that executes them.
+
+FIXTURE = "target_fixture"
+PARK = (50.0, 50.0, 50.0)  # moving composite parked far away during static validity queries
+
+
+def _pair_distance(world: GeomWorld, ga, gb) -> float:
+    return min(world.signed_distance(a, b) for a in ga for b in gb)
+
+
+def validity(scene: Scene3D) -> tuple[int, float]:
+    """(V, margin): movable entities and the target fixture must not penetrate any other static body."""
+    bodies = scene.entities + ((Entity3D(Entity(FIXTURE, EntityRole.TARGET), scene.fixture),) if scene.fixture else ())
+    world = GeomWorld(bodies, scene.moving)
+    world.set_pose(PARK, IDENTITY)
+    d = [_pair_distance(world, world.entity_geoms[i], world.entity_geoms[j]) for i, j in combinations(range(len(bodies)), 2)
+         if bodies[i].entity.movable or bodies[j].entity.movable]
+    return is_valid(d), min(d, default=DISTMAX)
+
+
+@dataclass(frozen=True)
+class Stage5Case:
+    name: str
+    structure: str                        # independent | coupled | substitutable | mixed | validity | perturbed
+    scene: Scene3D
+    candidates: tuple[Intervention, ...]  # executable candidate set I (P <= 10)
+    expected: frozenset[frozenset[str]]   # manually derived admissible minimal repairs
+
+    def __post_init__(self) -> None:
+        moved = [iv.entity_id for iv in self.candidates if iv.kind is InterventionKind.RELOCATE]
+        shifts = [iv for iv in self.candidates if iv.kind is InterventionKind.SHIFT_TARGET]
+        if len(self.candidates) > 10 or any(iv.is_diagnostic for iv in self.candidates):
+            raise ValueError("need P <= 10 executable candidates")
+        if len(moved) != len(set(moved)) or len(shifts) > 1:
+            raise ValueError("at most one relocation per entity and one repositioning macro")
+
+    @property
+    def k_max(self) -> int:
+        return sum(iv.length for iv in self.candidates)
+
+
+@dataclass(frozen=True)
+class Table:
+    """Exhaustive oracle table over all 2^P subsets, rows indexed by bitmask x."""
+    ids: tuple[str, ...]
+    d: np.ndarray        # (2^P, N) signed envelope distance d^S
+    d_start: np.ndarray
+    d_goal: np.ndarray
+    V: np.ndarray        # (2^P,) post-intervention static validity
+    margin: np.ndarray   # (2^P,) min static pair distance behind V
+    K: np.ndarray        # (2^P,) repair length
+
+    def assessment(self, x: int) -> Assessment:
+        return assess(self.ids, self.d[x], self.d_start[x], self.d_goal[x])
+
+    @cached_property
+    def rows(self) -> list[Assessment]:
+        return [self.assessment(x) for x in range(len(self.K))]
+
+    @property
+    def G(self) -> np.ndarray:
+        return np.array([a.G for a in self.rows])
+
+    @property
+    def F(self) -> np.ndarray:
+        return np.array([a.F for a in self.rows])
+
+    @property
+    def C(self) -> np.ndarray:
+        return np.array([a.c for a in self.rows])
+
+
+def exhaustive_table(case: Stage5Case, step: float = ENVELOPE_STEP) -> Table:
+    """All 2^P subsets. d_i depends only on entity i's pose and the envelope, so every
+    pose variant is swept once and rows are assembled exactly (tested against evaluate(do(S)))."""
+    scene, cands = case.scene, case.candidates
+    reloc = {iv.entity_id: iv for iv in cands if iv.kind is InterventionKind.RELOCATE}
+    shift_iv = next((iv for iv in cands if iv.kind is InterventionKind.SHIFT_TARGET), None)
+    scenes = [scene] + ([apply_intervention(scene, shift_iv)] if shift_iv else [])
+    pose = [[e] + ([apply_intervention(scene, reloc[e.eid]).entities[i]] if e.eid in reloc else [])
+            for i, e in enumerate(scene.entities)]
+    flat = [Entity3D(Entity(f"{e.eid}.v{k}", e.entity.role), e.boxes) for vs in pose for k, e in enumerate(vs)]
+    col = {(i, k): n for n, (i, k) in enumerate((i, k) for i, vs in enumerate(pose) for k in range(len(vs)))}
+    sweeps = [sweep(GeomWorld(tuple(flat), scene.moving), sc.motion, scene.moving, step) for sc in scenes]
+    fixtures = [Entity3D(Entity(f"{FIXTURE}.v{m}", EntityRole.TARGET), sc.fixture) for m, sc in enumerate(scenes)
+                if sc.fixture]
+    static = tuple(flat) + tuple(fixtures)
+    world = GeomWorld(static, scene.moving)
+    world.set_pose(PARK, IDENTITY)
+    pair = {}
+    rows = {k: [] for k in ("d", "d_start", "d_goal", "V", "margin", "K")}
+    for x in range(2 ** len(cands)):
+        S = [iv for p, iv in enumerate(cands) if x >> p & 1]
+        m = int(shift_iv in S)
+        cols = [col[(i, int(e.eid in reloc and reloc[e.eid] in S))] for i, e in enumerate(scene.entities)]
+        for key, arr in (("d", sweeps[m].d_min), ("d_start", sweeps[m].d_start), ("d_goal", sweeps[m].d_goal)):
+            rows[key].append(arr[cols])
+        bodies = cols + ([len(flat) + m] if fixtures else [])
+        for a, b in combinations(bodies, 2):
+            if (a, b) not in pair and (static[a].entity.movable or static[b].entity.movable):
+                pair[(a, b)] = _pair_distance(world, world.entity_geoms[a], world.entity_geoms[b])
+        dist = [pair[(a, b)] for a, b in combinations(bodies, 2) if (a, b) in pair]
+        rows["V"].append(is_valid(dist))
+        rows["margin"].append(min(dist, default=DISTMAX))
+        rows["K"].append(sum(iv.length for iv in S))
+    return Table(tuple(e.eid for e in scene.entities), **{k: np.array(v) for k, v in rows.items()})
+
+
+# ------------------------------------------------------- Stage 5 catalogue
+BLOCK = (0.03, 0.03, 0.05)        # half-size of a shelf box
+SLOTS = (0.04, 0.11, 0.18, 0.25, 0.32)  # x positions of shelf boxes along a lane
+BASE = Box3D((LID_L / 2, 0.0, BOX_H / 2), (LID_L / 2, LID_W / 2, BOX_H / 2))  # hinged box body
+
+
+def side_box(eid: str, x: float, side: int, depth: float, lane_y: float = 0.0, half=BLOCK) -> Entity3D:
+    """Movable shelf box beside a lane centred at lane_y; depth > 0 intrudes past the finger faces."""
+    return _ent(eid, MOVABLE, (x, lane_y + side * (LANE + half[1] - depth), half[2]), half)
+
+
+def book(eid: str, x: float) -> Entity3D:
+    """Flat movable item lying across the lane: blocks the object from below, whatever its lateral offset."""
+    return _ent(eid, MOVABLE, (x, -0.02, 0.01), (0.025, 0.07, 0.01))
+
+
+def item(eid: str, x: float, y: float, top: float, half_xy=(0.03, 0.02)) -> Entity3D:
+    """Movable object standing on the table near the hinged box."""
+    return _ent(eid, MOVABLE, (x, y, top / 2), (half_xy[0], half_xy[1], top / 2))
+
+
+def staged(ent: Entity3D, y: float, x: float | None = None) -> Intervention:
+    c = ent.boxes[0].center
+    return relocate(ent.eid, (c[0] if x is None else x, y, c[2]))
+
+
+def _s5(name, structure, scene, candidates, *expected) -> Stage5Case:
+    return Stage5Case(name, structure, scene, tuple(candidates), frozenset(frozenset(e) for e in expected))
+
+
+def _lane_boxes(k: int, lane_y: float, xs, depths=None) -> list[Entity3D]:
+    spots = [(x, side) for x in xs for side in (+1, -1)]
+    return [side_box(f"b{i + 1}", *spots[i], (depths or {}).get(i, 0.004 + 0.003 * i), lane_y) for i in range(k)]
+
+
+def insertion_blockers(k: int, depths=None, name=None, structure="independent") -> Stage5Case:
+    blockers = _lane_boxes(k, 0.0, SLOTS, depths)
+    used = {(b.boxes[0].center[0], b.boxes[0].center[1] > 0) for b in blockers}
+    free = [(x, s) for x in reversed(SLOTS) for s in (+1, -1) if (x, s > 0) not in used][:2]
+    distract = [side_box(f"d{j + 1}", x, s, -0.004) for j, (x, s) in enumerate(free)]
+    ents = blockers + distract
+    cands = [staged(e, 0.25 if e.boxes[0].center[1] > 0 else -0.25) for e in ents]
+    return _s5(name or f"S5_ins_k{k}", structure, insertion(*ents), cands, tuple(f"r_b{i + 1}" for i in range(k)
+               if (depths or {}).get(i, 1.0) > 0))
+
+
+def extraction_blockers(k: int) -> Stage5Case:
+    lane, xs = -0.12, SLOTS[:3]  # boxes stay clear of the palm and wrist at the start grasp
+    blockers = _lane_boxes(k, lane, xs)
+    ents = blockers + [side_box("d1", xs[2], -1, -0.004, lane)]  # k <= 5 leaves this spot free
+    cands = [staged(e, 0.15 if e.boxes[0].center[1] > lane else 0.25) for e in ents]
+    scene = Scene3D("extraction", ActionSpec("extract", "obj"), GRIPPED,
+                    LinearMotion((0.30, lane, CARRY_Z), (-0.35, lane, CARRY_Z)), cupboard() + tuple(ents),
+                    (Box3D((0.30, lane, CARRY_Z), (0.04, 0.03, 0.05)),))
+    return _s5(f"S5_ext_k{k}", "independent", scene, cands, tuple(f"r_b{i + 1}" for i in range(k)))
+
+
+def hinge_blockers(k: int) -> Stage5Case:
+    ys = (-0.10, -0.05, 0.0, 0.05, 0.10)[:k] if k == 5 else (-0.10, 0.0, 0.10)[:k]
+    ents = [item(f"b{i + 1}", -0.09, y, 0.325 + 0.005 * i) for i, y in enumerate(ys)] + [item("d1", -0.22, 0.0, 0.30)]
+    cands = [relocate(e.eid, (-0.45, -0.20 + 0.08 * j, e.boxes[0].center[2])) for j, e in enumerate(ents)]
+    return _s5(f"S5_hinge_k{k}", "independent", replace(lid_scene(*ents), fixture=(BASE,)), cands,
+               tuple(f"r_b{i + 1}" for i in range(k)))
+
+
+def insertion_coupled(mixed: bool) -> Stage5Case:
+    """3D analogue of T6: the jamb forces a lateral repositioning that pushes the lane into box nb.
+    mixed=True adds three flat books lying across the lane (independent, repositioning-invariant)."""
+    nb, dis = side_box("nb", SLOTS[1], -1, -0.010, half=(0.02, 0.03, 0.05)), side_box("d1", SLOTS[3], +1, -0.004)
+    books = [book(f"bk{i + 1}", x) for i, x in enumerate((0.06, 0.16, 0.26))] if mixed else []
+    cands = [shift("obj", (0.0, -0.03, 0.0)), staged(nb, -0.25), staged(dis, 0.25, 0.33)] + [staged(b, 0.22) for b in books]
+    return _s5("S5_ins_mixed" if mixed else "S5_ins_coupled", "mixed" if mixed else "coupled",
+               insertion(jamb(0.010), nb, dis, *books), cands, ("shift_obj", "r_nb") + tuple(f"r_{b.eid}" for b in books))
+
+
+def hinge_repositioning(name: str, structure: str, bt_x: float, bt_top: float) -> Stage5Case:
+    """The front shelf forces moving the box back 12 cm; bottle bt then blocks the lid sweep
+    (tall, further back: coupled in G) or the moved box body itself (low, close: coupled in V)."""
+    scene = replace(lid_scene(front_shelf(), item("bt", bt_x, 0.0, bt_top), item("d1", -0.30, 0.15, 0.30)),
+                    fixture=(BASE,))
+    cands = [shift("lid", (-0.12, 0.0, 0.0)), staged(scene.entities[1], 0.35, -0.45), staged(scene.entities[2], -0.35, -0.45)]
+    return _s5(name, structure, scene, cands, ("shift_lid", "r_bt"))
+
+
+def substitutable_cases() -> list[Stage5Case]:
+    """One conflict, two equal-cost executable repairs (relocate the blocker, or reposition the target)."""
+    ins = insertion(side_box("b1", SLOTS[2], +1, 0.008), side_box("d1", SLOTS[3], -1, -0.030))
+    lid = replace(lid_scene(item("bt", -0.09, 0.0, 0.33), item("d1", -0.30, 0.15, 0.30)), fixture=(BASE,))
+    return [
+        _s5("S5_ins_substitutable", "substitutable", ins, [shift("obj", (0.0, -0.02, 0.0)), staged(ins.entities[-2], 0.25),
+            staged(ins.entities[-1], -0.25)], ("r_b1",), ("shift_obj",)),
+        _s5("S5_hinge_substitutable", "substitutable", lid, [shift("lid", (0.06, 0.0, 0.0)),
+            staged(lid.entities[0], 0.35, -0.45), staged(lid.entities[1], -0.35, -0.45)], ("r_bt",), ("shift_lid",)),
+    ]
+
+
+def stage5_cases() -> list[Stage5Case]:
+    cases = [insertion_blockers(k) for k in range(1, 7)] + [extraction_blockers(k) for k in (2, 4, 5)]
+    cases += [hinge_blockers(k) for k in (2, 3, 5)] + substitutable_cases()
+    cases += [insertion_coupled(mixed=False), insertion_coupled(mixed=True),
+              hinge_repositioning("S5_hinge_coupled", "coupled", -0.18, 0.30),
+              hinge_repositioning("S5_hinge_validity", "validity", -0.10, 0.10)]
+    for tag, dep in (("p_minus", 0.0065), ("p_plus", 0.0075), ("cross_in", 0.001), ("cross_out", -0.001)):
+        cases.append(insertion_blockers(3, {1: dep}, f"S5_ins_k3_{tag}", "perturbed"))
+    return cases

@@ -176,3 +176,96 @@ def test_rebuilt_scene_reproduces_identical_conflict(results):
     for name in ("A2_single_blocker", "C4_immovable_cause"):
         again, _ = cs.evaluate(CASES[name].scene)
         assert again == results[name][0]
+
+
+# ------------------------------------------------------------ Stage 5
+
+from poc import energy as en  # noqa: E402
+from poc.oracle import admissible_minimal_repairs, oracle_repair_cost  # noqa: E402
+
+S5 = {c.name: c for c in cs.stage5_cases()}
+
+
+@pytest.fixture(scope="module")
+def tables():
+    return {n: cs.exhaustive_table(c) for n, c in S5.items()}
+
+
+def _subset(case, x):
+    return [iv for p, iv in enumerate(case.candidates) if x >> p & 1]
+
+
+def _repairs(case, T, xs):
+    return frozenset(frozenset(iv.intervention_id for iv in _subset(case, x)) for x in xs)
+
+
+@pytest.mark.parametrize("name", ["S5_ins_coupled", "S5_hinge_validity", "S5_ext_k2", "S5_hinge_substitutable"])
+def test_exhaustive_table_equals_direct_intervention_evaluation(name, tables):
+    case, T = S5[name], tables[name]
+    for x in range(len(T.K)):
+        direct, _ = cs.evaluate(cs.do(case.scene, _subset(case, x)))
+        assert direct.d == tuple(T.d[x]) and direct.d_start == tuple(T.d_start[x]) and direct.d_goal == tuple(T.d_goal[x])
+        assert cs.validity(cs.do(case.scene, _subset(case, x)))[0] == T.V[x]
+
+
+@pytest.mark.parametrize("name", sorted(S5))
+def test_stage5_admissible_minimal_repairs_match_expectation(name, tables):
+    case, T = S5[name], tables[name]
+    assert _repairs(case, T, admissible_minimal_repairs(T.F, T.V, T.K, case.k_max)) == case.expected
+    assert T.V[0] == 1, "every catalogue scene is valid before intervention"
+    if case.structure != "validity":
+        assert np.all(T.V == 1), "distinct staging poses: no invalid subset outside the validity probe"
+
+
+def test_validity_filter_blocks_a_feasible_but_invalid_repair(tables):
+    case, T = S5["S5_hinge_validity"], tables["S5_hinge_validity"]
+    x_shift = 1 << [iv.intervention_id for iv in case.candidates].index("shift_lid")
+    assert T.F[x_shift] == 0 and T.V[x_shift] == 0  # the lid clears, but the moved box sits inside the low bottle
+    J = [oracle_repair_cost(int(f), int(k), case.k_max) for f, k in zip(T.F, T.K)]
+    assert x_shift in en.argmin_sets(J), "without V the invalid single repositioning would win"
+    assert x_shift not in admissible_minimal_repairs(T.F, T.V, T.K, case.k_max)
+
+
+def test_admissible_minimal_repairs_semantics():
+    F, V, K = np.array([1, 0, 0, 0]), np.array([1, 0, 1, 1]), np.array([0, 1, 1, 2])
+    assert admissible_minimal_repairs(F, V, K, 2) == {2}
+    assert admissible_minimal_repairs(np.ones(2, int), np.ones(2, int), np.array([0, 1]), 1) == frozenset()
+
+
+def test_significance_rule():
+    base, fine = np.array([0.0, 0.02, 0.02, 5e-7, 1e-3, -0.01]), np.array([0.0, 0.02, -0.02, 5e-7, 7e-4, -0.0101])
+    assert en.significant(base, fine, 1e-6).tolist() == [False, True, False, False, False, True]
+
+
+@pytest.mark.parametrize("name, k", [("S5_ins_k6", 6), ("S5_ext_k5", 5), ("S5_hinge_k5", 5)])
+def test_high_cardinality_repairs_are_unary(name, k, tables):
+    case, T = S5[name], tables[name]
+    assert {len(s) for s in _repairs(case, T, admissible_minimal_repairs(T.F, T.V, T.K, case.k_max))} == {k}
+    assert np.max(np.abs(T.G - en.approximate(T.G, 1))) <= 1e-12
+    assert len(case.candidates) > k, "includes distractor candidates"
+
+
+@pytest.mark.parametrize("name, macro, other", [("S5_ins_coupled", "shift_obj", "r_nb"),
+                                                ("S5_hinge_coupled", "shift_lid", "r_bt")])
+def test_repositioning_creates_significant_physical_pair_term(name, macro, other, tables):
+    case, T = S5[name], tables[name]
+    fine = cs.exhaustive_table(case, ev.ENVELOPE_STEP / 2)
+    names = [iv.intervention_id for iv in case.candidates]
+    x = (1 << names.index(macro)) | (1 << names.index(other))
+    a_b, a_f = en.mobius(T.G), en.mobius(fine.G)
+    assert a_b[x] < -0.01 and en.significant(a_b, a_f, 1e-6)[x]
+    assert abs(T.G[1 << names.index(other)] - T.G[0]) <= 1e-12, "relocating the neighbour alone does nothing"
+
+
+def test_perturbations_change_the_repair_only_across_the_boundary(tables):
+    base = S5["S5_ins_k3"].expected
+    for tag in ("p_minus", "p_plus", "cross_in"):
+        assert S5[f"S5_ins_k3_{tag}"].expected == base
+    assert S5["S5_ins_k3_cross_out"].expected == {frozenset({"r_b1", "r_b3"})}
+
+
+def test_shift_target_moves_the_fixture_with_the_target():
+    case = S5["S5_hinge_coupled"]
+    moved = cs.do(case.scene, [case.candidates[0]])
+    assert moved.fixture[0].center[0] == pytest.approx(case.scene.fixture[0].center[0] - 0.12)
+    assert moved.motion.pivot[0] == pytest.approx(case.scene.motion.pivot[0] - 0.12)

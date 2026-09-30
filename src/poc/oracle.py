@@ -77,6 +77,22 @@ def feasibility_excluding(a: Assessment, excluded) -> int:
     return feasibility_3d([ci for i, ci in zip(a.ids, a.c) if i not in set(excluded)])
 
 
+def is_valid(static_distances) -> int:
+    """V = 1 iff no pair of static post-intervention bodies penetrates beyond CONTACT_TOL_3D."""
+    return int(feasibility_3d(conflict_3d(static_distances)) == 0)
+
+
+def admissible_minimal_repairs(F, V, K, k_max: int) -> frozenset[int]:
+    """Exact S* over admissible subsets only (V = 1): argmin of J* = B F + K, feasible ones kept.
+
+    Validity is a filter, not a penalty inside J*, so an invalid repaired state can never win.
+    """
+    admissible = [x for x in range(len(F)) if V[x] == 1]
+    J = {x: oracle_repair_cost(int(F[x]), int(K[x]), k_max) for x in admissible}
+    j_min = min(J.values())
+    return frozenset(x for x, j in J.items() if j == j_min and F[x] == 0)
+
+
 def diagnostic_causes(a: Assessment) -> tuple[str, ...]:
     """Minimal diagnostic cause set: ignoring all causes restores feasibility, each is necessary."""
     causes = a.blockers

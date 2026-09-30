@@ -163,6 +163,21 @@ def pair_sources(G_table, C_table, tol: float) -> list[dict]:
     return out
 
 
+SIG_FACTOR = 10.0  # a coefficient must exceed 10x its base-vs-fine change to count
+
+
+def significant(coeffs_base, coeffs_fine, floor: float, factor: float = SIG_FACTOR) -> np.ndarray:
+    """Resolution-aware significance of Möbius coefficients (Stage 5 pre-registered rule).
+
+    a(T) is significant iff its sign is the same at base and fine envelope
+    resolution and min(|a_base|, |a_fine|) > max(factor * |a_base - a_fine|, floor).
+    With factor = 10 this also bounds the relative base-vs-fine change below 10%.
+    """
+    b, f = np.asarray(coeffs_base, dtype=float), np.asarray(coeffs_fine, dtype=float)
+    same_sign = np.sign(b) == np.sign(f)
+    return same_sign & (np.minimum(np.abs(b), np.abs(f)) > np.maximum(factor * np.abs(b - f), floor))
+
+
 def classify(reports: list[dict]) -> tuple[str, str]:
     """PoC interaction-order class from per-case reports (plan.md section 10).
 
