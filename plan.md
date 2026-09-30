@@ -612,12 +612,12 @@ No `data/` directory is needed for this PoC unless Stage 5 proves that a dataset
 # 7. Current Stage Status
 
 ```text
-CURRENT_STAGE: 1
+CURRENT_STAGE: 2
 ```
 
 - [x] Stage 0 — repository contract + mathematical types (gate: PASS)
-- [x] Stage 1 — 2D oracle and exhaustive intervention truth (gate: PASS; awaiting approval for Stage 2)
-- [ ] Stage 2 — interaction-order analysis + exact QUBO
+- [x] Stage 1 — 2D oracle and exhaustive intervention truth (gate: PASS)
+- [x] Stage 2 — interaction-order analysis + exact QUBO (gate: PASS; class B, narrow; awaiting approval for Stage 3)
 - [ ] Stage 3 — Hopfield solver validation
 - [ ] Stage 4 — minimal 3D MuJoCo envelope oracle
 - [ ] Stage 5 — 3D multi-blocker validation + final PoC verdict
