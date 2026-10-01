@@ -157,6 +157,10 @@ class SceneRecord:
             raise ValueError("a relocation must target a declared placement region")
         if any(i not in option_ids for g in self.groups for i in g.option_ids):
             raise ValueError("a repair group may only contain declared options")
+        _check_ids([g.group_id for g in self.groups], f"scene {self.scene_id!r} groups")
+        members = [i for g in self.groups for i in g.option_ids]
+        if len(members) != len(set(members)):  # M(S) would be ambiguous otherwise
+            raise ValueError("an option may belong to at most one mutually exclusive group")
         if self.repair.P != len(self.options):
             raise ValueError("repair.P must equal the number of candidate options")
         if any(i not in option_ids for S in self.repair.minimal_repairs for i in S):

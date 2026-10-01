@@ -299,8 +299,10 @@ PoC-1 and PoC-2 are independent packages inside one repository.
 Preferred development command from repository root:
 
 ```bash
-PYTHONPATH=PoC-1/src:PoC-2/src python -m pytest -q PoC-1/tests PoC-2/tests
+PYTHONPATH=PoC-1/src:PoC-2/src python -m pytest -q --import-mode=importlib PoC-1/tests PoC-2/tests
 ```
+
+(`--import-mode=importlib` is required because both packages contain `tests/test_core.py`.)
 
 Stage scripts are run similarly, for example:
 
@@ -918,10 +920,10 @@ Never begin the next stage automatically.
 # 15. Stage Status
 
 ```text
-CURRENT_STAGE: 0
+CURRENT_STAGE: 1
 
-[x] Stage 0 — Repository split + PoC-2 scaffold (gate: PASS; awaiting approval for Stage 1)
-[ ] Stage 1 — Deterministic make-space recourse oracle
+[x] Stage 0 — Repository split + PoC-2 scaffold (gate: PASS)
+[x] Stage 1 — Deterministic make-space recourse oracle (gate: PASS; awaiting approval for Stage 2)
 [ ] Stage 2 — Small randomized make-space structural dataset
 [ ] Stage 3 — Interaction structure and pairwise-necessity analysis
 [ ] Stage 4 — Multi-task benchmark-inspired extension
