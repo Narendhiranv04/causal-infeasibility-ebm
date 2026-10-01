@@ -76,6 +76,28 @@ def test_wrong_sign_separation_is_certified_and_recovered():
     assert world.signed_distance(gm, ge) == pytest.approx(0.1043819, abs=1e-6)
 
 
+@pytest.mark.parametrize("offset", [0.0, 1e-18, 3e-17, 1e-15, 1e-13])
+@pytest.mark.parametrize("axis", [0, 1])
+def test_near_coincident_overlapping_boxes_report_full_penetration(offset, axis):
+    """MuJoCo 3.10 returns a sub-1e-30 positive value for centres 3e-17-1e-15 m apart (found in PoC-2)."""
+    half = (0.03, 0.03, 0.05)
+    c2 = [0.25, -0.22, 0.05]
+    c2[axis] += offset
+    boxes = (Entity3D(Entity("a", EntityRole.MOVABLE), (Box3D((0.25, -0.22, 0.05), half),)),
+             Entity3D(Entity("b", EntityRole.MOVABLE), (Box3D(tuple(c2), half),)))
+    world = GeomWorld(boxes, Composite((("p", Box3D((0.0, 0.0, 0.0), (0.01, 0.01, 0.01))),)))
+    world.set_pose((50.0, 50.0, 50.0), (1.0, 0.0, 0.0, 0.0))
+    assert world.signed_distance(world.entity_geoms[0][0], world.entity_geoms[1][0]) == pytest.approx(-0.06, abs=1e-8)
+
+
+def test_relocations_onto_the_same_spot_are_invalid():
+    """Relocation arithmetic leaves ~3e-17 m between the two centres; V must still be 0."""
+    scene = cs.insertion(cs.side_box("b1", cs.SLOTS[1], +1, 0.010), cs.side_box("b2", cs.SLOTS[2], -1, 0.012))
+    both = cs.do(scene, [cs.relocate("b1", (0.25, -0.22, 0.05)), cs.relocate("b2", (0.25, -0.22, 0.05))])
+    valid, margin = cs.validity(both)
+    assert valid == 0 and margin == pytest.approx(-0.06, abs=1e-8)
+
+
 def test_distances_beyond_distmax_are_clamped():
     _, d = _pair()
     assert d((0.2 + DISTMAX + 0.1, 0.0, 0.0)) == DISTMAX

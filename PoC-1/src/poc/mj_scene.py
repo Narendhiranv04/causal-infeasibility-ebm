@@ -14,7 +14,8 @@ against analytic / QP / 15-axis-SAT truth on >1e5 random box pairs:
   * raw penetrations always have the right sign and are exact for axis-aligned
     and single-axis-rotated pairs (all Stage 4 geometry); under generic 3D
     rotations EPA rarely underestimates depth (8 of ~13k, <= 10%);
-  * exactly coincident geom centres report deep penetration as 0.0.
+  * exactly coincident geom centres report deep penetration as 0.0, and centres
+    3e-17-1e-15 m apart report it as a sub-1e-30 positive value.
 signed_distance() certifies every sign with the clamp probe, recovers a
 contradicted or zero separation by bisection on the clamp, resolves coincident
 centres with a 1e-9 m nudge (depth is 1-Lipschitz), and raises on the one
@@ -116,16 +117,16 @@ class GeomWorld:
             return lo
         if r >= ZERO_PROBE:
             raise RuntimeError(f"inconsistent MuJoCo distance for geoms {g1}, {g2}: raw {r} but not separated")
-        if r != 0.0:
+        if r < 0.0:
             return r
-        xpos = self.data.geom_xpos
+        xpos = self.data.geom_xpos  # zero or sub-probe positive: may hide (near-)coincident centres
         if np.linalg.norm(xpos[g1] - xpos[g2]) <= 1e-12:  # coincident centres: nudge, query, restore
             saved = xpos[g2].copy()
             xpos[g2, 0] += COINCIDENT_NUDGE
             r = self._raw(g1, g2, distmax)
             xpos[g2] = saved
             return r
-        return 0.0  # genuine touching
+        return r  # genuine touching / sub-probe contact
 
     def entity_distances(self) -> np.ndarray:
         """Per entity: min signed distance over (moving geom, entity geom) pairs at the current pose."""

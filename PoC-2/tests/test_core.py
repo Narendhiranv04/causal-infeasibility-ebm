@@ -15,6 +15,11 @@ from poc2 import types as t2
 REPO = Path(__file__).resolve().parents[2]
 FROZEN = "1d15bb57812d771e352174bdcb5e5d8fef214294"  # validated PoC-1 commit before the split
 MOVED = ("plan.md", "pyproject.toml", "src", "scripts", "tests")
+APPROVED_FIXES = {  # approved PoC-1 bug fixes after the split: path -> exact blob of the fixed file
+    # near-coincident overlapping boxes reported as touching by the signed-distance wrapper
+    "src/poc/mj_scene.py": "e1597f60aabef3f209d4d5ccdb6b600cdda243c3",
+    "tests/test_mujoco.py": "ab1347724222647f2460141a63101099ed4b9e87",
+}
 
 
 def _git(*args: str) -> str:
@@ -35,8 +40,10 @@ def frozen_files() -> dict[str, str]:
 # ------------------------------------------------------------ repository split
 
 def test_poc1_files_are_byte_identical_to_the_frozen_commit(frozen_files):
+    """Every PoC-1 file equals the frozen commit, except approved fixes, which equal their pinned version."""
     for path, blob in frozen_files.items():
-        assert _git("hash-object", f"PoC-1/{path}").strip() == blob, f"PoC-1/{path} content changed"
+        expected = APPROVED_FIXES.get(path, blob)
+        assert _git("hash-object", f"PoC-1/{path}").strip() == expected, f"PoC-1/{path} content changed"
 
 
 def test_poc1_tracked_tree_is_exactly_the_frozen_tree(frozen_files):
