@@ -136,7 +136,8 @@ def repair_table(scene: cs.Scene3D, options: tuple[RepairOption, ...], step: flo
         bodies = cols + ([fix_col[m]] if m in fix_col else [])
         for u, w in combinations(bodies, 2):
             if (u, w) not in pair and cs.checked_pair(static[u].entity, static[w].entity):
-                pair[(u, w)] = cs._pair_distance(world, world.entity_geoms[u], world.entity_geoms[w])
+                pair[(u, w)] = min(world.signed_distance(gu, gw)  # public PoC-1 certified distance
+                                   for gu in world.entity_geoms[u] for gw in world.entity_geoms[w])
         V[x] = is_valid([pair[(u, w)] for u, w in combinations(bodies, 2) if (u, w) in pair])
     return RepairTable(tuple(e.eid for e in scene.entities), tuple(o.option_id for o in options),
                        M, V, F, G, C, K, original)

@@ -14,11 +14,19 @@ sideways before retrying the same skill.
 from dataclasses import dataclass
 
 from poc import cases as cs
-from poc.types import Intervention, InterventionKind
+from poc.envelope import LinearMotion
+from poc.mj_scene import Box3D, Composite, Entity3D
+from poc.types import ActionSpec, Entity, EntityRole, Intervention, InterventionKind
 from poc2.types import PlacementRegion, RepairOption
 
 REGION_HALF = (0.035, 0.035, 0.05)  # [m] footprint of one placement region (one box fits)
 NARROW = (0.02, 0.03, 0.05)         # half-size of a narrow box (fits between other boxes)
+FIT_TOL = 1e-12                     # [m] round-off allowance of the region-containment check
+
+
+def fits_in_region(center, half, reg: PlacementRegion) -> bool:
+    """The relocated box lies entirely inside its declared placement region (all three axes)."""
+    return all(abs(c - rc) + h <= rh + FIT_TOL for c, h, rc, rh in zip(center, half, reg.center, reg.half))
 
 
 @dataclass(frozen=True)
@@ -37,10 +45,15 @@ class MakeSpaceCase:
             raise ValueError(f"{self.name}: need 3-6 movable objects, 2-4 regions and P <= 10")
         ids = {e.eid: e for e in self.scene.entities}
         regions = {r.region_id for r in self.regions}
+        by_id = {r.region_id: r for r in self.regions}
         for o in self.options:
             iv = o.intervention
-            if iv.kind is InterventionKind.RELOCATE and (o.region_id not in regions or not ids[iv.entity_id].entity.movable):
+            if iv.kind is not InterventionKind.RELOCATE:
+                continue
+            if o.region_id not in regions or not ids[iv.entity_id].entity.movable:
                 raise ValueError(f"{self.name}: {o.option_id} must move a movable object into a declared region")
+            if not fits_in_region(iv.params, ids[iv.entity_id].boxes[0].half, by_id[o.region_id]):
+                raise ValueError(f"{self.name}: {o.option_id} does not fit inside its placement region")
 
 
 def region(rid: str, x: float, y: float) -> PlacementRegion:
@@ -48,11 +61,18 @@ def region(rid: str, x: float, y: float) -> PlacementRegion:
 
 
 def to_region(ent, reg: PlacementRegion, cost: int = 1) -> RepairOption:
-    """Relocate a shelf box so it stands centred in a placement region."""
-    z = ent.boxes[0].center[2]
-    iv = Intervention(f"{ent.eid}->{reg.region_id}", InterventionKind.RELOCATE, ent.eid, length=cost,
-                      params=(reg.center[0], reg.center[1], z))
+    """Relocate a shelf box so it stands centred in a placement region; it must fit inside the region."""
+    box = ent.boxes[0]
+    dest = (reg.center[0], reg.center[1], box.center[2])
+    if not fits_in_region(dest, box.half, reg):
+        raise ValueError(f"{ent.eid} does not fit inside placement region {reg.region_id!r}")
+    iv = Intervention(f"{ent.eid}->{reg.region_id}", InterventionKind.RELOCATE, ent.eid, length=cost, params=dest)
     return RepairOption(iv, reg.region_id)
+
+
+def shelf_box(eid: str, center, half) -> Entity3D:
+    """Movable box standing on the shelf (public PoC-1 geometry records)."""
+    return Entity3D(Entity(eid, EntityRole.MOVABLE), (Box3D(tuple(center), tuple(half)),))
 
 
 def reposition(dy: float, name: str = "shift", cost: int = 1) -> RepairOption:
@@ -110,7 +130,7 @@ def distractors() -> MakeSpaceCase:
     """One blocker among distractor candidates; region r2 is already occupied by d1."""
     b1, d2, d3 = _box("b1", 2, +1, 0.012), _box("d2", 1, -1, -0.010), _box("d3", 4, +1, -0.008)
     r1, r2, r3 = region("r1", 0.06, 0.22), region("r2", 0.20, -0.22), region("r3", 0.33, -0.22)
-    d1 = cs._ent("d1", cs.MOVABLE, (0.20, -0.22, cs.BLOCK[2]), cs.BLOCK)  # standing inside r2
+    d1 = shelf_box("d1", (0.20, -0.22, cs.BLOCK[2]), cs.BLOCK)  # standing inside r2
     opts = [to_region(b1, r1), to_region(b1, r2), to_region(d1, r3), to_region(d2, r3), to_region(d3, r1)]
     return _case("M5_distractors", "distractors", (b1, d1, d2, d3), (r1, r2, r3), opts, ("b1",), ("b1->r1",))
 
@@ -127,3 +147,58 @@ def structural_cause() -> MakeSpaceCase:
 def stage1_cases() -> list[MakeSpaceCase]:
     return [independent(), placement_competition(), substitutable(), envelope_coupling(), distractors(),
             structural_cause()]
+
+
+# ------------------------------------------------- parametric make-space scenes (Stage 2)
+FINGER_HALF, PALM_HALF_X, WRIST_HALF = (0.03, 0.01, 0.02), 0.02, (0.10, 0.02, 0.02)
+CARRY_CLEARANCE = 0.01          # [m] carried object's bottom above the shelf
+START_X, GOAL_X = -0.35, 0.30   # [m] insertion from outside the cupboard to a deep shelf slot
+
+
+@dataclass(frozen=True)
+class ObjectSpec:
+    eid: str
+    center: tuple[float, float, float]
+    half: tuple[float, float, float]
+    destinations: tuple[str, ...]  # legal relocation regions (unit cost each)
+
+
+@dataclass(frozen=True)
+class MakeSpaceSpec:
+    """Complete deterministic description of one make-space scene and its candidate catalogue."""
+    scene_id: str
+    target_half: tuple[float, float, float]
+    lane_y: float
+    regions: tuple[PlacementRegion, ...]
+    objects: tuple[ObjectSpec, ...]
+    shifts: tuple[float, ...]  # lateral repositioning alternatives (mutually exclusive), unit cost
+
+
+def lane_half(target_half) -> float:
+    """Half-width of the insertion lane: outer faces of the fingers."""
+    return target_half[1] + 2 * FINGER_HALF[1]
+
+
+def gripped(target_half) -> Composite:
+    """Carried object + two fingers + palm + wrist in the object-centred frame (sized to the target)."""
+    hx, hy, _ = target_half
+    return Composite(parts=(
+        ("object", Box3D((0.0, 0.0, 0.0), tuple(target_half))),
+        ("finger_l", Box3D((0.0, hy + FINGER_HALF[1], 0.0), FINGER_HALF)),
+        ("finger_r", Box3D((0.0, -hy - FINGER_HALF[1], 0.0), FINGER_HALF)),
+        ("palm", Box3D((-(hx + PALM_HALF_X), 0.0, 0.0), (PALM_HALF_X, lane_half(target_half), FINGER_HALF[2]))),
+        ("wrist", Box3D((-(hx + 2 * PALM_HALF_X + WRIST_HALF[0]), 0.0, 0.0), WRIST_HALF)),
+    ))
+
+
+def build(spec: MakeSpaceSpec) -> tuple[cs.Scene3D, tuple[PlacementRegion, ...], tuple[RepairOption, ...]]:
+    """Scene, regions and unit-cost candidate catalogue, rebuilt deterministically from a spec."""
+    z = spec.target_half[2] + CARRY_CLEARANCE
+    motion = LinearMotion((START_X, spec.lane_y, z), (GOAL_X, spec.lane_y, z))
+    ents = tuple(shelf_box(o.eid, o.center, o.half) for o in spec.objects)
+    scene = cs.Scene3D("insertion", ActionSpec("insert", "obj"), gripped(spec.target_half), motion,
+                       cs.cupboard() + ents)
+    by_id = {r.region_id: r for r in spec.regions}
+    options = [to_region(e, by_id[rid]) for e, o in zip(ents, spec.objects) for rid in o.destinations]
+    options += [reposition(dy, f"shift{dy:+.3f}") for dy in spec.shifts]
+    return scene, spec.regions, tuple(options)
