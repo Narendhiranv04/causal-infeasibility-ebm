@@ -182,3 +182,14 @@ def digest(lines: list[dict]) -> str:
 def labels_of(lab: dict) -> tuple:
     """(F0, C*, S*) used by the refinement and reconstruction checks."""
     return lab["table"].F[0], lab["cause"].minimal_causes, lab["repair"].minimal_repairs
+
+
+STAGE2_DIGEST = "a523986584bd35f0abaf2cf0262c4d83b0895e714a00f39b5d6d3ad4eaf32bb5"  # approved fixed dataset
+
+
+def load_dataset(path) -> list[dict]:
+    """The fixed Stage-2 records, verified against the approved digest (never regenerated here)."""
+    lines = [json.loads(s) for s in open(path).read().splitlines()]
+    if digest(lines) != STAGE2_DIGEST:
+        raise ValueError(f"{path} is not the approved Stage-2 dataset")
+    return lines

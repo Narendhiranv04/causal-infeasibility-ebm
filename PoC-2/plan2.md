@@ -920,13 +920,14 @@ Never begin the next stage automatically.
 # 15. Stage Status
 
 ```text
-CURRENT_STAGE: 2
+CURRENT_STAGE: 3
 
 [x] Stage 0 — Repository split + PoC-2 scaffold (gate: PASS)
 [x] Stage 1 — Deterministic make-space recourse oracle (gate: PASS)
 [x] Stage 2 — Small randomized make-space structural dataset (gate: PASS; C* = {B0} by construction under the
-    separable per-entity oracle, kept as the localization label; unit costs; awaiting approval for Stage 3)
-[ ] Stage 3 — Interaction structure and pairwise-necessity analysis
+    separable per-entity oracle, kept as the localization label; unit costs)
+[x] Stage 3 — Interaction structure and pairwise-necessity analysis (gate: PASS; rules pre-registered in
+    poc2/structure.py; awaiting approval for Stage 4)
 [ ] Stage 4 — Multi-task benchmark-inspired extension
 [ ] Stage 5 — Cross-family structural recourse analysis
 [ ] Stage 6 — Optimization evaluation + final PoC-2 verdict
