@@ -179,15 +179,16 @@ def lane_half(target_half) -> float:
     return target_half[1] + 2 * FINGER_HALF[1]
 
 
-def gripped(target_half) -> Composite:
-    """Carried object + two fingers + palm + wrist in the object-centred frame (sized to the target)."""
+def gripped(target_half, grasp_dz: float = 0.0) -> Composite:
+    """Side grasp from -x: object + two fingers + palm + wrist in the object-centred frame (sized to
+    the target); grasp_dz raises the gripper parts relative to the object centre."""
     hx, hy, _ = target_half
     return Composite(parts=(
         ("object", Box3D((0.0, 0.0, 0.0), tuple(target_half))),
-        ("finger_l", Box3D((0.0, hy + FINGER_HALF[1], 0.0), FINGER_HALF)),
-        ("finger_r", Box3D((0.0, -hy - FINGER_HALF[1], 0.0), FINGER_HALF)),
-        ("palm", Box3D((-(hx + PALM_HALF_X), 0.0, 0.0), (PALM_HALF_X, lane_half(target_half), FINGER_HALF[2]))),
-        ("wrist", Box3D((-(hx + 2 * PALM_HALF_X + WRIST_HALF[0]), 0.0, 0.0), WRIST_HALF)),
+        ("finger_l", Box3D((0.0, hy + FINGER_HALF[1], grasp_dz), FINGER_HALF)),
+        ("finger_r", Box3D((0.0, -hy - FINGER_HALF[1], grasp_dz), FINGER_HALF)),
+        ("palm", Box3D((-(hx + PALM_HALF_X), 0.0, grasp_dz), (PALM_HALF_X, lane_half(target_half), FINGER_HALF[2]))),
+        ("wrist", Box3D((-(hx + 2 * PALM_HALF_X + WRIST_HALF[0]), 0.0, grasp_dz), WRIST_HALF)),
     ))
 
 

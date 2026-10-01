@@ -14,19 +14,55 @@ frozen PoC-1 package `poc`. This module owns only the new repair space:
 Rows with M(S) = 0 carry no geometry: F = V = -1 and G = nan (never invented).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import combinations
 
 import numpy as np
 
 from poc import cases as cs
-from poc.envelope import ENVELOPE_STEP, sweep
+from poc.envelope import ENVELOPE_STEP, LinearMotion, Sweep, shifted, sweep
 from poc.mj_scene import IDENTITY, Entity3D, GeomWorld
 from poc.oracle import Assessment, admissible_minimal_repairs, assess, feasibility_excluding, is_valid
 from poc.types import Entity, EntityRole, InterventionKind
 from poc2.types import CauseResult, RepairGroup, RepairOption, RepairOracleResult, RepairStatus
 
 RELOCATE, SHIFT = InterventionKind.RELOCATE, InterventionKind.SHIFT_TARGET
+
+
+@dataclass(frozen=True)
+class Polyline:
+    """Prescribed piecewise-linear action: consecutive PoC-1 LinearMotion segments (end meets start).
+
+    The envelope is the union of the segments' envelopes, each sampled with PoC-1's own
+    vertex-displacement criterion. Samples are numerical only; segments are not phases.
+    """
+    segments: tuple[LinearMotion, ...]
+
+
+def envelope_sweep(world: GeomWorld, motion, moving, step: float = ENVELOPE_STEP) -> Sweep:
+    """PoC-1 sweep, extended to a Polyline by stacking its segments' samples (start and goal kept)."""
+    if not isinstance(motion, Polyline):
+        return sweep(world, motion, moving, step)
+    parts = [sweep(world, seg, moving, step) for seg in motion.segments]
+    n = len(parts)
+    taus = np.concatenate([(k + part.taus) / n for k, part in enumerate(parts)])
+    return Sweep(taus, np.vstack([part.distances for part in parts]))
+
+
+def apply_option(scene: cs.Scene3D, iv) -> cs.Scene3D:
+    """do(I_p): PoC-1 semantics; a repositioning of a Polyline action shifts every segment and the fixture."""
+    if iv.kind is not SHIFT or not isinstance(scene.motion, Polyline):
+        return cs.apply_intervention(scene, iv)
+    if iv.entity_id != scene.action.target_id:
+        raise ValueError(f"SHIFT_TARGET must act on target {scene.action.target_id!r}")
+    fixture = tuple(replace(b, center=tuple(c + o for c, o in zip(b.center, iv.params))) for b in scene.fixture)
+    return replace(scene, motion=Polyline(tuple(shifted(s, iv.params) for s in scene.motion.segments)), fixture=fixture)
+
+
+def evaluate(scene: cs.Scene3D, step: float = ENVELOPE_STEP) -> Assessment:
+    """Fresh model, full envelope sweep, PoC-1 assessment (any supported motion)."""
+    sw = envelope_sweep(GeomWorld(scene.entities, scene.moving), scene.motion, scene.moving, step)
+    return assess([e.eid for e in scene.entities], sw.d_min, sw.d_start, sw.d_goal)
 
 
 def choice_groups(options: tuple[RepairOption, ...]) -> tuple[RepairGroup, ...]:
@@ -90,9 +126,9 @@ def _variant_world(scene, options):
     for p, o in enumerate(options):
         if o.intervention.kind is RELOCATE:
             i = ids.index(o.intervention.entity_id)
-            variants[i].append(cs.apply_intervention(scene, o.intervention).entities[i])
+            variants[i].append(apply_option(scene, o.intervention).entities[i])
             where[p] = (i, len(variants[i]) - 1)
-    motions = {None: scene} | {p: cs.apply_intervention(scene, o.intervention)
+    motions = {None: scene} | {p: apply_option(scene, o.intervention)
                                for p, o in enumerate(options) if o.intervention.kind is SHIFT}
     flat = [Entity3D(Entity(f"{e.eid}.v{k}", e.entity.role), e.boxes) for vs in variants for k, e in enumerate(vs)]
     col = {}
@@ -107,7 +143,8 @@ def repair_table(scene: cs.Scene3D, options: tuple[RepairOption, ...], step: flo
     envelope, so each pose variant is swept once (checked against direct_row in the tests)."""
     P, masks = len(options), choice_masks(options)
     where, motions, flat, col = _variant_world(scene, options)
-    sweeps = {m: sweep(GeomWorld(tuple(flat), scene.moving), sc.motion, scene.moving, step) for m, sc in motions.items()}
+    sweeps = {m: envelope_sweep(GeomWorld(tuple(flat), scene.moving), sc.motion, scene.moving, step)
+              for m, sc in motions.items()}
     fixtures = {m: Entity3D(Entity(f"{cs.FIXTURE}.{m}", EntityRole.TARGET), sc.fixture) for m, sc in motions.items()
                 if sc.fixture}
     static = tuple(flat) + tuple(fixtures.values())
@@ -162,8 +199,11 @@ def direct_row(scene: cs.Scene3D, options: tuple[RepairOption, ...], x: int,
     """Reference evaluation of one choice-consistent subset: do(S), re-run the action, check V."""
     if not choice_consistent(x, choice_masks(options)):
         raise ValueError("contradictory selections have no geometric do(S)")
-    repaired = cs.do(scene, [o.intervention for p, o in enumerate(options) if x >> p & 1])
-    return cs.evaluate(repaired, step)[0], cs.validity(repaired)[0]
+    repaired = scene
+    for p, o in enumerate(options):
+        if x >> p & 1:
+            repaired = apply_option(repaired, o.intervention)
+    return evaluate(repaired, step), cs.validity(repaired)[0]
 
 
 def repair_result(table: RepairTable) -> RepairOracleResult:
@@ -171,11 +211,11 @@ def repair_result(table: RepairTable) -> RepairOracleResult:
     admissible = ((table.M == 1) & (table.V == 1)).astype(int)
     F = np.where(table.M == 1, table.F, 1)
     k_max = int(table.K.max())
-    best = admissible_minimal_repairs(F, admissible, table.K, k_max)
+    best = admissible_minimal_repairs(F, admissible, table.K, k_max) if admissible.any() else frozenset()
     counts = dict(P=len(table.option_ids), n_choice_invalid=int((table.M == 0).sum()),
                   n_static_invalid=int(((table.M == 1) & (table.V == 0)).sum()))
     if not best:
         return RepairOracleResult(RepairStatus.NO_RECOURSE_IN_CATALOGUE, frozenset(), None, **counts)
-    status = RepairStatus.FEASIBLE if table.F[0] == 0 else RepairStatus.REPAIRED
+    status = RepairStatus.FEASIBLE if 0 in best else RepairStatus.REPAIRED  # {} admissible and optimal
     cost = int(table.K[next(iter(best))])
     return RepairOracleResult(status, frozenset(table.subset(x) for x in best), cost, **counts)

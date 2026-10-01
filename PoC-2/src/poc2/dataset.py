@@ -20,6 +20,7 @@ import numpy as np
 
 from poc.envelope import ENVELOPE_STEP
 from poc2 import oracle as orc
+from poc2 import tasks
 from poc2.scenes import MakeSpaceSpec, ObjectSpec, build, lane_half
 from poc2.types import PlacementRegion, RepairStatus, SceneRecord
 
@@ -93,12 +94,16 @@ def sample_spec(rng: np.random.Generator, scene_id: str, intent: str) -> MakeSpa
     return MakeSpaceSpec(scene_id, target, lane_y, regions, specs, shifts)
 
 
-def label(spec: MakeSpaceSpec, step: float = ENVELOPE_STEP) -> dict:
-    """Exact oracle labels for one spec (table, causes, minimal repairs)."""
-    scene, regions, options = build(spec)
+def family_of(spec) -> str:
+    return spec.family if isinstance(spec, tasks.TaskSpec) else FAMILY
+
+
+def label(spec, step: float = ENVELOPE_STEP) -> dict:
+    """Exact oracle labels for one spec of any family (same oracle: M, V, F, G, C*, S*)."""
+    scene, regions, options = tasks.build(spec) if isinstance(spec, tasks.TaskSpec) else build(spec)
     table = orc.repair_table(scene, options, step)
     cause, repair = orc.causes(table.original), orc.repair_result(table)
-    record = SceneRecord(spec.scene_id, SEED, FAMILY, regions, options, orc.choice_groups(options), cause, repair)
+    record = SceneRecord(spec.scene_id, SEED, family_of(spec), regions, options, orc.choice_groups(options), cause, repair)
     return {"table": table, "cause": cause, "repair": repair, "record": record, "options": options}
 
 
@@ -115,19 +120,30 @@ def rejection_reason(intent: str, lab: dict) -> str | None:
     return None if repair.status is RepairStatus.REPAIRED else "no_recourse_in_catalogue"
 
 
-def intents() -> list[str]:
-    """Fixed composition: every fourth slot is a feasible hard negative (30 + 10)."""
-    return ["negative" if j % 4 == 3 else "repairable" for j in range(N_REPAIRABLE + N_NEGATIVE)]
+def intents(n_repairable: int = N_REPAIRABLE, n_negative: int = N_NEGATIVE) -> list[str]:
+    """Fixed composition: every fourth slot is a feasible hard negative (30 + 10 / 15 + 5)."""
+    return ["negative" if j % 4 == 3 else "repairable" for j in range(n_repairable + n_negative)]
 
 
-def generate(slots: list[str] | None = None, max_attempts: int = MAX_ATTEMPTS):
+# Stage 4: pre-registered composition of each added family and its seeded stream
+FAMILY_CODE = {"storage_insertion": 1, "storage_extraction": 2, "articulated_opening": 3}
+FAMILY_PREFIX = {FAMILY: "ms", "storage_insertion": "si", "storage_extraction": "se", "articulated_opening": "ao"}
+N_REPAIRABLE_FAMILY, N_NEGATIVE_FAMILY, MAX_ATTEMPTS_FAMILY = 15, 5, 300
+
+
+def stream(family: str, attempt: int) -> list[int]:
+    return [SEED, attempt] if family == FAMILY else [SEED, FAMILY_CODE[family], attempt]
+
+
+def generate(slots: list[str] | None = None, max_attempts: int = MAX_ATTEMPTS, family: str = FAMILY):
     """Sequential seeded draws; returns (accepted [(spec, intent, attempt, labels)], rejection log)."""
+    sampler = sample_spec if family == FAMILY else tasks.SAMPLERS[family]
     slots, accepted, rejected, attempt = slots or intents(), [], {}, 0
     for j, intent in enumerate(slots):
         while True:
             if attempt >= max_attempts:
                 raise RuntimeError(f"composition not met within {max_attempts} attempts: {rejected}")
-            spec = sample_spec(np.random.default_rng([SEED, attempt]), f"ms{j:02d}", intent)
+            spec = sampler(np.random.default_rng(stream(family, attempt)), f"{FAMILY_PREFIX[family]}{j:02d}", intent)
             attempt += 1
             lab = label(spec)
             reason = rejection_reason(intent, lab)
@@ -138,7 +154,15 @@ def generate(slots: list[str] | None = None, max_attempts: int = MAX_ATTEMPTS):
     return accepted, {"attempts": attempt, "max_attempts": max_attempts, "reasons": rejected}
 
 
-def spec_to_json(spec: MakeSpaceSpec) -> dict:
+def spec_to_json(spec) -> dict:
+    if isinstance(spec, tasks.TaskSpec):
+        return {"family": spec.family, "scene_id": spec.scene_id, "target_half": list(spec.target_half),
+                "params": [[k, v] for k, v in spec.params],
+                "structures": [[e, list(c), list(h)] for e, c, h in spec.structures],
+                "regions": [{"id": r.region_id, "center": list(r.center), "half": list(r.half)} for r in spec.regions],
+                "objects": [{"id": o.eid, "center": list(o.center), "half": list(o.half),
+                             "destinations": list(o.destinations)} for o in spec.objects],
+                "shifts": [list(v) for v in spec.shifts]}
     return {"scene_id": spec.scene_id, "target_half": list(spec.target_half), "lane_y": spec.lane_y,
             "regions": [{"id": r.region_id, "center": list(r.center), "half": list(r.half)} for r in spec.regions],
             "objects": [{"id": o.eid, "center": list(o.center), "half": list(o.half), "destinations": list(o.destinations)}
@@ -146,7 +170,13 @@ def spec_to_json(spec: MakeSpaceSpec) -> dict:
             "shifts": list(spec.shifts)}
 
 
-def spec_from_json(d: dict) -> MakeSpaceSpec:
+def spec_from_json(d: dict):
+    regions = tuple(PlacementRegion(r["id"], tuple(r["center"]), tuple(r["half"])) for r in d["regions"])
+    objects = tuple(ObjectSpec(o["id"], tuple(o["center"]), tuple(o["half"]), tuple(o["destinations"])) for o in d["objects"])
+    if "family" in d:
+        return tasks.TaskSpec(d["family"], d["scene_id"], tuple(d["target_half"]), tuple((k, v) for k, v in d["params"]),
+                              tuple((e, tuple(c), tuple(h)) for e, c, h in d["structures"]), regions, objects,
+                              tuple(tuple(v) for v in d["shifts"]))
     return MakeSpaceSpec(d["scene_id"], tuple(d["target_half"]), d["lane_y"],
                          tuple(PlacementRegion(r["id"], tuple(r["center"]), tuple(r["half"])) for r in d["regions"]),
                          tuple(ObjectSpec(o["id"], tuple(o["center"]), tuple(o["half"]), tuple(o["destinations"]))
@@ -158,10 +188,10 @@ def _sets(fs) -> list[list[str]]:
     return sorted(sorted(s) for s in fs)
 
 
-def to_record_json(spec: MakeSpaceSpec, intent: str, attempt: int, lab: dict) -> dict:
-    a, cause, repair = lab["table"].original, lab["cause"], lab["repair"]
+def to_record_json(spec, intent: str, attempt: int, lab: dict) -> dict:
+    a, cause, repair, family = lab["table"].original, lab["cause"], lab["repair"], family_of(spec)
     return {
-        "scene_id": spec.scene_id, "seed": SEED, "stream": [SEED, attempt], "family": FAMILY, "intent": intent,
+        "scene_id": spec.scene_id, "seed": SEED, "stream": stream(family, attempt), "family": family, "intent": intent,
         "spec": spec_to_json(spec),
         "candidate_interventions": [{"id": o.option_id, "entity": o.intervention.entity_id,
                                      "kind": o.intervention.kind.value, "region": o.region_id,
@@ -187,9 +217,13 @@ def labels_of(lab: dict) -> tuple:
 STAGE2_DIGEST = "a523986584bd35f0abaf2cf0262c4d83b0895e714a00f39b5d6d3ad4eaf32bb5"  # approved fixed dataset
 
 
-def load_dataset(path) -> list[dict]:
-    """The fixed Stage-2 records, verified against the approved digest (never regenerated here)."""
+def load_dataset(path, expected: str = STAGE2_DIGEST) -> list[dict]:
+    """Fixed records, verified against an approved digest (never regenerated here)."""
     lines = [json.loads(s) for s in open(path).read().splitlines()]
-    if digest(lines) != STAGE2_DIGEST:
-        raise ValueError(f"{path} is not the approved Stage-2 dataset")
+    if digest(lines) != expected:
+        raise ValueError(f"{path} is not the approved dataset")
     return lines
+
+
+def record_stream_attempt(record: dict) -> int:
+    return record["stream"][-1]
