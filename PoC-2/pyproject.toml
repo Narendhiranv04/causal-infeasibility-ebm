@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poc2"
+version = "0.0.0"
+description = "PoC-2: causal diagnosis and structured corrective recourse (imports the frozen PoC-1 package `poc`)"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "mujoco==3.10.0",  # same validated version as PoC-1, whose oracle PoC-2 reuses
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+plot = ["matplotlib"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "../PoC-1/src"]  # PoC-1 is imported, never copied
