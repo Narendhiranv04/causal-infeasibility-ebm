@@ -108,14 +108,16 @@ class EarlyStopping:
 
 
 def train(train_set: list, val_set: list, seed: int, max_epochs: int = MAX_EPOCHS, patience: int = PATIENCE,
-          batch: int = BATCH_SCENES, threads: int = 1, pairwise: bool = False, loss_fn=None, name: str = "bce") -> dict:
+          batch: int = BATCH_SCENES, threads: int = 1, pairwise: bool = False, loss_fn=None, name: str = "bce",
+          make_model=None) -> dict:
     """Train one seed; returns the best-validation state dict and the full loss history.
 
     Defaults are the frozen Stage-3 baseline (unary model, scene-balanced BCE). Stage 4 passes
-    pairwise / loss_fn = structured_loss / name = "set_nll"; everything else is shared."""
+    pairwise / loss_fn = structured_loss / name = "set_nll"; everything else is shared. make_model (Stage-4.5
+    diagnostic hook) builds another (q, Q) model at the same point, after seeding; None keeps EnergyModel."""
     loss_fn = loss_fn or scene_balanced_bce
     set_determinism(seed, threads)
-    model = md.EnergyModel(pairwise=pairwise)
+    model = make_model() if make_model is not None else md.EnergyModel(pairwise=pairwise)
     assert model.pairwise == pairwise
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     order_rng = np.random.default_rng(seed)
