@@ -113,7 +113,21 @@ def test_candidate_conventions(name):
             assert np.allclose(u[:2], [0, 1]) and np.allclose(u[8:], 0)
             assert np.allclose(u[2:5] * L0, iv.params)
             assert np.allclose(u[5:8] * L0, ft.reference_point(orc.apply_option(scene, iv).motion))
-            assert f.affected[p] == (len(scene.entities) if scene.fixture else ft.NO_ENTITY)
+            assert f.affected[p] == ft.NO_ENTITY
+
+
+def test_every_shift_target_uses_no_entity_in_every_family():
+    seen = set()
+    for name, (scene, regions, options) in ALL.items():
+        f = ft.extract(scene, regions, options)
+        for p, o in enumerate(options):
+            if o.intervention.kind is InterventionKind.SHIFT_TARGET:
+                assert f.affected[p] == ft.NO_ENTITY, (name, p)
+                seen.add((name, bool(scene.fixture)))
+            else:
+                assert f.affected[p] >= 0
+    assert {"storage_extraction", "articulated_opening", "storage_insertion"} <= {n for n, _ in seen}
+    assert {fx for _, fx in seen} == {True, False}  # covered with and without a fixture
 
 
 def test_shift_reference_points_per_motion_type():

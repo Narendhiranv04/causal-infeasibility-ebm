@@ -807,11 +807,19 @@ the physical meaning differs.
 
 Use the learned embedding of the affected entity.
 
-For SHIFT_TARGET, use the target/fixture embedding plus global scene/action context.
+For SHIFT_TARGET, use no affected entity: `affected = NO_ENTITY = -1`, hence the zero
+affected-entity embedding, in every family and whether or not the scene has a target fixture.
+*(Approved Stage-1 correction.)*
 
 Why:
 
 a relocation is entity-specific.
+
+SHIFT_TARGET is a global action-envelope intervention, not a local intervention on the static
+fixture. The learned energy models the geometric action-feasibility response; fixture / static
+compatibility is handled separately by the exact \(V\). The shift candidate already receives the
+scene/action context, the moving-composite context, its kind, the shift vector and the shifted action
+reference point.
 
 ### Translation delta
 

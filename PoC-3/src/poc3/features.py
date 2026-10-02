@@ -23,9 +23,11 @@ FIXED CONVENTIONS
                apply_option), delta = proposed - current centre; region centre / half kept separate.
                SHIFT_TARGET: delta = shift vector; proposed centre = shifted action reference point
                (LinearMotion start, first Polyline segment start, hinge pivot); region features zero.
-  Affected     entity index of the acted-on entity: the relocated entity for RELOCATE; the target fixture
-               for SHIFT_TARGET, or -1 (zero embedding, context from the scene / action encoding) when the
-               scene has no fixture.
+  Affected     RELOCATE: index of the relocated entity. SHIFT_TARGET: always NO_ENTITY = -1 (zero
+               affected-entity embedding), with or without a fixture. A shift is a global action-envelope
+               intervention, not a local edit of the static fixture; its context comes from the scene /
+               action / moving-composite encoding, kind, shift vector and shifted reference point, and
+               fixture / static compatibility is handled by the exact V.
 """
 
 from dataclasses import dataclass
@@ -154,7 +156,7 @@ def candidate_row(scene, regions: dict, option) -> tuple[np.ndarray, int]:
     if iv.kind is InterventionKind.SHIFT_TARGET:
         delta = np.asarray(iv.params, dtype=float)
         row = np.concatenate([(0.0, 1.0), delta / L0, (reference_point(scene.motion) + delta) / L0, zero, zero])
-        return row, (len(ids) if scene.fixture else NO_ENTITY)
+        return row, NO_ENTITY
     raise ValueError(f"{iv.kind} is not an executable repair kind")
 
 
@@ -171,5 +173,5 @@ def contract() -> dict:
     """Machine-readable feature contract (column names, scale, conventions)."""
     return {"L0_m": L0, "K_A": K_A, "entity_columns": list(ENTITY_COLUMNS), "action_columns": list(ACTION_COLUMNS),
             "moving_columns": list(MOVING_COLUMNS), "candidate_columns": list(CANDIDATE_COLUMNS),
-            "affected": "entity index; -1 = no entity (SHIFT_TARGET without a fixture) -> zero embedding",
+            "affected": "RELOCATE: relocated entity index; SHIFT_TARGET: always -1 (NO_ENTITY) -> zero embedding",
             "conventions": __doc__.split("FIXED CONVENTIONS")[1].strip()}
