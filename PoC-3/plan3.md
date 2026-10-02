@@ -3,7 +3,7 @@
 **Project:** `lfd_infeasibility`  
 **Repository:** `https://github.com/Narendhiranv04/causal-infeasibility-ebm`  
 **Dependency baseline:** PoC-1 frozen; PoC-2 frozen at `bb6f335`  
-**Status:** `CURRENT_STAGE: 4.5 (diagnostic)`  
+**Status:** `CURRENT_STAGE: 4.6A (analysis only)`  
 **Primary purpose:** learn a scene-conditioned energy over executable intervention subsets, then compare exact, Hopfield, and Boltzmann-style inference on the **same learned energy**.
 
 ---
