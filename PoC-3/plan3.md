@@ -3,7 +3,7 @@
 **Project:** `lfd_infeasibility`  
 **Repository:** `https://github.com/Narendhiranv04/causal-infeasibility-ebm`  
 **Dependency baseline:** PoC-1 frozen; PoC-2 frozen at `bb6f335`  
-**Status:** `CURRENT_STAGE: 0`  
+**Status:** `CURRENT_STAGE: 1`  
 **Primary purpose:** learn a scene-conditioned energy over executable intervention subsets, then compare exact, Hopfield, and Boltzmann-style inference on the **same learned energy**.
 
 ---
@@ -755,19 +755,32 @@ Why:
 - the network sees the actual path geometry;
 - it does not receive signed distances or collision labels.
 
-## 13.2 Moving-composite size
+## 13.2 Moving-composite size and offset
 
-Also include the local axis-aligned half-extent of the manipulated object + gripper/wrist composite:
+Also include the local axis-aligned bounding box (AABB) of the manipulated object + gripper/wrist
+composite, from the composite corners expressed in the moving (action) frame:
 
 \[
-h_{\mathrm{moving}}\in\mathbb R^3.
+c_{\mathrm{moving}}^{local}
+=
+\frac{\min(\text{corners})+\max(\text{corners})}{2},
+\qquad
+h_{\mathrm{moving}}^{local}
+=
+\frac{\max(\text{corners})-\min(\text{corners})}{2},
 \]
+
+both in \(\mathbb R^3\) and scaled by \(L_0\).
 
 Why:
 
 the path alone does not determine the swept occupied volume.
 
 A large carried object and a small carried object following the same trajectory have different conflicts.
+
+Half-extents alone are insufficient: hinge objects and asymmetric gripper/wrist composites can be
+offset from the action frame, so the same half-extents at a different local offset sweep a different
+volume. *(Approved Stage-1 amendment.)*
 
 ---
 
