@@ -44,8 +44,8 @@ def score_state(x: int, M, V, F, K, optimal) -> dict:
             "excess_cost": int(K[x]) - k_star if ok else None, "n_pred": int(x).bit_count(), "empty": x == 0}
 
 
-def summarize(rows: list[dict]) -> dict:
-    """Scene-balanced summary of per-scene rows (each row: score_state fields + 'brier')."""
+def summarize(rows: list[dict], extra=()) -> dict:
+    """Scene-balanced summary of per-scene rows (score_state fields, optional 'brier', extra numeric keys)."""
     if not rows:
         return {"n": 0}
     out = {"n": len(rows)}
@@ -54,18 +54,20 @@ def summarize(rows: list[dict]) -> dict:
     out["n_valid_feasible"] = len(excess)
     out["mean_excess_cost_valid_feasible"] = float(np.mean(excess)) if excess else math.nan
     out["mean_n_pred"] = float(np.mean([r["n_pred"] for r in rows]))
-    out["brier"] = float(np.mean([r["brier"] for r in rows]))
+    if "brier" in rows[0]:
+        out["brier"] = float(np.mean([r["brier"] for r in rows]))
+    out.update({k: float(np.mean([r[k] for r in rows])) for k in extra})
     sizes = np.bincount([r["n_pred"] for r in rows], minlength=P_MAX + 1)
     out["size_histogram"] = {str(k): int(v) for k, v in enumerate(sizes)}
     return out
 
 
-def grouped(rows: list[dict], families) -> dict:
+def grouped(rows: list[dict], families, extra=()) -> dict:
     """All / repairable (primary) / negative, overall and per family; negatives add the false-positive rate."""
     def block(sel):
         rep = [r for r in sel if r["intent"] == "repairable"]
         neg = [r for r in sel if r["intent"] == "negative"]
-        b = {"all": summarize(sel), "repairable": summarize(rep), "negative": summarize(neg)}
+        b = {"all": summarize(sel, extra), "repairable": summarize(rep, extra), "negative": summarize(neg, extra)}
         if neg:
             b["negative"]["false_positive_repair_rate"] = float(np.mean([not r["empty"] for r in neg]))
         return b
@@ -81,3 +83,62 @@ def across_seeds(per_seed: list[dict]) -> dict:
     if np.isnan(vals).any():
         return {"mean": math.nan, "std": math.nan}
     return {"mean": float(vals.mean()), "std": float(vals.std(ddof=1)) if len(vals) > 1 else 0.0}
+
+
+# ------------------------------------------------------------ Stage 4: learned-minimum sets and exact distributions
+# Learned minimum set S_hat vs oracle S*: recovery 1[S_hat = S*], precision |S_hat & S*| / |S_hat|, recall
+# |S_hat & S*| / |S*|. Exact learned Boltzmann distribution at temperature T over the admissible domain:
+# NLL = -(1/|S*|) sum_{x in S*} log P_T(x); KL(P* || P_T) = NLL - log |S*|; mass = P_T(S*);
+# marginals y_hat_p = P_T(x_p = 1) vs the tie marginal y_p: Brier and MAE averaged over p, then scenes.
+# Paired bootstrap: per-scene differences d_i resampled with replacement, 10 000 times, fresh
+# default_rng(107) per comparison, 95 % percentile interval.
+# Collapse (pre-registered before any Stage-4 result): over repairable scenes, the most frequent predicted
+# repair size covers > COLLAPSE_SIZE_SHARE of scenes, or the empty set is predicted for > COLLAPSE_EMPTY.
+BOOTSTRAP_RESAMPLES, BOOTSTRAP_SEED = 10_000, 107
+COLLAPSE_SIZE_SHARE, COLLAPSE_EMPTY = 0.95, 0.50
+SET_KEYS = ("set_recovery", "set_precision", "set_recall")
+
+
+def set_scores(learned, optimal) -> dict:
+    inter = len(set(learned) & set(optimal))
+    return {"set_recovery": set(learned) == set(optimal), "set_precision": inter / len(learned),
+            "set_recall": inter / len(optimal)}
+
+
+def boltzmann(E: np.ndarray, T: float) -> np.ndarray:
+    z = -np.asarray(E, dtype=float) / T
+    w = np.exp(z - z.max())
+    return w / w.sum()
+
+
+def distribution_scores(E: np.ndarray, states, optimal, P: int, T: float) -> dict:
+    """Exact learned distribution metrics for one scene (E over the admissible states, ascending)."""
+    states = np.asarray(states)
+    z = -np.asarray(E, dtype=float) / T
+    logp = z - (z.max() + np.log(np.exp(z - z.max()).sum()))  # stable log-probabilities
+    prob = np.exp(logp)
+    on = np.isin(states, sorted(optimal))
+    nll = float(-np.mean(logp[on]))
+    bits = (states[:, None] >> np.arange(P)[None, :]) & 1
+    y_hat, y = prob @ bits, soft_target(optimal, P)
+    return {"nll": nll, "kl": nll - math.log(len(optimal)), "mass": float(prob[on].sum()),
+            "brier": float(np.mean((y_hat - y) ** 2)), "mae": float(np.mean(np.abs(y_hat - y))),
+            "prob_sum": float(prob.sum())}
+
+
+def paired_bootstrap(d, resamples: int = BOOTSTRAP_RESAMPLES, seed: int = BOOTSTRAP_SEED) -> dict:
+    d = np.asarray(d, dtype=float)
+    idx = np.random.default_rng(seed).integers(0, len(d), size=(resamples, len(d)))
+    means = d[idx].mean(axis=1)
+    lo, hi = np.percentile(means, [2.5, 97.5])
+    return {"n": len(d), "mean_diff": float(d.mean()), "ci95": [float(lo), float(hi)],
+            "excludes_zero": bool(lo > 0 or hi < 0)}
+
+
+def collapse(rows: list[dict]) -> dict:
+    """Repair-size collapse check over the repairable rows of one model / seed."""
+    rep = [r for r in rows if r["intent"] == "repairable"]
+    sizes = np.bincount([r["n_pred"] for r in rep], minlength=P_MAX + 1)
+    share, empty = float(sizes.max() / len(rep)), float(np.mean([r["empty"] for r in rep]))
+    return {"max_size_share": share, "empty_rate": empty, "n_distinct_sizes": int((sizes > 0).sum()),
+            "collapsed": share > COLLAPSE_SIZE_SHARE or empty > COLLAPSE_EMPTY}

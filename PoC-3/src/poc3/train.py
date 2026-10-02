@@ -1,4 +1,5 @@
-"""PoC-3 Stage 3: independent non-energy candidate baseline (plan3.md sections 20, 32, 33A, 50).
+"""PoC-3 training: Stage 3 independent baseline (sections 20, 32, 33A, 50) and Stage 4 exact structured set
+likelihood for the unary / pairwise learned energies (sections 21, 22, 33B-C, 36, 51; see the Stage-4 block).
 
   Model       the unchanged Stage-1 EnergyModel(pairwise=False); its unary outputs q_p are independent
               candidate logits, pi_p = sigmoid(q_p). Q, structured energy inference, M / V projection and
@@ -106,15 +107,19 @@ class EarlyStopping:
         return self.bad >= self.patience
 
 
-def train(train_set: list[Sample], val_set: list[Sample], seed: int, max_epochs: int = MAX_EPOCHS,
-          patience: int = PATIENCE, batch: int = BATCH_SCENES, threads: int = 1) -> dict:
-    """Train one seed; returns the best-validation state dict and the full loss history."""
+def train(train_set: list, val_set: list, seed: int, max_epochs: int = MAX_EPOCHS, patience: int = PATIENCE,
+          batch: int = BATCH_SCENES, threads: int = 1, pairwise: bool = False, loss_fn=None, name: str = "bce") -> dict:
+    """Train one seed; returns the best-validation state dict and the full loss history.
+
+    Defaults are the frozen Stage-3 baseline (unary model, scene-balanced BCE). Stage 4 passes
+    pairwise / loss_fn = structured_loss / name = "set_nll"; everything else is shared."""
+    loss_fn = loss_fn or scene_balanced_bce
     set_determinism(seed, threads)
-    model = md.EnergyModel(pairwise=False)
-    assert not model.pairwise
+    model = md.EnergyModel(pairwise=pairwise)
+    assert model.pairwise == pairwise
     opt = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     order_rng = np.random.default_rng(seed)
-    stopper, history, best_state = EarlyStopping(patience), {"train_bce": [], "val_bce": []}, None
+    stopper, history, best_state = EarlyStopping(patience), {f"train_{name}": [], f"val_{name}": []}, None
     t0 = time.perf_counter()
     for epoch in range(max_epochs):
         model.train()
@@ -122,26 +127,26 @@ def train(train_set: list[Sample], val_set: list[Sample], seed: int, max_epochs:
         for k in range(0, len(order), batch):
             chunk = [train_set[i] for i in order[k:k + batch]]
             opt.zero_grad()
-            loss = scene_balanced_bce(model, chunk)
+            loss = loss_fn(model, chunk)
             loss.backward()
             opt.step()
             total += float(loss.detach()) * len(chunk)
         model.eval()
         with torch.no_grad():
-            val = float(scene_balanced_bce(model, val_set))
-        history["train_bce"].append(total / len(train_set))
-        history["val_bce"].append(val)
+            val = float(loss_fn(model, val_set))
+        history[f"train_{name}"].append(total / len(train_set))
+        history[f"val_{name}"].append(val)
         if stopper.update(epoch, val):
             best_state = copy.deepcopy(model.state_dict())
         if stopper.stop:
             break
-    return {"state_dict": best_state, "best_epoch": stopper.best_epoch, "best_val_bce": stopper.best,
-            "epochs_run": len(history["val_bce"]), "history": history, "runtime_s": time.perf_counter() - t0,
-            "seed": seed, "threads": threads}
+    return {"state_dict": best_state, "best_epoch": stopper.best_epoch, f"best_val_{name}": stopper.best,
+            "epochs_run": len(history[f"val_{name}"]), "history": history, "runtime_s": time.perf_counter() - t0,
+            "seed": seed, "threads": threads, "pairwise": pairwise}
 
 
-def load_model(state_dict: dict) -> md.EnergyModel:
-    model = md.EnergyModel(pairwise=False)
+def load_model(state_dict: dict, pairwise: bool = False) -> md.EnergyModel:
+    model = md.EnergyModel(pairwise=pairwise)
     model.load_state_dict(state_dict)
     return model.eval()
 
@@ -151,3 +156,111 @@ def predict(model: md.EnergyModel, s: Sample) -> tuple[np.ndarray, int]:
     with torch.no_grad():
         pi = torch.sigmoid(logits(model, s)).numpy().astype(float)
     return pi, int(sum(1 << p for p in range(len(pi)) if pi[p] >= THRESHOLD))
+
+
+# ------------------------------------------------------------ Stage 4: exact structured set likelihood
+# E(x) = q^T x + sum_{p<r} Q_pr x_p x_r + K(x) on the exact admissible domain A = {M = 1, V = 1} (hard mask,
+# from the stored Stage-2 bitset); K uses the stored candidate costs and is never an input. Loss per scene:
+#   L_set = (1 / |S*|) sum_{x in S*} E(x) / T + logsumexp_{y in A} (-E(y) / T),  T_train = 1,
+# averaged equally over scenes. Top-1 = argmin over A, ties -> lowest state index; learned minimum set
+# = {x in A : E(x) <= E_min + ENERGY_TIE_TOL}. Temperature: one scalar per checkpoint on the fixed grid,
+# minimising validation set NLL (ties -> smallest grid index).
+ENERGY_TIE_TOL = 1e-6
+T_GRID = np.logspace(np.log10(0.05), np.log10(20.0), 241)
+GATE_SCENES_PER_FAMILY, GATE_EPOCHS, GATE_BATCH, GATE_MIN_HITS = 5, 400, 20, 19
+
+
+@dataclass(frozen=True)
+class StructuredSample:
+    inputs: dict              # Stage-1 model tensors only
+    cost: torch.Tensor        # (P,) exact stored candidate costs (float64), never an input
+    states: np.ndarray        # (A,) admissible state indices, ascending
+    bits: torch.Tensor        # (A, P) float64 bits of the admissible states
+    target: torch.Tensor      # (A,) bool, state in S*
+    optimal: frozenset[int]   # complete tied oracle S*
+    meta: dict                # evaluation only
+
+
+def make_structured_sample(scene, regions, options, admissible, optimal, cost, meta: dict | None = None):
+    P, states = len(options), np.array(sorted(admissible), dtype=np.int64)
+    if not optimal or not set(optimal) <= set(admissible):
+        raise ValueError("S* must be a non-empty subset of the admissible domain")
+    bits = torch.as_tensor((states[:, None] >> np.arange(P)[None, :]) & 1, dtype=torch.float64)
+    target = torch.as_tensor(np.isin(states, sorted(optimal)))
+    return StructuredSample(md.as_tensors(ft.extract(scene, regions, options)),
+                            torch.as_tensor(np.asarray(cost, dtype=float)), states, bits, target, frozenset(optimal),
+                            meta or {})
+
+
+def structured_samples_from_dataset(records: list[dict], arrays: dict, rows) -> list[StructuredSample]:
+    out = []
+    for j in rows:
+        r, P = records[j], int(arrays["P"][j])
+        meta = {k: r[k] for k in ("scene_id", "family", "intent", "split")}
+        out.append(make_structured_sample(*ds.build(pd.spec_from_json(r["spec"])),
+                                          ds.unpack_states(arrays["admissible"][j], P),
+                                          ds.unpack_states(arrays["optimal"][j], P), arrays["cost"][j][:P], meta))
+    return out
+
+
+def admissible_energies(q: torch.Tensor, Q: torch.Tensor, s: StructuredSample) -> torch.Tensor:
+    """E(x) for every admissible x, in float64; the symmetric Q counts each pair p < r once."""
+    X = s.bits
+    return X @ q.double() + 0.5 * ((X @ Q.double()) * X).sum(dim=1) + X @ s.cost
+
+
+def set_nll(E: torch.Tensor, target: torch.Tensor, T: float = 1.0) -> torch.Tensor:
+    return E[target].mean() / T + torch.logsumexp(-E / T, dim=0)
+
+
+def structured_loss(model: md.EnergyModel, batch: list[StructuredSample]) -> torch.Tensor:
+    return torch.stack([set_nll(admissible_energies(*model(**s.inputs), s), s.target) for s in batch]).mean()
+
+
+def energies(model: md.EnergyModel, s: StructuredSample) -> np.ndarray:
+    with torch.no_grad():
+        return admissible_energies(*model(**s.inputs), s).numpy()
+
+
+def exact_inference(E: np.ndarray, s: StructuredSample) -> tuple[int, frozenset[int]]:
+    """(top-1 state: exact argmin, lowest state index on ties; learned minimum set within ENERGY_TIE_TOL)."""
+    top = int(s.states[np.flatnonzero(E == E.min())[0]])
+    return top, frozenset(int(x) for x in s.states[E <= E.min() + ENERGY_TIE_TOL])
+
+
+def nll_curve(E: np.ndarray, target: np.ndarray, temps) -> np.ndarray:
+    """Exact set NLL of one scene at each temperature (stable logsumexp, float64)."""
+    T = np.atleast_1d(np.asarray(temps, dtype=float))
+    Z = -E[None, :] / T[:, None]
+    m = Z.max(axis=1, keepdims=True)
+    return E[target].mean() / T + m[:, 0] + np.log(np.exp(Z - m).sum(axis=1))
+
+
+def calibrate_temperature(val_energies: list[np.ndarray], val_targets: list[np.ndarray]) -> dict:
+    """Validation-only scalar temperature on the fixed grid (lowest mean set NLL; ties -> smallest index)."""
+    curve = np.mean([nll_curve(E, t, T_GRID) for E, t in zip(val_energies, val_targets)], axis=0)
+    i = int(np.flatnonzero(curve == curve.min())[0])
+    t1 = float(np.mean([nll_curve(E, t, 1.0)[0] for E, t in zip(val_energies, val_targets)]))
+    return {"T": float(T_GRID[i]), "index": i, "at_boundary": i in (0, len(T_GRID) - 1),
+            "val_nll_T1": t1, "val_nll_cal": float(curve[i])}
+
+
+def gate_rows(records: list[dict]) -> list[int]:
+    """First 5 repairable TRAIN scenes of each family (fixed row order): the 20-scene overfit gate."""
+    out = []
+    for fam in ds.FAMILIES:
+        rows = [j for j, r in enumerate(records) if r["split"] == "train" and r["family"] == fam
+                and r["intent"] == "repairable"]
+        out += rows[:GATE_SCENES_PER_FAMILY]
+    return out
+
+
+def overfit_gate(samples: list[StructuredSample], seed: int = 7, epochs: int = GATE_EPOCHS) -> dict:
+    """Pairwise model fit and evaluated (exact inference) on the same scenes; pass iff >= 19 / 20 hits."""
+    run = train(samples, samples, seed, max_epochs=epochs, patience=epochs, batch=GATE_BATCH, pairwise=True,
+                loss_fn=structured_loss, name="set_nll")
+    model = load_model(run["state_dict"], pairwise=True)
+    hits = [exact_inference(energies(model, s), s)[0] in s.optimal for s in samples]
+    return {"hits": int(sum(hits)), "n": len(samples), "passed": sum(hits) >= GATE_MIN_HITS * len(samples) / 20,
+            "best_epoch": run["best_epoch"], "best_train_set_nll": run["best_val_set_nll"],
+            "runtime_s": run["runtime_s"]}

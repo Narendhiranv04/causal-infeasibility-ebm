@@ -92,3 +92,45 @@ def test_across_seeds_mean_and_sample_std():
     agg = mt.across_seeds([{"a": 1.0, "b": {"c": 2}}, {"a": 2.0, "b": {"c": 2}}, {"a": 3.0, "b": {"c": 2}}])
     assert agg["a"] == {"mean": 2.0, "std": 1.0} and agg["b"]["c"] == {"mean": 2.0, "std": 0.0}
     assert math.isnan(mt.across_seeds([1.0, math.nan, 2.0])["mean"])
+
+
+# ------------------------------------------------------------ Stage 4 metrics
+
+def test_set_scores():
+    assert mt.set_scores({1, 2}, {1, 2}) == {"set_recovery": True, "set_precision": 1.0, "set_recall": 1.0}
+    assert mt.set_scores({1, 5}, {1, 2, 3, 4}) == {"set_recovery": False, "set_precision": 0.5, "set_recall": 0.25}
+
+
+def test_distribution_scores_are_exact_and_normalized():
+    E, states = np.array([0.0, 1.0, 1.0, 3.0]), np.array([0, 1, 2, 3])
+    d = mt.distribution_scores(E, states, {1, 2}, 2, 1.0)
+    p = np.exp(-E) / np.exp(-E).sum()
+    assert math.isclose(d["prob_sum"], 1.0) and math.isclose(mt.boltzmann(E, 0.3).sum(), 1.0)
+    assert math.isclose(d["nll"], -np.log(p[1])) and math.isclose(d["kl"], d["nll"] - np.log(2))
+    assert math.isclose(d["mass"], p[1] + p[2])
+    y_hat = np.array([p[1] + p[3], p[2] + p[3]])
+    assert math.isclose(d["brier"], np.mean((y_hat - 0.5) ** 2)) and math.isclose(d["mae"], np.mean(np.abs(y_hat - 0.5)))
+    extreme = mt.distribution_scores(np.array([0.0, 2000.0]), np.array([0, 1]), {1}, 1, 1.0)
+    assert math.isclose(extreme["nll"], 2000.0)  # stable, no log(0)
+
+
+def test_paired_bootstrap_is_deterministic_with_seed_107():
+    d = np.random.default_rng(0).normal(0.1, 0.3, 200)
+    a, b = mt.paired_bootstrap(d), mt.paired_bootstrap(d)
+    assert a == b and (mt.BOOTSTRAP_RESAMPLES, mt.BOOTSTRAP_SEED) == (10_000, 107)
+    assert a["ci95"][0] <= a["mean_diff"] <= a["ci95"][1]
+    assert mt.paired_bootstrap(np.zeros(50)) == {"n": 50, "mean_diff": 0.0, "ci95": [0.0, 0.0], "excludes_zero": False}
+
+
+def test_collapse_rule():
+    rows = [_row(n_pred=1, empty=False)] * 96 + [_row(n_pred=2, empty=False)] * 4
+    assert mt.collapse(rows)["collapsed"] and mt.collapse(rows)["max_size_share"] == 0.96
+    mixed = [_row(n_pred=1, empty=False)] * 60 + [_row(n_pred=2, empty=False)] * 40 + [_row(intent="negative")] * 50
+    assert not mt.collapse(mixed)["collapsed"] and mt.collapse(mixed)["n_distinct_sizes"] == 2
+    assert mt.collapse([_row()] * 60 + [_row(n_pred=1, empty=False)] * 40)["collapsed"]  # 60 % empty
+
+
+def test_summarize_extra_keys_and_optional_brier():
+    rows = [_row(set_recall=0.5), _row(set_recall=1.0)]
+    s = mt.summarize([{k: v for k, v in r.items() if k != "brier"} for r in rows], extra=("set_recall",))
+    assert s["set_recall"] == 0.75 and "brier" not in s
