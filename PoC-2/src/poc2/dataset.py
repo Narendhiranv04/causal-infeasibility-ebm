@@ -215,6 +215,7 @@ def labels_of(lab: dict) -> tuple:
 
 
 STAGE2_DIGEST = "a523986584bd35f0abaf2cf0262c4d83b0895e714a00f39b5d6d3ad4eaf32bb5"  # approved fixed dataset
+STAGE4_DIGEST = "db5498a5f8a4253dccf6afe23a9d337050b8cf6c02da15465569ab97b518fdea"  # approved fixed 100 scenes
 
 
 def load_dataset(path, expected: str = STAGE2_DIGEST) -> list[dict]:

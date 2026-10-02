@@ -105,3 +105,56 @@ def interaction_edges(table: RepairTable, coeffs: np.ndarray, sig: np.ndarray) -
 
 def density(n_edges: int, P: int) -> float:
     return n_edges / (P * (P - 1) / 2) if P > 1 else 0.0
+
+
+# ------------------------------------------------ Stage 5 definitions (plan2.md section 21)
+# Pre-registered before any Stage-5 aggregate; the Stage-3 rules above are used unchanged.
+#   Graphs        nodes = the P candidate options; the geometric (significant beta^G), static-compatibility
+#                 (V) and choice (M) edge sets are measured separately and never merged into beta^G.
+#   Geometric class  "independent": no geometric edge; "dense": density > DENSE_DENSITY; "macro_star":
+#                 every geometric edge touches a target-repositioning option (a global macro);
+#                 otherwise "sparse_general".
+#   Validity binding  the exact S* changes when V is ignored (admissible = {M = 1} only).
+#   Distractor fraction  share of candidate options that belong to no tied minimal repair.
+DENSE_DENSITY = 0.5
+
+
+def graph_metrics(P: int, edges) -> dict:
+    """Edge count, density, maximum degree and connected components (isolated nodes included)."""
+    parent = list(range(P))
+
+    def root(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    degree = [0] * P
+    for p, q in edges:
+        degree[p] += 1
+        degree[q] += 1
+        parent[root(p)] = root(q)
+    return {"n_edges": len(edges), "density": density(len(edges), P), "max_degree": max(degree, default=0),
+            "n_components": len({root(i) for i in range(P)})}
+
+
+def geometric_class(P: int, geometric_pairs, hubs) -> str:
+    if not geometric_pairs:
+        return "independent"
+    if density(len(geometric_pairs), P) > DENSE_DENSITY:
+        return "dense"
+    return "macro_star" if all(p in hubs or q in hubs for p, q in geometric_pairs) else "sparse_general"
+
+
+def validity_binding(table: RepairTable) -> bool:
+    """True iff ignoring static validity V would change the exact minimal repair set."""
+    without_v = admissible_minimal_repairs(np.where(table.M == 1, table.F, 1), (table.M == 1).astype(int),
+                                           table.K, int(table.K.max()))
+    return without_v != exact_decision(table)
+
+
+def distractor_fraction(P: int, exact: frozenset[int]) -> float:
+    used = 0
+    for x in exact:
+        used |= x
+    return 1.0 - used.bit_count() / P if P else 0.0
