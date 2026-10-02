@@ -14,13 +14,15 @@ from poc3 import types as t3
 
 REPO = Path(__file__).resolve().parents[2]
 POC3 = REPO / "PoC-3"
-LAYOUT = {  # plan3.md section 45 + approved Stage-4.5 / 4.6A diagnostic exceptions; nothing else without approval
+LAYOUT = {  # plan3.md section 45 + approved Stage-4.5 / 4.6A / 4.6B diagnostic exceptions; nothing else without approval
     "src/poc3": {"__init__.py", "types.py", "features.py", "dataset.py", "model.py", "train.py", "inference.py",
                  "metrics.py", "relational.py"},
     "scripts": {"s1_features.py", "s2_dataset.py", "s3_baselines.py", "s4_energy.py", "s5_solvers.py", "s6_ood.py",
-                "s7_verdict.py", "s45_diagnostic.py", "s46a_error_audit.py"},
+                "s7_verdict.py", "s45_diagnostic.py", "s46a_error_audit.py",
+                "s46b_relational_pair.py"},
     "tests": {"test_core.py", "test_features.py", "test_dataset.py", "test_model.py", "test_training.py",
-              "test_inference.py", "test_metrics.py", "test_relational.py", "test_s46a.py"},
+              "test_inference.py", "test_metrics.py", "test_relational.py", "test_s46a.py",
+              "test_s46b.py"},
 }
 HARD_MAX_LINES = 500
 

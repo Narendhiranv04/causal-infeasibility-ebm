@@ -30,6 +30,14 @@ TOKEN = 3 + 3 + len(MOVING_COLUMNS) + 3
 ENTITY_DIM = 2 * REL_EMBED          # [mean_k, max_k]
 CONTEXT_DIM = 2 * ENTITY_DIM        # [mean_i, max_i]
 VARIANTS = ("static", "cf")
+PAIR_MODES = (None, "all", "shift")
+PAIR_EMBED = 64
+PAIR_ARCHITECTURE = """Stage-4.6B pair head (optional; the unary path above is unchanged):
+  h_p = phi_pair(z_p)                      phi_pair: 2-layer MLP 910 -> 128 -> 64, GELU (z_p = unary input)
+  z_pr = [h_p + h_r, |h_p - h_r|, h_p * h_r, g_0]   symmetric in (p, r)
+  Q_pr = Q_rp = f_2(z_pr) for p < r, Q_pp = 0       f_2: 2-layer MLP 448 -> 128 -> 1, GELU
+  pair = "all": every pair; pair = "shift": Q_pr kept only if candidate p or r is SHIFT_TARGET (candidate
+  kind only, applied after prediction; identical parameters). E = q^T x + sum_{p<r} Q_pr x_p x_r + K."""
 FIXTURE = ENTITY_COLUMNS.index("role_target_fixture")
 SHIFT = CANDIDATE_COLUMNS.index("kind_shift_target")
 DELTA = slice(CANDIDATE_COLUMNS.index("dx"), CANDIDATE_COLUMNS.index("dz") + 1)
@@ -56,16 +64,19 @@ def relation_tokens(centres, halves, roles, pos, R, moving) -> torch.Tensor:
 
 
 class RelationalEnergy(nn.Module):
-    """Unary relational energy; forward returns (q, Q = 0) like the Stage-1 EnergyModel."""
-    pairwise = False
+    """Relational energy; forward returns (q, Q) like the Stage-1 EnergyModel (Q = 0 unless a pair head)."""
 
-    def __init__(self, variant: str):
+    def __init__(self, variant: str, pair: str | None = None):
         super().__init__()
-        if variant not in VARIANTS:
-            raise ValueError(f"variant must be one of {VARIANTS}")
-        self.variant = variant
+        if variant not in VARIANTS or pair not in PAIR_MODES:
+            raise ValueError(f"variant must be one of {VARIANTS} and pair one of {PAIR_MODES}")
+        self.variant, self.pair, self.pairwise = variant, pair, pair is not None
+        z_dim = 3 * CONTEXT_DIM + len(CANDIDATE_COLUMNS) + ENTITY_DIM
         self.phi_rel = md.mlp(TOKEN, REL_EMBED, REL_HIDDEN)
-        self.score = md.mlp(3 * CONTEXT_DIM + len(CANDIDATE_COLUMNS) + ENTITY_DIM, 1, md.HIDDEN)
+        self.score = md.mlp(z_dim, 1, md.HIDDEN)
+        if self.pairwise:  # absent for the unary model, so Stage-4.5 checkpoints still load strictly
+            self.phi_pair = md.mlp(z_dim, PAIR_EMBED, md.HIDDEN)
+            self.f_2 = md.mlp(3 * PAIR_EMBED + CONTEXT_DIM, 1, md.HIDDEN)
 
     def embed(self, centres, halves, roles, pos, R, moving) -> torch.Tensor:
         h = self.phi_rel(relation_tokens(centres, halves, roles, pos, R, moving))
@@ -105,17 +116,34 @@ class RelationalEnergy(nn.Module):
                 g[reloc] = self.pool(torch.where(mask, e_new[:, None, :], e0[None]))
         return g0, g, e0, aff
 
-    def forward(self, entities, action, moving, candidates, affected) -> tuple[torch.Tensor, torch.Tensor]:
+    def unary_inputs(self, entities, action, moving, candidates, affected):
+        """(z_p for every candidate, g_0): the unchanged REL-CF / REL-STATIC unary input."""
         g0, g, e0, aff = self.contexts(entities, action, moving, candidates, affected)
         padded = torch.cat([e0, e0.new_zeros(1, ENTITY_DIM)])
         e_aff = padded[torch.where(aff < 0, len(e0), aff)]
-        P = len(candidates)
-        z = torch.cat([g0.expand(P, -1), g, g - g0, candidates, e_aff], dim=1)
+        z = torch.cat([g0.expand(len(candidates), -1), g, g - g0, candidates, e_aff], dim=1)
+        return z, g0
+
+    @staticmethod
+    def pair_descriptor(h: torch.Tensor, g0: torch.Tensor, p: torch.Tensor, r: torch.Tensor) -> torch.Tensor:
+        return torch.cat([h[p] + h[r], (h[p] - h[r]).abs(), h[p] * h[r], g0.expand(len(p), -1)], dim=1)
+
+    def forward(self, entities, action, moving, candidates, affected) -> tuple[torch.Tensor, torch.Tensor]:
+        z, g0 = self.unary_inputs(entities, action, moving, candidates, affected)
         q = self.score(z).squeeze(-1)
-        return q, q.new_zeros(P, P)
+        P = len(candidates)
+        Q = q.new_zeros(P, P)
+        if self.pairwise and P > 1:
+            p, r = torch.triu_indices(P, P, offset=1)
+            pair_score = self.f_2(self.pair_descriptor(self.phi_pair(z), g0, p, r)).squeeze(-1)
+            if self.pair == "shift":
+                shift = candidates[:, SHIFT] == 1
+                pair_score = pair_score * (shift[p] | shift[r]).to(pair_score.dtype)
+            Q = Q.index_put((p, r), pair_score).index_put((r, p), pair_score)
+        return q, Q
 
 
-def load(state_dict: dict, variant: str) -> RelationalEnergy:
-    model = RelationalEnergy(variant)
+def load(state_dict: dict, variant: str, pair: str | None = None) -> RelationalEnergy:
+    model = RelationalEnergy(variant, pair)
     model.load_state_dict(state_dict)
     return model.eval()

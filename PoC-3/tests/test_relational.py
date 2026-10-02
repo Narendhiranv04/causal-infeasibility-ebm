@@ -2,8 +2,10 @@
 
 import functools
 import inspect
+import itertools
 import re
 from dataclasses import replace
+from pathlib import Path
 
 import mujoco
 import numpy as np
@@ -174,3 +176,110 @@ def test_stage1_contract_unchanged_for_relational_inputs():
     f = ft.extract(*CASES["M2_placement_competition"])
     assert f.entities.shape[1] == 9 and f.action.shape == (8, 9) and f.candidates.shape[1] == 14
     assert replace(f, affected=f.affected).affected.dtype == np.int64
+
+
+# ------------------------------------------------------------ Stage 4.6B relational pair head
+
+S45 = Path(__file__).resolve().parents[1] / "out" / "s45" / "checkpoints"
+
+
+def paired_model(pair: str, zero_head: bool = False) -> rl.RelationalEnergy:
+    torch.manual_seed(7)
+    m = rl.RelationalEnergy("cf", pair)
+    if zero_head:
+        with torch.no_grad():
+            m.f_2[2].weight.zero_()
+            m.f_2[2].bias.zero_()
+    return m.eval()
+
+
+def unary_twin(pair_model) -> rl.RelationalEnergy:
+    u = rl.RelationalEnergy("cf")
+    u.load_state_dict({k: v for k, v in pair_model.state_dict().items() if k.split(".")[0] in ("phi_rel", "score")})
+    return u.eval()
+
+
+@pytest.mark.parametrize("pair", ["all", "shift"])
+def test_unary_q_path_is_unchanged_by_the_pair_head(pair):
+    m = paired_model(pair)
+    t = inputs("storage_insertion")
+    with torch.no_grad():
+        assert torch.equal(m(**t)[0], unary_twin(m)(**t)[0])
+
+
+@pytest.mark.skipif(not (S45 / "rel_cf_seed7.pt").exists(), reason="Stage-4.5 checkpoints not present")
+def test_frozen_stage45_rel_cf_checkpoints_still_load_strictly():
+    for seed in (7, 17, 27):
+        rl.load(torch.load(S45 / f"rel_cf_seed{seed}.pt")["state_dict"], "cf")
+
+
+@pytest.mark.parametrize("pair", ["all", "shift"])
+@pytest.mark.parametrize("name", ["storage_insertion", "M4_envelope_coupling", "articulated_opening"])
+def test_pair_Q_symmetric_zero_diagonal_and_permutation_equivariant(pair, name):
+    m, t = paired_model(pair), inputs(name)
+    with torch.no_grad():
+        q, Q = m(**t)
+        perm = torch.as_tensor(np.random.default_rng(17).permutation(len(t["candidates"])))
+        q2, Q2 = m(**(t | {"candidates": t["candidates"][perm], "affected": t["affected"][perm]}))
+    assert torch.equal(Q, Q.T) and torch.all(torch.diagonal(Q) == 0)
+    assert torch.allclose(q2, q[perm], **TOL) and torch.allclose(Q2, Q[perm][:, perm], **TOL)
+
+
+def test_pair_descriptor_is_symmetric():
+    h, g0 = torch.randn(5, rl.PAIR_EMBED), torch.randn(rl.CONTEXT_DIM)
+    p, r = torch.tensor([0, 1, 3]), torch.tensor([2, 4, 4])
+    assert torch.equal(rl.RelationalEnergy.pair_descriptor(h, g0, p, r), rl.RelationalEnergy.pair_descriptor(h, g0, r, p))
+
+
+def test_shift_mask_keeps_shift_pairs_and_zeros_relocation_pairs():
+    t = inputs("storage_insertion")  # two relocations of one object, one other relocation, two shifts
+    shift = (t["candidates"][:, rl.SHIFT] == 1).numpy()
+    assert shift.sum() >= 2 and (~shift).sum() >= 2
+    with torch.no_grad():
+        Q_all, Q_shift = paired_model("all")(**t)[1], paired_model("shift")(**t)[1]
+    for p, r in itertools.combinations(range(len(shift)), 2):
+        if shift[p] or shift[r]:
+            assert Q_shift[p, r] == Q_all[p, r] != 0          # SHIFT-relocation and SHIFT-SHIFT kept
+        else:
+            assert Q_shift[p, r] == 0 and Q_all[p, r] != 0    # relocation-relocation masked only in P2
+
+
+def test_pair_variants_have_identical_parameter_counts_below_500k():
+    n_all, n_shift = md.n_parameters(rl.RelationalEnergy("cf", "all")), md.n_parameters(rl.RelationalEnergy("cf", "shift"))
+    assert n_all == n_shift < 500_000 and rl.RelationalEnergy("cf", "all").pairwise
+    assert not rl.RelationalEnergy("cf").pairwise
+
+
+@pytest.mark.parametrize("pair", ["all", "shift"])
+def test_zero_pair_head_reduces_exactly_to_rel_cf_unary_energy(pair, structured):
+    m = paired_model(pair, zero_head=True)
+    u = unary_twin(m)
+    for s in structured:
+        assert np.array_equal(tr.energies(m, s), tr.energies(u, s))
+
+
+def test_pair_terms_are_counted_once_in_stage4_energies(structured):
+    m = paired_model("all")
+    s = structured[2]
+    with torch.no_grad():
+        q, Q = m(**s.inputs)
+    X = s.bits.numpy()
+    manual = X @ q.double().numpy() + X @ s.cost.numpy()
+    manual += sum(Q[p, r].item() * X[:, p] * X[:, r] for p in range(len(q)) for r in range(p + 1, len(q)))
+    assert np.allclose(tr.energies(m, s), manual, atol=1e-9)
+
+
+def test_gradients_reach_unary_and_pair_heads(structured):
+    m = paired_model("shift").train()
+    tr.structured_loss(m, structured).backward()
+    for head in (m.score, m.phi_pair, m.f_2, m.phi_rel):
+        assert all(p.grad is not None and p.grad.abs().sum() > 0 for p in head.parameters())
+
+
+def test_tiny_pairwise_relational_training_is_deterministic(structured):
+    kw = dict(max_epochs=3, patience=3, batch=4, pairwise=True, loss_fn=tr.structured_loss, name="set_nll",
+              make_model=functools.partial(rl.RelationalEnergy, "cf", "shift"))
+    a, b = tr.train(structured, structured[:3], 7, **kw), tr.train(structured, structured[:3], 7, **kw)
+    assert a["history"] == b["history"] and all(torch.equal(a["state_dict"][k], b["state_dict"][k]) for k in a["state_dict"])
+    ma, mb = rl.load(a["state_dict"], "cf", "shift"), rl.load(b["state_dict"], "cf", "shift")
+    assert all(np.array_equal(tr.energies(ma, s), tr.energies(mb, s)) for s in structured)
