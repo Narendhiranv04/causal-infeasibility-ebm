@@ -1,0 +1,57 @@
+# World layout + named placement poses.
+# Frame: world z up, floor z=0, dishwasher front faces -y. Units: metres / degrees.
+
+world:
+  dishwasher_pos: [0.0, 0.0, 0.4276]      # RoboCasa Dishwasher054, base on the floor
+  articulation:                           # scene articulation state (real joint values)
+    door: max                             # door_joint upper limit (0.6736 rad = 38.6 deg)
+    upper_rack: max                       # rack1_joint fully pulled (0.40 m): loading position
+    lower_rack: 0.0                       # rack0 stays in (a pulled lower rack would hit the door)
+  countertop: {x: [-0.95, 1.20], y: [-0.33, 0.36], z: [0.870, 0.910]}
+  cabinets:
+    - {x: [-0.95, -0.325], y: [-0.30, 0.36], z: [0.0, 0.870]}
+    - {x: [0.325, 1.20], y: [-0.30, 0.36], z: [0.0, 0.870]}
+  wall: {x: [-3.0, 3.0], y: [0.36, 0.38], z: [0.0, 2.40]}
+  # Mobile Panda (RoboCasa-style mobile manipulator): two discrete base stations chosen by
+  # an IK reach study. The base may reposition between the pick and place halves of a
+  # relocation. Reachability is an admissibility filter only.
+  robot_stations:
+    dishwasher_center: {pos: [0.00, -0.92, 0.42], yaw_deg: 90}
+    dishwasher_right:  {pos: [0.36, -0.92, 0.42], yaw_deg: 90}
+    counter:           {pos: [0.62, -0.82, 0.55], yaw_deg: 90}
+    counter_right:     {pos: [0.90, -0.80, 0.55], yaw_deg: 90}
+    counter_high:      {pos: [0.62, -0.82, 0.72], yaw_deg: 90}
+    dishwasher_center_high: {pos: [0.00, -0.92, 0.72], yaw_deg: 90}
+    dishwasher_right_high:  {pos: [0.36, -0.92, 0.72], yaw_deg: 90}
+    counter_left:      {pos: [-0.62, -0.82, 0.55], yaw_deg: 90}
+    counter_left_high: {pos: [-0.62, -0.82, 0.72], yaw_deg: 90}
+  robot_base: {pos: [0.36, -0.92, 0.42], yaw_deg: 90}     # default (rendering) station
+  pedestal: {half: [0.16, 0.16], top: 0.42}
+
+# Support surfaces are derived from the fixture's actual collision geoms at runtime
+# (src/artrecourse/placements.py): upper-rack left bay floor, right bay floor, tine tops,
+# and the countertop. Slots below are (x, y) in WORLD coordinates for the pulled-out rack
+# and the counter; z comes from the support surface; yaw is the canonical-frame yaw
+# (handle direction for handled objects).
+slots:
+  # upper rack, pulled out (rack interior y in [-0.619, -0.165]; the counter overhang
+  # starts at y = -0.33, so usable slots are y <= -0.36)
+  upper_left_front:    {support: rack_left_bay,  xy: [-0.170, -0.560]}
+  upper_left_back:     {support: rack_left_bay,  xy: [-0.170, -0.430]}
+  upper_right_front:   {support: rack_right_bay, xy: [0.174, -0.560]}
+  upper_right_back:    {support: rack_right_bay, xy: [0.174, -0.430]}
+  upper_center_front:  {support: rack_tines,     xy: [0.003, -0.540]}
+  upper_center_back:   {support: rack_tines,     xy: [0.003, -0.440]}
+  upper_tines_handle_left:  {support: rack_tines, xy: [0.060, -0.465]}    # skillet across the rack, handle over the left bay
+  upper_tines_handle_right: {support: rack_tines, xy: [-0.060, -0.465]}   # skillet across the rack, handle over the right bay
+  # countertop buffer (right of the dishwasher; only the front strip is within the
+  # mobile Panda's top-down reach, see README)
+  counter_buffer_left:      {support: counter, xy: [0.450, -0.205]}
+  counter_buffer_center:    {support: counter, xy: [0.610, -0.205]}
+  counter_buffer_right:     {support: counter, xy: [0.770, -0.205]}
+  counter_buffer_far_right: {support: counter, xy: [0.930, -0.205]}
+  counter_pan_right:        {support: counter, xy: [0.800, -0.205]}   # long cookware, handle to +x
+  # countertop buffer left of the dishwasher (mirror image)
+  counter_left_near:        {support: counter, xy: [-0.450, -0.205]}
+  counter_left_mid:         {support: counter, xy: [-0.610, -0.205]}
+  counter_left_far:         {support: counter, xy: [-0.770, -0.205]}

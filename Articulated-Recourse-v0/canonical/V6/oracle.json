@@ -1,0 +1,1524 @@
+{
+ "schema": "artrecourse.scene.v0",
+ "scene_id": "canonical_V6",
+ "split": "canonical",
+ "variant": "V6",
+ "variant_requested": "V6",
+ "variant_satisfied": true,
+ "fixture_id": "RoboCasa:Dishwasher054",
+ "story": "Branching recourse. Path A (2 moves): the bowl occupying the counter centre is moved aside, then the water bottle goes to the centre. Path B (3 moves): the tall bottle behind the cereal box is moved so the box can be grasped, the box leaves the corridor, then the water bottle goes to the counter right. The oracle must prefer the shorter coordinated plan.",
+ "spec": {
+  "scene_id": "canonical_V6",
+  "split": "canonical",
+  "variant_requested": "V6",
+  "story": "Branching recourse. Path A (2 moves): the bowl occupying the counter centre is moved aside, then the water bottle goes to the centre. Path B (3 moves): the tall bottle behind the cereal box is moved so the box can be grasped, the box leaves the corridor, then the water bottle goes to the counter right. The oracle must prefer the shorter coordinated plan.",
+  "seed": null,
+  "objects": [
+   {
+    "key": "bottle_a",
+    "asset_id": "bottle/water_bottle_1",
+    "slot": "upper_right_back",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "bowl",
+    "asset_id": "bowl/bowl_2",
+    "slot": "counter_buffer_center",
+    "yaw_deg": 0,
+    "dxy": [
+     -0.03,
+     0.0
+    ]
+   },
+   {
+    "key": "box",
+    "asset_id": "box/boxed_food_2",
+    "slot": "counter_buffer_right",
+    "yaw_deg": 0,
+    "dxy": [
+     -0.03,
+     -0.065
+    ]
+   },
+   {
+    "key": "bottle_c",
+    "asset_id": "bottle/water_bottle_0",
+    "slot": "counter_buffer_right",
+    "yaw_deg": 0,
+    "dxy": [
+     -0.03,
+     0.04
+    ]
+   },
+   {
+    "key": "mug",
+    "asset_id": "mug/mug_1",
+    "slot": "upper_left_front",
+    "yaw_deg": 90,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "interventions": [
+   {
+    "obj": "bottle_a",
+    "slot": "counter_buffer_center",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_bottle_a_to_counter_buffer_center"
+   },
+   {
+    "obj": "bottle_a",
+    "slot": "counter_buffer_right",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_bottle_a_to_counter_buffer_right"
+   },
+   {
+    "obj": "bowl",
+    "slot": "counter_buffer_left",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_bowl_to_counter_buffer_left"
+   },
+   {
+    "obj": "box",
+    "slot": "counter_buffer_far_right",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_box_to_counter_buffer_far_right"
+   },
+   {
+    "obj": "bottle_c",
+    "slot": "counter_buffer_left",
+    "yaw_deg": 0,
+    "dxy": [
+     -0.04,
+     0.03
+    ],
+    "name": "",
+    "id": "move_bottle_c_to_counter_buffer_left"
+   },
+   {
+    "obj": "mug",
+    "slot": "counter_left_far",
+    "yaw_deg": 90,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_mug_to_counter_left_far"
+   }
+  ]
+ },
+ "INPUT_KEYS_ALLOWED_FOR_MODELS": [
+  "objects",
+  "initial_poses",
+  "articulation",
+  "target_action",
+  "placement_candidates",
+  "candidate_interventions"
+ ],
+ "LABEL_KEYS_SUPERVISION_ONLY": [
+  "F_initial",
+  "direct_target_blockers",
+  "target_clearance",
+  "per_action",
+  "enable_edges",
+  "disable_edges",
+  "compatibility_edges",
+  "optimal_sequences",
+  "optimal_cost",
+  "sequence_length",
+  "no_recourse",
+  "sequence_proofs",
+  "irreducible_solutions"
+ ],
+ "inputs": {
+  "objects": [
+   {
+    "key": "bottle_a",
+    "asset_id": "bottle/water_bottle_1",
+    "category": "bottle",
+    "scale": 1.5,
+    "extent_canonical": [
+     0.081,
+     0.076,
+     0.2042
+    ],
+    "mass": 0.8416
+   },
+   {
+    "key": "bowl",
+    "asset_id": "bowl/bowl_2",
+    "category": "bowl",
+    "scale": 1.4,
+    "extent_canonical": [
+     0.161,
+     0.161,
+     0.0678
+    ],
+    "mass": 0.4879
+   },
+   {
+    "key": "box",
+    "asset_id": "box/boxed_food_2",
+    "category": "box",
+    "scale": 1.1,
+    "extent_canonical": [
+     0.0973,
+     0.0348,
+     0.165
+    ],
+    "mass": 0.0559
+   },
+   {
+    "key": "bottle_c",
+    "asset_id": "bottle/water_bottle_0",
+    "category": "bottle",
+    "scale": 1.5,
+    "extent_canonical": [
+     0.0776,
+     0.0776,
+     0.2047
+    ],
+    "mass": 0.9402
+   },
+   {
+    "key": "mug",
+    "asset_id": "mug/mug_1",
+    "category": "mug",
+    "scale": 1.0,
+    "extent_canonical": [
+     0.115,
+     0.0786,
+     0.0904
+    ],
+    "mass": 0.1826
+   }
+  ],
+  "initial_poses": {
+   "bottle_a": [
+    0.174,
+    -0.43,
+    0.489978,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "bowl": [
+    0.58,
+    -0.205,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "box": [
+    0.74,
+    -0.27,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "bottle_c": [
+    0.74,
+    -0.165,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "mug": [
+    -0.17,
+    -0.56,
+    0.489978,
+    0.0,
+    0.0,
+    0.707107,
+    0.707107
+   ]
+  },
+  "articulation": {
+   "door_joint": 0.673599,
+   "rack1_joint_upper": 0.4,
+   "rack0_joint_lower": 0.0
+  },
+  "target_action": {
+   "name": "CLOSE_DISHWASHER",
+   "primitive": "PUSH_RACK(rack1_joint 0.40->0) then CLOSE_DOOR(door_joint 0.6736->0)",
+   "phases": {
+    "push_rack": [
+     0.0,
+     0.5
+    ],
+    "close_door": [
+     0.5,
+     1.0
+    ]
+   },
+   "moving_bodies": [
+    "upper rack (rack1)",
+    "door",
+    "gripper",
+    "objects resting on the upper rack"
+   ],
+   "trajectory_ref": "inputs.npz:TARGET",
+   "n_samples": 91
+  },
+  "placement_candidates": [
+   {
+    "object": "bottle_a",
+    "pose_index": 1,
+    "slot": "counter_buffer_center",
+    "support": "counter",
+    "pose": [
+     0.61,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "bottle_a",
+    "pose_index": 2,
+    "slot": "counter_buffer_right",
+    "support": "counter",
+    "pose": [
+     0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "bowl",
+    "pose_index": 1,
+    "slot": "counter_buffer_left",
+    "support": "counter",
+    "pose": [
+     0.45,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "box",
+    "pose_index": 1,
+    "slot": "counter_buffer_far_right",
+    "support": "counter",
+    "pose": [
+     0.93,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "bottle_c",
+    "pose_index": 1,
+    "slot": "counter_buffer_left",
+    "support": "counter",
+    "pose": [
+     0.41,
+     -0.175,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "mug",
+    "pose_index": 1,
+    "slot": "counter_left_far",
+    "support": "counter",
+    "pose": [
+     -0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ]
+   }
+  ],
+  "candidate_interventions": [
+   {
+    "id": "move_bottle_a_to_counter_buffer_center",
+    "object": "bottle_a",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_center",
+    "source_pose": [
+     0.174,
+     -0.43,
+     0.489978,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.61,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "bottle_cap_topdown_90",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.1822
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.055,
+     "closed_width": 0.03,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "dishwasher_center",
+      "lift": "counter_high",
+      "transfer": "counter",
+      "above_place": "counter_high",
+      "place": "counter_high"
+     }
+    },
+    "grasp_pose": [
+     0.174,
+     -0.43,
+     0.672151,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_bottle_a_to_counter_buffer_center",
+    "n_samples": 145,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:bottle_a"
+    ]
+   },
+   {
+    "id": "move_bottle_a_to_counter_buffer_right",
+    "object": "bottle_a",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_right",
+    "source_pose": [
+     0.174,
+     -0.43,
+     0.489978,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "bottle_cap_topdown_90",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.1822
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.055,
+     "closed_width": 0.03,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "dishwasher_center",
+      "lift": "counter_high",
+      "transfer": "counter",
+      "above_place": "counter_high",
+      "place": "counter_high"
+     }
+    },
+    "grasp_pose": [
+     0.174,
+     -0.43,
+     0.672151,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_bottle_a_to_counter_buffer_right",
+    "n_samples": 159,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:bottle_a"
+    ]
+   },
+   {
+    "id": "move_bowl_to_counter_buffer_left",
+    "object": "bowl",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_left",
+    "source_pose": [
+     0.58,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.45,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "bowl_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0735,
+      0.0,
+      0.0518
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter",
+      "place": "counter"
+     }
+    },
+    "grasp_pose": [
+     0.506501,
+     -0.205,
+     0.961807,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_bowl_to_counter_buffer_left",
+    "n_samples": 68,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:bowl"
+    ]
+   },
+   {
+    "id": "move_box_to_counter_buffer_far_right",
+    "object": "box",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_far_right",
+    "source_pose": [
+     0.74,
+     -0.27,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.93,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "box_thin_topdown",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.135
+     ],
+     "finger_axis_yaw_in_object_frame": 0.0,
+     "open_width": 0.065,
+     "closed_width": 0.0347906361,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter_right",
+      "above_place": "counter_right",
+      "place": "counter_right"
+     }
+    },
+    "grasp_pose": [
+     0.74,
+     -0.27,
+     1.045,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_box_to_counter_buffer_far_right",
+    "n_samples": 74,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:box"
+    ]
+   },
+   {
+    "id": "move_bottle_c_to_counter_buffer_left",
+    "object": "bottle_c",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_left",
+    "source_pose": [
+     0.74,
+     -0.165,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.41,
+     -0.175,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "bottle_cap_topdown_90",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.1827
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.055,
+     "closed_width": 0.03,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter_high",
+      "lift": "counter_high",
+      "transfer": "counter_high",
+      "above_place": "counter_high",
+      "place": "counter_high"
+     }
+    },
+    "grasp_pose": [
+     0.74,
+     -0.165,
+     1.09272,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_bottle_c_to_counter_buffer_left",
+    "n_samples": 87,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:bottle_c"
+    ]
+   },
+   {
+    "id": "move_mug_to_counter_left_far",
+    "object": "mug",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_left_far",
+    "source_pose": [
+     -0.17,
+     -0.56,
+     0.489978,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ],
+    "destination_pose": [
+     -0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ],
+    "grasp_template": {
+     "name": "mug_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0323,
+      0.0,
+      0.0744
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": false,
+    "rejection_reasons": [
+     "no grasp candidate is clear of the fixed environment and robot-admissible: mug_rim_topdown_az180: fixed-environment collision; mug_rim_topdown_az90: fixed-environment collision; mug_rim_topdown_az270: fixed-environment collision"
+    ],
+    "robot": null,
+    "grasp_pose": [
+     -0.17,
+     -0.592282,
+     0.564367,
+     1.0,
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_mug_to_counter_left_far",
+    "n_samples": 164,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:mug"
+    ]
+   }
+  ]
+ },
+ "labels": {
+  "F_initial": 1,
+  "direct_target_blockers": [
+   "bottle_a"
+  ],
+  "target_clearance": {
+   "bottle_a": -0.01722,
+   "bowl": 0.05,
+   "box": 0.05,
+   "bottle_c": 0.05,
+   "mug": 0.03353
+  },
+  "enable_edges": [
+   {
+    "from": "move_bowl_to_counter_buffer_left",
+    "to": "move_bottle_a_to_counter_buffer_center",
+    "blocker": "bowl",
+    "blocked_before": true,
+    "executable_after": true,
+    "cause": {
+     "type": "occupancy",
+     "swept_volume": false,
+     "destination_occupied": true,
+     "final_pose_distance": -0.03234,
+     "min_dist": -0.03234,
+     "tau_star": 0.9194,
+     "phase_star": "lower",
+     "part_star": "carried:bottle_a",
+     "status": "conflict",
+     "conflict_magnitude": 0.03234,
+     "phases_in_conflict": [
+      "lower"
+     ],
+     "parts_in_conflict": [
+      "carried:bottle_a"
+     ]
+    }
+   },
+   {
+    "from": "move_bottle_c_to_counter_buffer_left",
+    "to": "move_box_to_counter_buffer_far_right",
+    "blocker": "bottle_c",
+    "blocked_before": true,
+    "executable_after": true,
+    "cause": {
+     "type": "sweep",
+     "swept_volume": true,
+     "destination_occupied": false,
+     "final_pose_distance": 0.05,
+     "min_dist": -0.02605,
+     "tau_star": 0.1447,
+     "phase_star": "approach",
+     "part_star": "gripper",
+     "status": "conflict",
+     "conflict_magnitude": 0.02605,
+     "phases_in_conflict": [
+      "approach",
+      "grasp",
+      "lift"
+     ],
+     "parts_in_conflict": [
+      "gripper"
+     ]
+    }
+   }
+  ],
+  "disable_edges": [
+   {
+    "from": "move_bowl_to_counter_buffer_left",
+    "to": "move_bottle_c_to_counter_buffer_left",
+    "blocker": "bowl",
+    "cause": {
+     "type": "occupancy",
+     "swept_volume": false,
+     "destination_occupied": true,
+     "final_pose_distance": -0.03474,
+     "min_dist": -0.03474,
+     "tau_star": 0.862,
+     "phase_star": "lower",
+     "part_star": "carried:bottle_c",
+     "status": "conflict",
+     "conflict_magnitude": 0.03474,
+     "phases_in_conflict": [
+      "lower"
+     ],
+     "parts_in_conflict": [
+      "carried:bottle_c"
+     ]
+    }
+   },
+   {
+    "from": "move_bottle_c_to_counter_buffer_left",
+    "to": "move_bowl_to_counter_buffer_left",
+    "blocker": "bottle_c",
+    "cause": {
+     "type": "occupancy+sweep",
+     "swept_volume": true,
+     "destination_occupied": true,
+     "final_pose_distance": -0.03474,
+     "min_dist": -0.05755,
+     "tau_star": 0.7683,
+     "phase_star": "lower",
+     "part_star": "carried:bowl",
+     "status": "conflict",
+     "conflict_magnitude": 0.05755,
+     "phases_in_conflict": [
+      "approach",
+      "grasp",
+      "lift",
+      "lower",
+      "release",
+      "retreat",
+      "transfer"
+     ],
+     "parts_in_conflict": [
+      "carried:bowl",
+      "gripper"
+     ]
+    }
+   }
+  ],
+  "compatibility_edges": {
+   "same_object": [
+    [
+     "move_bottle_a_to_counter_buffer_center",
+     "move_bottle_a_to_counter_buffer_right"
+    ]
+   ],
+   "destination_overlap": [
+    [
+     "move_bottle_c_to_counter_buffer_left",
+     "move_bowl_to_counter_buffer_left",
+     -0.0347
+    ]
+   ],
+   "final_placement_collision": [
+    [
+     "move_bottle_a_to_counter_buffer_center",
+     "move_bowl_to_counter_buffer_left",
+     -0.0323
+    ],
+    [
+     "move_bottle_a_to_counter_buffer_right",
+     "move_bottle_c_to_counter_buffer_left",
+     -0.0278
+    ]
+   ],
+   "support_incompatibility": [
+    [
+     "move_bottle_c_to_counter_buffer_left",
+     "move_bowl_to_counter_buffer_left",
+     "counter_buffer_left"
+    ]
+   ]
+  },
+  "optimal_sequences": [
+   [
+    "move_bowl_to_counter_buffer_left",
+    "move_bottle_a_to_counter_buffer_center"
+   ]
+  ],
+  "optimal_cost": 2,
+  "sequence_length": 2,
+  "no_recourse": false,
+  "sequence_proofs": [
+   {
+    "sequence": [
+     "move_bowl_to_counter_buffer_left",
+     "move_bottle_a_to_counter_buffer_center"
+    ],
+    "edges": [
+     {
+      "from": "move_bowl_to_counter_buffer_left",
+      "to": "move_bottle_a_to_counter_buffer_center",
+      "blocker": "bowl",
+      "proof": {
+       "move_bottle_a_to_counter_buffer_center executable without move_bowl_to_counter_buffer_left": false,
+       "move_bottle_a_to_counter_buffer_center executable after move_bowl_to_counter_buffer_left": true
+      },
+      "cause": {
+       "type": "occupancy",
+       "swept_volume": false,
+       "destination_occupied": true,
+       "final_pose_distance": -0.03234,
+       "min_dist": -0.03234,
+       "tau_star": 0.9194,
+       "phase_star": "lower",
+       "part_star": "carried:bottle_a",
+       "status": "conflict",
+       "conflict_magnitude": 0.03234,
+       "phases_in_conflict": [
+        "lower"
+       ],
+       "parts_in_conflict": [
+        "carried:bottle_a"
+       ]
+      }
+     },
+     {
+      "from": "move_bottle_a_to_counter_buffer_center",
+      "to": "TARGET",
+      "blocker": "bottle_a",
+      "proof": {
+       "TARGET feasible without move_bottle_a_to_counter_buffer_center": false,
+       "TARGET feasible after sequence": true
+      },
+      "cause": {
+       "type": "target_blocker",
+       "min_dist": -0.01722,
+       "tau_star": 0.225,
+       "phase_star": "push_rack",
+       "part_star": "object:bottle_a|env:dishwasher",
+       "status": "conflict",
+       "conflict_magnitude": 0.01722,
+       "phases_in_conflict": [
+        "close_door",
+        "push_rack"
+       ],
+       "parts_in_conflict": [
+        "object:bottle_a|env:dishwasher"
+       ]
+      }
+     }
+    ],
+    "final_F": 0
+   }
+  ],
+  "irreducible_solutions": [
+   {
+    "interventions": [
+     "move_bottle_a_to_counter_buffer_center",
+     "move_bowl_to_counter_buffer_left"
+    ],
+    "example_order": [
+     "move_bowl_to_counter_buffer_left",
+     "move_bottle_a_to_counter_buffer_center"
+    ],
+    "length": 2
+   },
+   {
+    "interventions": [
+     "move_bottle_a_to_counter_buffer_right",
+     "move_bottle_c_to_counter_buffer_left",
+     "move_box_to_counter_buffer_far_right"
+    ],
+    "example_order": [
+     "move_bottle_c_to_counter_buffer_left",
+     "move_box_to_counter_buffer_far_right",
+     "move_bottle_a_to_counter_buffer_right"
+    ],
+    "length": 3
+   }
+  ],
+  "per_action": {
+   "move_bottle_a_to_counter_buffer_center": {
+    "executable_initially": false,
+    "blockers_initially": [
+     "bowl"
+    ],
+    "min_clearance_per_entity_initially": {
+     "bowl": {
+      "min_dist": -0.03234,
+      "tau_star": 0.9194,
+      "phase_star": "lower",
+      "part_star": "carried:bottle_a",
+      "status": "conflict",
+      "conflict_magnitude": 0.03234,
+      "phases_in_conflict": [
+       "lower"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle_a"
+      ]
+     },
+     "box": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle_c": {
+      "min_dist": 0.02395,
+      "tau_star": 0.9194,
+      "phase_star": "lower",
+      "part_star": "gripper",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.9194,
+     "phase_star": "lower",
+     "part_star": "carried:bottle_a|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_bottle_a_to_counter_buffer_right": {
+    "executable_initially": false,
+    "blockers_initially": [
+     "bottle_c",
+     "box"
+    ],
+    "min_clearance_per_entity_initially": {
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": -0.01821,
+      "tau_star": 0.7847,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle_a",
+      "status": "conflict",
+      "conflict_magnitude": 0.01821,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle_a"
+      ]
+     },
+     "bottle_c": {
+      "min_dist": -0.0278,
+      "tau_star": 0.927,
+      "phase_star": "lower",
+      "part_star": "carried:bottle_a",
+      "status": "conflict",
+      "conflict_magnitude": 0.0278,
+      "phases_in_conflict": [
+       "lower",
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle_a"
+      ]
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.927,
+     "phase_star": "lower",
+     "part_star": "carried:bottle_a|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_bowl_to_counter_buffer_left": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "bottle_a": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.0413,
+      "tau_star": 0.2019,
+      "phase_star": "lift",
+      "part_star": "carried:bowl",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle_c": {
+      "min_dist": 0.04604,
+      "tau_star": 0.2019,
+      "phase_star": "lift",
+      "part_star": "carried:bowl",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.813,
+     "phase_star": "lower",
+     "part_star": "carried:bowl|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_box_to_counter_buffer_far_right": {
+    "executable_initially": false,
+    "blockers_initially": [
+     "bottle_c"
+    ],
+    "min_clearance_per_entity_initially": {
+     "bottle_a": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.0413,
+      "tau_star": 0.2389,
+      "phase_star": "lift",
+      "part_star": "carried:box",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle_c": {
+      "min_dist": -0.02605,
+      "tau_star": 0.1447,
+      "phase_star": "approach",
+      "part_star": "gripper",
+      "status": "conflict",
+      "conflict_magnitude": 0.02605,
+      "phases_in_conflict": [
+       "approach",
+       "grasp",
+       "lift"
+      ],
+      "parts_in_conflict": [
+       "gripper"
+      ]
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.8334,
+     "phase_star": "lower",
+     "part_star": "carried:box|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_bottle_c_to_counter_buffer_left": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "bottle_a": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.04601,
+      "tau_star": 0.1748,
+      "phase_star": "lift",
+      "part_star": "carried:bottle_c",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.04734,
+      "tau_star": 0.3571,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle_c",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.862,
+     "phase_star": "lower",
+     "part_star": "carried:bottle_c|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_mug_to_counter_left_far": {
+    "executable_initially": false,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "bottle_a": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle_c": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.01432,
+     "tau_star": 0.0621,
+     "phase_star": "approach",
+     "part_star": "gripper|fixture:rack1",
+     "status": "conflict",
+     "conflict_magnitude": 0.01432,
+     "phases_in_conflict": [
+      "approach",
+      "grasp",
+      "lift"
+     ],
+     "parts_in_conflict": [
+      "gripper|fixture:rack1"
+     ]
+    }
+   },
+   "TARGET": {
+    "F_initial": 1,
+    "min_clearance_per_entity_initially": {
+     "bottle_a": {
+      "min_dist": -0.01722,
+      "tau_star": 0.225,
+      "phase_star": "push_rack",
+      "part_star": "object:bottle_a|env:dishwasher",
+      "status": "conflict",
+      "conflict_magnitude": 0.01722,
+      "phases_in_conflict": [
+       "close_door",
+       "push_rack"
+      ],
+      "parts_in_conflict": [
+       "object:bottle_a|env:dishwasher"
+      ]
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle_c": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.03353,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "object:mug|door",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    }
+   }
+  },
+  "direct_target_blocker_details": {
+   "bottle_a": {
+    "min_dist": -0.01722,
+    "tau_star": 0.225,
+    "phase_star": "push_rack",
+    "part_star": "object:bottle_a|env:dishwasher",
+    "status": "conflict",
+    "conflict_magnitude": 0.01722,
+    "phases_in_conflict": [
+     "close_door",
+     "push_rack"
+    ],
+    "parts_in_conflict": [
+     "object:bottle_a|env:dishwasher"
+    ]
+   }
+  }
+ },
+ "quality": {
+  "static_problems": [],
+  "consulted_ambiguities": [],
+  "coarse_fine": {
+   "coarse_spacing_samples": 788,
+   "fine_spacing_samples": 3052,
+   "disagreements": [],
+   "agree": true,
+   "max_min_distance_shift_coarse_vs_fine_m": 0.00031,
+   "fine_consulted_ambiguities": []
+  },
+  "target_robot_coverage": {
+   "waypoints": {
+    "push_0": "ok@dishwasher_center",
+    "push_8": "ok@dishwasher_center",
+    "push_16": "ok@dishwasher_center",
+    "push_24": "ok@dishwasher_center",
+    "push_32": "ok@counter_left",
+    "push_40": "ok@dishwasher_right",
+    "door_41": "no_ik",
+    "door_53": "ok@dishwasher_center",
+    "door_65": "no_ik",
+    "door_77": "no_ik",
+    "door_90": "no_ik"
+   },
+   "fully_admissible": false
+  },
+  "target_gripper_vs_fixed_env": {
+   "min_dist": 0.02116,
+   "tau_star": 0.3125,
+   "phase_star": "push_rack",
+   "part_star": "gripper|env:dishwasher",
+   "status": "clear",
+   "conflict_magnitude": 0.0,
+   "phases_in_conflict": [],
+   "parts_in_conflict": []
+  },
+  "distance_glitch_retries": 514,
+  "n_inadmissible_interventions": 1,
+  "accepted": true
+ },
+ "constants": {
+  "distance_cap_m": 0.05,
+  "conflict_if_min_dist_le": -0.004,
+  "clear_if_min_dist_ge": 0.004,
+  "lift_clearance_m": 0.13,
+  "approach_m": 0.1,
+  "retreat_m": 0.1,
+  "coarse_spacing_m": 0.01,
+  "fine_spacing_m": 0.0025,
+  "max_repair_depth": 4
+ },
+ "verification": {
+  "requested_variant": "V6",
+  "satisfied": true,
+  "unmet": [],
+  "all_variant_definitions_satisfied": [
+   "V2",
+   "V6"
+  ],
+  "factorisation_spot_check": {
+   "checks": 21,
+   "mismatches": []
+  }
+ }
+}

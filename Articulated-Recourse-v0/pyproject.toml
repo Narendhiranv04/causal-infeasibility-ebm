@@ -1,0 +1,13 @@
+[project]
+name = "artrecourse"
+version = "0.0.1"
+description = "Articulated Manipulation Recourse Dataset v0 (MuJoCo, RoboCasa Dishwasher054)"
+requires-python = ">=3.10"
+dependencies = ["mujoco>=3.2", "numpy", "scipy", "pyyaml", "networkx", "matplotlib", "opencv-python", "trimesh"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"

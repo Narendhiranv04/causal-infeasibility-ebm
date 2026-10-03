@@ -1,0 +1,5511 @@
+{
+ "schema": "artrecourse.asset_manifest.v0",
+ "fixture": {
+  "fixture_id": "Dishwasher054",
+  "category": "dishwasher",
+  "source_repository": "https://github.com/robocasa/robocasa",
+  "upstream_asset": "fixtures_lightwheel:fixtures/dishwashers/Dishwasher054/",
+  "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+  "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+  "local_cache_path": ".asset_cache/robocasa/fixtures_lightwheel/fixtures/dishwashers/Dishwasher054",
+  "visual_meshes": [
+   "",
+   "Body001.obj",
+   "button_power.obj",
+   "door.obj",
+   "rack0.obj",
+   "rack1.obj"
+  ],
+  "collision": "35 source box/cylinder collision geoms (RoboCasa class 'collision')",
+  "n_visual_faces": 15935,
+  "scale": 1.0,
+  "bounding_box_dims": [
+   0.6342,
+   0.6499,
+   0.853
+  ],
+  "joints": {
+   "door": {
+    "name": "door_joint",
+    "type": "hinge",
+    "range": [
+     0.0,
+     0.6735987755982988
+    ]
+   },
+   "upper_rack": {
+    "name": "rack1_joint",
+    "type": "slide",
+    "range": [
+     0.0,
+     0.4
+    ]
+   },
+   "lower_rack": {
+    "name": "rack0_joint",
+    "type": "slide",
+    "range": [
+     0.0,
+     0.4
+    ]
+   }
+  },
+  "checks": {
+   "door_rotation_deg_at_max": 38.59,
+   "door_centre_displacement_m": 0.2375,
+   "upper_rack_translation_m": 0.4,
+   "clearance_open_door_vs_pulled_upper_rack_m": 0.0039,
+   "clearance_open_door_vs_pulled_lower_rack_m": -0.1752,
+   "passed": true
+  },
+  "regions": {
+   "reg_int": {
+    "body": "object",
+    "pos": [
+     0.00022,
+     0.00763,
+     -0.05051
+    ],
+    "size": [
+     0.25421,
+     0.25948,
+     0.29266
+    ]
+   },
+   "reg_main": {
+    "body": "object",
+    "pos": [
+     1e-05,
+     0.02303,
+     -0.0
+    ],
+    "size": [
+     0.32016,
+     0.30232,
+     0.42752
+    ]
+   },
+   "reg_rack0": {
+    "body": "rack0",
+    "pos": [
+     0.0,
+     0.00827,
+     -0.0914
+    ],
+    "size": [
+     0.2304,
+     0.22258,
+     0.14261
+    ]
+   },
+   "reg_rack1": {
+    "body": "rack1",
+    "pos": [
+     -0.00015,
+     0.00819,
+     0.15403
+    ],
+    "size": [
+     0.2308,
+     0.22288,
+     0.08846
+    ]
+   }
+  },
+  "notes": "Real joint ranges are used unmodified. At the door's real maximum (38.6 deg) the fully pulled LOWER rack would penetrate the door (negative clearance above), so v0 scenes keep the lower rack in and use the upper rack in its fully pulled loading position."
+ },
+ "robot": {
+  "asset_id": "franka_emika_panda",
+  "category": "robot",
+  "source_repository": "https://github.com/google-deepmind/mujoco_menagerie",
+  "upstream_asset": "franka_emika_panda",
+  "upstream_version": "4d038b3feae26ec82b46a4d586379114012a8ac7",
+  "license": "Apache-2.0",
+  "local_cache_path": ".asset_cache/mujoco_menagerie/franka_emika_panda",
+  "visual_mesh": "assets/*.obj",
+  "collision_meshes": [
+   "assets/link*.stl",
+   "assets/hand.stl",
+   "assets/finger_0.obj"
+  ],
+  "use": "visualisation + IK/arm-collision admissibility filter (never a recourse label)"
+ },
+ "textures": {
+  "counter": {
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_asset": "textures:textures/marble/marble_3.png",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "local_cache_path": ".asset_cache/robocasa/textures/textures/marble/marble_3.png"
+  },
+  "cabinet": {
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_asset": "textures:textures/wood/light_wood_planks.png",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "local_cache_path": ".asset_cache/robocasa/textures/textures/wood/light_wood_planks.png"
+  },
+  "floor": {
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_asset": "textures:textures/tiles/white_square_tiles.png",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "local_cache_path": ".asset_cache/robocasa/textures/textures/tiles/white_square_tiles.png"
+  },
+  "wall": {
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_asset": "textures:textures/cream-plaster.png",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "local_cache_path": ".asset_cache/robocasa/textures/textures/cream-plaster.png"
+  }
+ },
+ "objects": [
+  {
+   "asset_id": "mug/mug_1",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_1",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_1",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.018218225154839313,
+    3.2560075469145744e-10,
+    -0.045194497178410495
+   ],
+   "extent_canonical": [
+    0.11500000141908134,
+    0.07856355246895189,
+    0.09038899925720353
+   ],
+   "canonical_xy_min": [
+    -0.03928177623447594,
+    -0.03928177623447594
+   ],
+   "canonical_xy_max": [
+    0.0757182251846054,
+    0.03928177623447594
+   ],
+   "height": 0.09038899925720353,
+   "mass": 0.18263563955088716,
+   "inertia_diag": [
+    0.00026538647794540975,
+    0.0002394421408969395,
+    0.00022072561690694378
+   ],
+   "bbox_dims": [
+    0.0786,
+    0.115,
+    0.0904
+   ],
+   "visual_bbox_dims": [
+    0.0786,
+    0.115,
+    0.0904
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 2172,
+   "n_collision_faces": 1990,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0044358821465915335,
+    "tilt_deg": 0.029134867373548753,
+    "xy_drift": 2.0004912330160722e-05,
+    "max_penetration": 0.0032518361951813426,
+    "rest_height_error": -0.00010103907505157328,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "mug/mug_2",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_2",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_2",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.017279896054213296,
+    -1.5765938866929563e-09,
+    -0.04550523406744215
+   ],
+   "extent_canonical": [
+    0.10500000047461627,
+    0.07044020885355118,
+    0.09101046838089802
+   ],
+   "canonical_xy_min": [
+    -0.03522010442677559,
+    -0.03522010442677559
+   ],
+   "canonical_xy_max": [
+    0.06977989604784068,
+    0.03522010442677559
+   ],
+   "height": 0.09101046838089802,
+   "mass": 0.20098472595902384,
+   "inertia_diag": [
+    0.00024577818347538635,
+    0.00021437650541088362,
+    0.0001909753102378736
+   ],
+   "bbox_dims": [
+    0.0704,
+    0.105,
+    0.091
+   ],
+   "visual_bbox_dims": [
+    0.0704,
+    0.105,
+    0.091
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 18048,
+   "n_collision_faces": 3648,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0029316939029716926,
+    "tilt_deg": 0.00042166047129361646,
+    "xy_drift": 5.960223933702661e-07,
+    "max_penetration": 0.0032045858844568093,
+    "rest_height_error": -3.2842123377313515e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "mug/mug_3",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_3",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_3",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.01839094016313863,
+    -3.623266900398825e-08,
+    -0.04213980437476145
+   ],
+   "extent_canonical": [
+    0.13611573744715766,
+    0.09952112637543968,
+    0.0842020458239722
+   ],
+   "canonical_xy_min": [
+    -0.04976056318771984,
+    -0.04976056318771984
+   ],
+   "canonical_xy_max": [
+    0.08635517425943784,
+    0.04976056318771984
+   ],
+   "height": 0.0842020458239722,
+   "mass": 0.3067840288340016,
+   "inertia_diag": [
+    0.00046267882742155684,
+    0.0003912268148080626,
+    0.0003618836829198448
+   ],
+   "bbox_dims": [
+    0.0995,
+    0.1361,
+    0.0842
+   ],
+   "visual_bbox_dims": [
+    0.0982,
+    0.135,
+    0.0828
+   ],
+   "visual_collision_extent_ratio": [
+    0.987,
+    0.992,
+    0.983
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 983,
+   "n_collision_faces": 11236,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.425346744893884e-15,
+    "tilt_deg": 0.08674010342195734,
+    "xy_drift": 6.304201294856848e-05,
+    "max_penetration": 0.0032306785833365378,
+    "rest_height_error": -7.96629301103094e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "mug/mug_4",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_4",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.015731231664350746,
+    -8.673378574380886e-08,
+    -0.043444111792487465
+   ],
+   "extent_canonical": [
+    0.10999824286598041,
+    0.07853402252466453,
+    0.08688822379514624
+   ],
+   "canonical_xy_min": [
+    -0.039267011262332265,
+    -0.039267011262332265
+   ],
+   "canonical_xy_max": [
+    0.07073123160364814,
+    0.039267011262332265
+   ],
+   "height": 0.08688822379514624,
+   "mass": 0.19680548832883507,
+   "inertia_diag": [
+    0.00027906037123651763,
+    0.00025927121617579676,
+    0.00021487169934365826
+   ],
+   "bbox_dims": [
+    0.0785,
+    0.11,
+    0.0869
+   ],
+   "visual_bbox_dims": [
+    0.0785,
+    0.11,
+    0.0869
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 38592,
+   "n_collision_faces": 5250,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0011613729056249326,
+    "tilt_deg": 0.0012972988714072004,
+    "xy_drift": 9.89918345446042e-07,
+    "max_penetration": 0.003202240289404204,
+    "rest_height_error": -2.364318681056382e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "mug/mug_5",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_5",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_5",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.014584251540023643,
+    -1.251078528299171e-06,
+    -0.043373271139013174
+   ],
+   "extent_canonical": [
+    0.1159164166348888,
+    0.08697365391248543,
+    0.0867793222294201
+   ],
+   "canonical_xy_min": [
+    -0.043486826956242716,
+    -0.043486826956242716
+   ],
+   "canonical_xy_max": [
+    0.0724295896786461,
+    0.043486826956242716
+   ],
+   "height": 0.0867793222294201,
+   "mass": 0.2256997606113312,
+   "inertia_diag": [
+    0.00029222157866648653,
+    0.00027486959754218133,
+    0.00025898965720088795
+   ],
+   "bbox_dims": [
+    0.087,
+    0.1159,
+    0.0868
+   ],
+   "visual_bbox_dims": [
+    0.0858,
+    0.115,
+    0.0857
+   ],
+   "visual_collision_extent_ratio": [
+    0.987,
+    0.992,
+    0.988
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 3582,
+   "n_collision_faces": 18044,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.2749789445309645e-15,
+    "tilt_deg": 0.03174179361871015,
+    "xy_drift": 2.3736398948402394e-05,
+    "max_penetration": 0.003215922755877434,
+    "rest_height_error": -4.615914418613226e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "mug/mug_7",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_7",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.012121513687880163,
+    9.089942234682957e-07,
+    -0.02934777370238282
+   ],
+   "extent_canonical": [
+    0.12594614941580096,
+    0.10183267279557807,
+    0.058496044356189214
+   ],
+   "canonical_xy_min": [
+    -0.05091633639778904,
+    -0.05091633639778904
+   ],
+   "canonical_xy_max": [
+    0.07502981301801193,
+    0.05091633639778904
+   ],
+   "height": 0.058496044356189214,
+   "mass": 0.23558269296808654,
+   "inertia_diag": [
+    0.000377432865646448,
+    0.00026323632703931867,
+    0.00023743898934534092
+   ],
+   "bbox_dims": [
+    0.1018,
+    0.1259,
+    0.0585
+   ],
+   "visual_bbox_dims": [
+    0.1008,
+    0.125,
+    0.0573
+   ],
+   "visual_collision_extent_ratio": [
+    0.989,
+    0.992,
+    0.98
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 1872,
+   "n_collision_faces": 14012,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.9383170258668805,
+    "tilt_deg": 0.3090614835482351,
+    "xy_drift": 0.0006870292558488043,
+    "max_penetration": 0.004597852649840642,
+    "rest_height_error": -0.0018299638574858154,
+    "passed": false
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "dimensions outside category range",
+    "drop/settle test failed"
+   ]
+  },
+  {
+   "asset_id": "mug/mug_8",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_8",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_8",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_8",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.020224031450955818,
+    -5.7189613541369644e-08,
+    -0.04841989871072521
+   ],
+   "extent_canonical": [
+    0.12108941321757902,
+    0.08082054376485465,
+    0.0966247094979382
+   ],
+   "canonical_xy_min": [
+    -0.04041027188242732,
+    -0.04041027188242732
+   ],
+   "canonical_xy_max": [
+    0.0806791413351517,
+    0.04041027188242732
+   ],
+   "height": 0.0966247094979382,
+   "mass": 0.1483997188540051,
+   "inertia_diag": [
+    0.00022216658184835472,
+    0.00018784868243482537,
+    0.00017120555582942959
+   ],
+   "bbox_dims": [
+    0.0808,
+    0.1211,
+    0.0966
+   ],
+   "visual_bbox_dims": [
+    0.0796,
+    0.12,
+    0.0955
+   ],
+   "visual_collision_extent_ratio": [
+    0.984,
+    0.991,
+    0.989
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 22592,
+   "n_collision_faces": 22368,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0009507240588209273,
+    "tilt_deg": 0.12620311953164953,
+    "xy_drift": 0.00010447896645875035,
+    "max_penetration": 0.0032296998808092536,
+    "rest_height_error": -0.0001504011092052157,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "mug/mug_9",
+   "category": "mug",
+   "robocasa_category": "mug",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "mug_9",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/mug/mug_9",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/mug/mug_9",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.016526987023929143,
+    1.0887951606419755e-06,
+    -0.04494006237396608
+   ],
+   "extent_canonical": [
+    0.12000000008082516,
+    0.08694602637622317,
+    0.08988013279190765
+   ],
+   "canonical_xy_min": [
+    -0.04347301318811159,
+    -0.04347301318811159
+   ],
+   "canonical_xy_max": [
+    0.07652698689271357,
+    0.04347301318811159
+   ],
+   "height": 0.08988013279190765,
+   "mass": 0.1696797400411772,
+   "inertia_diag": [
+    0.00024154541543255228,
+    0.0002163375811636473,
+    0.00020885138515547766
+   ],
+   "bbox_dims": [
+    0.0869,
+    0.12,
+    0.0899
+   ],
+   "visual_bbox_dims": [
+    0.0869,
+    0.12,
+    0.0899
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 572,
+   "n_collision_faces": 1130,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.003171963837884827,
+    "tilt_deg": 0.008997834547710496,
+    "xy_drift": 7.268615666317734e-06,
+    "max_penetration": 0.003231534660523848,
+    "rest_height_error": -7.667648064651339e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "cup/cup_2",
+   "category": "cup",
+   "robocasa_category": "cup",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "cup_2",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/cup/cup_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/cup/cup_2",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -6.632213523233288e-07,
+    6.735086637878196e-07,
+    -0.057500000118667655
+   ],
+   "extent_canonical": [
+    0.07443605274046818,
+    0.07443472634632994,
+    0.11500000122894453
+   ],
+   "canonical_xy_min": [
+    -0.03721736317316497,
+    -0.03721736317316497
+   ],
+   "canonical_xy_max": [
+    0.037218689567303204,
+    0.03721736317316497
+   ],
+   "height": 0.11500000122894453,
+   "mass": 0.09069439113944916,
+   "inertia_diag": [
+    0.00016131207672999808,
+    0.00015980084549876752,
+    8.449648145762645e-05
+   ],
+   "bbox_dims": [
+    0.0744,
+    0.0744,
+    0.115
+   ],
+   "visual_bbox_dims": [
+    0.0744,
+    0.0744,
+    0.115
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 640,
+   "n_collision_faces": 852,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.01877232347750175,
+    "tilt_deg": 0.031864048155554804,
+    "xy_drift": 0.00012551431072719817,
+    "max_penetration": 0.0035910588424900654,
+    "rest_height_error": -0.00030310001235080847,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "cup/cup_3",
+   "category": "cup",
+   "robocasa_category": "cup",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "cup_3",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/cup/cup_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/cup/cup_3",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 3.141592653589793,
+   "anchor": [
+    2.5973329736972417e-10,
+    4.452685442579707e-11,
+    -0.052500002762382925
+   ],
+   "extent_canonical": [
+    0.08596219379601942,
+    0.08659293653392332,
+    0.10499803814378121
+   ],
+   "canonical_xy_min": [
+    -0.04298109689800971,
+    -0.04329646826696166
+   ],
+   "canonical_xy_max": [
+    0.04298109689800971,
+    0.04329646826696166
+   ],
+   "height": 0.10499803814378121,
+   "mass": 0.11021599419606365,
+   "inertia_diag": [
+    0.00017682516168144918,
+    0.00017201678484842194,
+    0.00010689018511434439
+   ],
+   "bbox_dims": [
+    0.086,
+    0.0866,
+    0.105
+   ],
+   "visual_bbox_dims": [
+    0.086,
+    0.0866,
+    0.105
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 412,
+   "n_collision_faces": 862,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.1169138240909348e-15,
+    "tilt_deg": 0.09598319146857033,
+    "xy_drift": 8.695038356682805e-05,
+    "max_penetration": 0.0032604479759139587,
+    "rest_height_error": -9.487796170565971e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "cup/cup_4",
+   "category": "cup",
+   "robocasa_category": "cup",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "cup_4",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/cup/cup_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/cup/cup_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 3.141592653589793,
+   "anchor": [
+    -5.382916244967006e-07,
+    -5.381238798139731e-07,
+    -0.05250000355181103
+   ],
+   "extent_canonical": [
+    0.08707892389949112,
+    0.08707892063939643,
+    0.10500000505567192
+   ],
+   "canonical_xy_min": [
+    -0.043539460319698214,
+    -0.043539460319698214
+   ],
+   "canonical_xy_max": [
+    0.043539463579792916,
+    0.043539460319698214
+   ],
+   "height": 0.10500000505567192,
+   "mass": 0.0990683666803572,
+   "inertia_diag": [
+    0.00015579901072384605,
+    0.00015070903887795788,
+    0.00010463770278111565
+   ],
+   "bbox_dims": [
+    0.0871,
+    0.0871,
+    0.105
+   ],
+   "visual_bbox_dims": [
+    0.0871,
+    0.0871,
+    0.105
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 2408,
+   "n_collision_faces": 1530,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.018526608283012884,
+    "tilt_deg": 0.02900985893907281,
+    "xy_drift": 3.346520102043663e-05,
+    "max_penetration": 0.0032745994945280153,
+    "rest_height_error": -0.00017737179389448743,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "cup/cup_5",
+   "category": "cup",
+   "robocasa_category": "cup",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "cup_5",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/cup/cup_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/cup/cup_5",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -5.948434256969337e-08,
+    2.748479811000293e-07,
+    -0.04250000014648485
+   ],
+   "extent_canonical": [
+    0.08499978493894411,
+    0.08499945039576498,
+    0.08500000199451481
+   ],
+   "canonical_xy_min": [
+    -0.04249972519788249,
+    -0.04249972519788249
+   ],
+   "canonical_xy_max": [
+    0.042500059741061615,
+    0.04249972519788249
+   ],
+   "height": 0.08500000199451481,
+   "mass": 0.11350332733937576,
+   "inertia_diag": [
+    0.0001647698095882512,
+    0.00016117069684210982,
+    0.00015836033789640036
+   ],
+   "bbox_dims": [
+    0.085,
+    0.085,
+    0.085
+   ],
+   "visual_bbox_dims": [
+    0.085,
+    0.085,
+    0.085
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 4300,
+   "n_collision_faces": 4554,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.2986120185453808e-15,
+    "tilt_deg": 0.032619877335205695,
+    "xy_drift": 2.3890258415495897e-05,
+    "max_penetration": 0.003222658836382334,
+    "rest_height_error": -4.36573788476502e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bowl/bowl_0",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_0",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_0",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_0",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.3613702526393823e-10,
+    7.515681582082046e-07,
+    -0.025766181178312832
+   ],
+   "extent_canonical": [
+    0.18199991258315446,
+    0.18199487529402758,
+    0.05153236170265388
+   ],
+   "canonical_xy_min": [
+    -0.09099995629157723,
+    -0.09099743764701379
+   ],
+   "canonical_xy_max": [
+    0.09099995629157723,
+    0.09099743764701379
+   ],
+   "height": 0.05153236170265388,
+   "mass": 0.5673595426301421,
+   "inertia_diag": [
+    0.0021973986748717897,
+    0.0012118153398745955,
+    0.001183663785924084
+   ],
+   "bbox_dims": [
+    0.182,
+    0.182,
+    0.0515
+   ],
+   "visual_bbox_dims": [
+    0.182,
+    0.182,
+    0.0515
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 1398,
+   "n_collision_faces": 1640,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0002899836592018033,
+    "tilt_deg": 0.00016414672638967809,
+    "xy_drift": 7.921453132895091e-08,
+    "max_penetration": 0.003198795651286366,
+    "rest_height_error": -2.0421038541992148e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bowl/bowl_1",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_1",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_1",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -8.18528917229111e-07,
+    -1.1614429704931428e-06,
+    -0.03680045874656679
+   ],
+   "extent_canonical": [
+    0.16799836331718304,
+    0.16799767736573618,
+    0.07360091867939848
+   ],
+   "canonical_xy_min": [
+    -0.08399918165859152,
+    -0.08399883868286809
+   ],
+   "canonical_xy_max": [
+    0.08399918165859152,
+    0.08399883868286809
+   ],
+   "height": 0.07360091867939848,
+   "mass": 0.35875151084984647,
+   "inertia_diag": [
+    0.0013318878640552812,
+    0.0008230479546460989,
+    0.0007864413959158873
+   ],
+   "bbox_dims": [
+    0.168,
+    0.168,
+    0.0736
+   ],
+   "visual_bbox_dims": [
+    0.168,
+    0.168,
+    0.0736
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 1160,
+   "n_collision_faces": 1484,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.005961850519608184,
+    "tilt_deg": 0.12013109224546972,
+    "xy_drift": 7.758883618295795e-05,
+    "max_penetration": 0.0033158108413304513,
+    "rest_height_error": -7.655833820466307e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bowl/bowl_2",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_2",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_2",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    6.578396803888498e-07,
+    5.686002013810532e-07,
+    -0.033903288353715616
+   ],
+   "extent_canonical": [
+    0.16099868410353185,
+    0.16099886342015382,
+    0.06780657659591893
+   ],
+   "canonical_xy_min": [
+    -0.08049934205176593,
+    -0.08049943171007691
+   ],
+   "canonical_xy_max": [
+    0.08049934205176593,
+    0.08049943171007691
+   ],
+   "height": 0.06780657659591893,
+   "mass": 0.4879358274176782,
+   "inertia_diag": [
+    0.0014728502751691186,
+    0.0008868335407928882,
+    0.0008757421862088011
+   ],
+   "bbox_dims": [
+    0.161,
+    0.161,
+    0.0678
+   ],
+   "visual_bbox_dims": [
+    0.161,
+    0.161,
+    0.0678
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 678,
+   "n_collision_faces": 1382,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0008546817498924611,
+    "tilt_deg": 0.005131089832426508,
+    "xy_drift": 3.1412827718153304e-06,
+    "max_penetration": 0.0032146517580972575,
+    "rest_height_error": -4.625999837433448e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bowl/bowl_3",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_3",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_3",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj",
+    "model_normalized_3.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -3.5740517860538557e-07,
+    -5.440956157842791e-10,
+    -0.03191641411783256
+   ],
+   "extent_canonical": [
+    0.1819991985807045,
+    0.1819999998831324,
+    0.06383282938670451
+   ],
+   "canonical_xy_min": [
+    -0.09099959929035226,
+    -0.0909999999415662
+   ],
+   "canonical_xy_max": [
+    0.09099959929035226,
+    0.0909999999415662
+   ],
+   "height": 0.06383282938670451,
+   "mass": 0.31063858334439215,
+   "inertia_diag": [
+    0.001168187252100557,
+    0.0006881884764179059,
+    0.0006535448674583505
+   ],
+   "bbox_dims": [
+    0.182,
+    0.182,
+    0.0638
+   ],
+   "visual_bbox_dims": [
+    0.182,
+    0.182,
+    0.0638
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 960,
+   "n_collision_faces": 938,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.3972419860863155e-15,
+    "tilt_deg": 0.049390263414131406,
+    "xy_drift": 2.6911736794450443e-05,
+    "max_penetration": 0.0032240537841636135,
+    "rest_height_error": -6.395962139917749e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bowl/bowl_5",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_5",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_5",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.4631306115286957e-07,
+    4.29448965513779e-07,
+    -0.023413157588422804
+   ],
+   "extent_canonical": [
+    0.16099963032345482,
+    0.16099543672437067,
+    0.04682631587339667
+   ],
+   "canonical_xy_min": [
+    -0.08049981516172741,
+    -0.08049771836218533
+   ],
+   "canonical_xy_max": [
+    0.08049981516172741,
+    0.08049771836218533
+   ],
+   "height": 0.04682631587339667,
+   "mass": 0.22612565242361066,
+   "inertia_diag": [
+    0.0009483271319080227,
+    0.0005363701998695195,
+    0.0004975674662129142
+   ],
+   "bbox_dims": [
+    0.161,
+    0.161,
+    0.0468
+   ],
+   "visual_bbox_dims": [
+    0.161,
+    0.161,
+    0.0468
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 2944,
+   "n_collision_faces": 3060,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0005751908331690564,
+    "tilt_deg": 0.04976538395246654,
+    "xy_drift": 1.9946336854759393e-05,
+    "max_penetration": 0.0032408146380510537,
+    "rest_height_error": -7.376370345039268e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bowl/bowl_6",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_6",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_6",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_6",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -8.713221992043274e-07,
+    9.763000082887996e-07,
+    -0.03440248157338967
+   ],
+   "extent_canonical": [
+    0.16786890229517654,
+    0.1679980470969179,
+    0.0688049626469241
+   ],
+   "canonical_xy_min": [
+    -0.08393445114758827,
+    -0.08399902354845895
+   ],
+   "canonical_xy_max": [
+    0.08393445114758827,
+    0.08399902354845895
+   ],
+   "height": 0.0688049626469241,
+   "mass": 0.42550531075760034,
+   "inertia_diag": [
+    0.0016868085933376832,
+    0.0010447475458976107,
+    0.0009658166402410805
+   ],
+   "bbox_dims": [
+    0.1679,
+    0.168,
+    0.0688
+   ],
+   "visual_bbox_dims": [
+    0.1679,
+    0.168,
+    0.0688
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 74984,
+   "n_collision_faces": 9940,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.4581329056376514e-15,
+    "tilt_deg": 0.18780097414618868,
+    "xy_drift": 0.00010928143426835428,
+    "max_penetration": 0.0032076813317414125,
+    "rest_height_error": -0.0001813016351287569,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bowl/bowl_7",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_7",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    2.0717503941697357e-06,
+    1.111529135573719e-06,
+    -0.030115502977652843
+   ],
+   "extent_canonical": [
+    0.18199585625106673,
+    0.18199505317869102,
+    0.06023213500880188
+   ],
+   "canonical_xy_min": [
+    -0.09099792812553337,
+    -0.09099752658934551
+   ],
+   "canonical_xy_max": [
+    0.09099792812553337,
+    0.09099752658934551
+   ],
+   "height": 0.06023213500880188,
+   "mass": 0.4658334934139042,
+   "inertia_diag": [
+    0.0022824629130978463,
+    0.0012898029968929229,
+    0.001279628141210421
+   ],
+   "bbox_dims": [
+    0.182,
+    0.182,
+    0.0602
+   ],
+   "visual_bbox_dims": [
+    0.182,
+    0.182,
+    0.0602
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 640,
+   "n_collision_faces": 1444,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.2190011908012057e-15,
+    "tilt_deg": 0.07718232005533239,
+    "xy_drift": 4.0598592183878296e-05,
+    "max_penetration": 0.0036162852335464195,
+    "rest_height_error": -9.567216121442873e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bowl/bowl_8",
+   "category": "bowl",
+   "robocasa_category": "bowl",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "bowl_8",
+   "scale": 1.4,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/bowl/bowl_8",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/bowl/bowl_8",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    1.2692367626285228e-06,
+    -1.256703637854406e-06,
+    -0.034548374291844146
+   ],
+   "extent_canonical": [
+    0.16799746199747262,
+    0.16799201879534997,
+    0.06909674992445808
+   ],
+   "canonical_xy_min": [
+    -0.08399873099873631,
+    -0.08399600939767499
+   ],
+   "canonical_xy_max": [
+    0.08399873099873631,
+    0.08399600939767499
+   ],
+   "height": 0.06909674992445808,
+   "mass": 0.5105120153440659,
+   "inertia_diag": [
+    0.0023641518412572684,
+    0.0014251378944567957,
+    0.00136577521325369
+   ],
+   "bbox_dims": [
+    0.168,
+    0.168,
+    0.0691
+   ],
+   "visual_bbox_dims": [
+    0.168,
+    0.168,
+    0.0691
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 3456,
+   "n_collision_faces": 3520,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.010041706978372552,
+    "tilt_deg": 0.37117453483551965,
+    "xy_drift": 0.0002120529984656217,
+    "max_penetration": 0.0032931170380667667,
+    "rest_height_error": -0.0003422398582592079,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "plate/plate_0",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_0",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_0",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_0",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -0.00018697556915680397,
+    -1.8261983310285945e-07,
+    -0.01652432012482162
+   ],
+   "extent_canonical": [
+    0.24628844545033002,
+    0.24590284745610305,
+    0.033029782632049295
+   ],
+   "canonical_xy_min": [
+    -0.12314422272516501,
+    -0.12295142372805153
+   ],
+   "canonical_xy_max": [
+    0.12314422272516501,
+    0.12295142372805153
+   ],
+   "height": 0.033029782632049295,
+   "mass": 0.05927686908693597,
+   "inertia_diag": [
+    0.0004840703702678991,
+    0.00025067237566043664,
+    0.00024057005274387208
+   ],
+   "bbox_dims": [
+    0.2463,
+    0.2459,
+    0.033
+   ],
+   "visual_bbox_dims": [
+    0.2498,
+    0.2497,
+    0.033
+   ],
+   "visual_collision_extent_ratio": [
+    1.014,
+    1.016,
+    1.001
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 8496,
+   "n_collision_faces": 1494,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.0664398838041222e-15,
+    "tilt_deg": 0.369221391813971,
+    "xy_drift": 0.00010145774373061082,
+    "max_penetration": 0.0017348558937421432,
+    "rest_height_error": -0.0002295747423486233,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "plate/plate_1",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_1",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_1",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -0.00033795166551956607,
+    5.493598631556296e-12,
+    -0.007486583479584918
+   ],
+   "extent_canonical": [
+    0.24615112034722747,
+    0.24547526157138677,
+    0.014973141768533687
+   ],
+   "canonical_xy_min": [
+    -0.12307556017361374,
+    -0.12273763078569339
+   ],
+   "canonical_xy_max": [
+    0.12307556017361374,
+    0.12273763078569339
+   ],
+   "height": 0.014973141768533687,
+   "mass": 0.012474049510388493,
+   "inertia_diag": [
+    9.66796875383395e-05,
+    4.948382709424021e-05,
+    4.768035891574977e-05
+   ],
+   "bbox_dims": [
+    0.2462,
+    0.2455,
+    0.015
+   ],
+   "visual_bbox_dims": [
+    0.2497,
+    0.2498,
+    0.015
+   ],
+   "visual_collision_extent_ratio": [
+    1.015,
+    1.017,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 11008,
+   "n_collision_faces": 950,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 9.443157433299208e-16,
+    "tilt_deg": 0.0013119342655816717,
+    "xy_drift": 1.6069326538620303e-07,
+    "max_penetration": 0.0017203616683139794,
+    "rest_height_error": -5.03460901693422e-06,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "plate/plate_2",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_2",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_2",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    3.5461447320250805e-09,
+    -3.6743260586891147e-09,
+    -0.009363246705146828
+   ],
+   "extent_canonical": [
+    0.23125012456835797,
+    0.23125020937785756,
+    0.018714614480141365
+   ],
+   "canonical_xy_min": [
+    -0.11562506228417899,
+    -0.11562510468892878
+   ],
+   "canonical_xy_max": [
+    0.11562506228417899,
+    0.11562510468892878
+   ],
+   "height": 0.018714614480141365,
+   "mass": 0.029566482139911792,
+   "inertia_diag": [
+    0.00019199791614168157,
+    9.831145505628249e-05,
+    9.475026773083797e-05
+   ],
+   "bbox_dims": [
+    0.2313,
+    0.2313,
+    0.0187
+   ],
+   "visual_bbox_dims": [
+    0.2362,
+    0.2362,
+    0.0187
+   ],
+   "visual_collision_extent_ratio": [
+    1.022,
+    1.022,
+    1.001
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 8000,
+   "n_collision_faces": 1060,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.15437282010862e-15,
+    "tilt_deg": 1.0813058017978017,
+    "xy_drift": 0.00016695874224999225,
+    "max_penetration": 0.0017355277571685463,
+    "rest_height_error": -6.737172926514316e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "plate/plate_3",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_3",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_3",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -3.4154048339507526e-10,
+    1.3313451729946024e-10,
+    -0.011743633492853775
+   ],
+   "extent_canonical": [
+    0.23310807179350962,
+    0.2331080717749098,
+    0.023453235203928953
+   ],
+   "canonical_xy_min": [
+    -0.11655403589675481,
+    -0.1165540358874549
+   ],
+   "canonical_xy_max": [
+    0.11655403589675481,
+    0.1165540358874549
+   ],
+   "height": 0.023453235203928953,
+   "mass": 0.012667599920127948,
+   "inertia_diag": [
+    8.158598691660318e-05,
+    4.188984595897175e-05,
+    4.0898965090859036e-05
+   ],
+   "bbox_dims": [
+    0.2331,
+    0.2331,
+    0.0235
+   ],
+   "visual_bbox_dims": [
+    0.2362,
+    0.2363,
+    0.0235
+   ],
+   "visual_collision_extent_ratio": [
+    1.013,
+    1.013,
+    1.001
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 55296,
+   "n_collision_faces": 1244,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 8.730332146630156e-16,
+    "tilt_deg": 0.0022178916296199474,
+    "xy_drift": 4.310601582443725e-07,
+    "max_penetration": 0.001720951701425305,
+    "rest_height_error": -5.438521542637173e-06,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "plate/plate_4",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_4",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.4343308761176343e-05,
+    -0.0005820562769161958,
+    -0.019251384492310106
+   ],
+   "extent_canonical": [
+    0.2457161799305435,
+    0.24591203156666722,
+    0.03850276923886709
+   ],
+   "canonical_xy_min": [
+    -0.12285808996527176,
+    -0.12295601578333361
+   ],
+   "canonical_xy_max": [
+    0.12285808996527176,
+    0.12295601578333361
+   ],
+   "height": 0.03850276923886709,
+   "mass": 0.04860322994760629,
+   "inertia_diag": [
+    0.00032090417325304717,
+    0.0001702939642730675,
+    0.00016178734685201967
+   ],
+   "bbox_dims": [
+    0.2457,
+    0.2459,
+    0.0385
+   ],
+   "visual_bbox_dims": [
+    0.2498,
+    0.2484,
+    0.0385
+   ],
+   "visual_collision_extent_ratio": [
+    1.016,
+    1.01,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 860,
+   "n_collision_faces": 1274,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 8.501857157565568e-06,
+    "tilt_deg": 0.0004721329666254939,
+    "xy_drift": 1.5486954282053401e-07,
+    "max_penetration": 0.0017177845668055348,
+    "rest_height_error": -2.152723999161027e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "plate/plate_5",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_5",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_5",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.6793172698953418e-07,
+    1.7844841863901006e-07,
+    -0.011624002681638433
+   ],
+   "extent_canonical": [
+    0.24474366982278872,
+    0.24474367627466795,
+    0.023217145611550638
+   ],
+   "canonical_xy_min": [
+    -0.12237183491139436,
+    -0.12237183813733397
+   ],
+   "canonical_xy_max": [
+    0.12237183491139436,
+    0.12237183813733397
+   ],
+   "height": 0.023217145611550638,
+   "mass": 0.03851980217816025,
+   "inertia_diag": [
+    0.0002827876256572692,
+    0.00014616091847090385,
+    0.0001402046330664181
+   ],
+   "bbox_dims": [
+    0.2447,
+    0.2447,
+    0.0232
+   ],
+   "visual_bbox_dims": [
+    0.2498,
+    0.2497,
+    0.0232
+   ],
+   "visual_collision_extent_ratio": [
+    1.02,
+    1.02,
+    1.001
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 1360,
+   "n_collision_faces": 960,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.0575862738357945e-15,
+    "tilt_deg": 0.00036033698549595123,
+    "xy_drift": 7.036572271023732e-08,
+    "max_penetration": 0.0017179690703109443,
+    "rest_height_error": -2.3466070614239914e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "plate/plate_7",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_7",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    0.000369123460145844,
+    -0.00018455612735403942,
+    -0.006466269897597227
+   ],
+   "extent_canonical": [
+    0.24646423817814395,
+    0.24609517830335076,
+    0.012934328323388661
+   ],
+   "canonical_xy_min": [
+    -0.12323211908907197,
+    -0.12304758915167538
+   ],
+   "canonical_xy_max": [
+    0.12323211908907197,
+    0.12304758915167538
+   ],
+   "height": 0.012934328323388661,
+   "mass": 0.01611330641114383,
+   "inertia_diag": [
+    0.0001654409375271641,
+    8.588318156763742e-05,
+    7.991583608593724e-05
+   ],
+   "bbox_dims": [
+    0.2465,
+    0.2461,
+    0.0129
+   ],
+   "visual_bbox_dims": [
+    0.2497,
+    0.2497,
+    0.0129
+   ],
+   "visual_collision_extent_ratio": [
+    1.013,
+    1.015,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 1020,
+   "n_collision_faces": 1050,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 9.627624723678885e-16,
+    "tilt_deg": 0.002917451362768601,
+    "xy_drift": 2.998691843000638e-07,
+    "max_penetration": 0.0017231017776910456,
+    "rest_height_error": -1.4117092521611155e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "plate/plate_8",
+   "category": "plate",
+   "robocasa_category": "plate",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "plate_8",
+   "scale": 1.35,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/plate/plate_8",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/plate/plate_8",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    0.0006376310315499706,
+    -8.381349605098704e-05,
+    -0.008335244309951986
+   ],
+   "extent_canonical": [
+    0.24666561206579107,
+    0.245557977930904,
+    0.01667049316237485
+   ],
+   "canonical_xy_min": [
+    -0.12333280603289554,
+    -0.122778988965452
+   ],
+   "canonical_xy_max": [
+    0.12333280603289554,
+    0.122778988965452
+   ],
+   "height": 0.01667049316237485,
+   "mass": 0.05081148694478226,
+   "inertia_diag": [
+    0.00041776823895162704,
+    0.000211304604249215,
+    0.00020777500938057913
+   ],
+   "bbox_dims": [
+    0.2467,
+    0.2456,
+    0.0167
+   ],
+   "visual_bbox_dims": [
+    0.2497,
+    0.2497,
+    0.0167
+   ],
+   "visual_collision_extent_ratio": [
+    1.013,
+    1.017,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 1120,
+   "n_collision_faces": 938,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.0268958594125167e-15,
+    "tilt_deg": 0.0001652090612381299,
+    "xy_drift": 2.2930205217565776e-08,
+    "max_penetration": 0.0017172894759366537,
+    "rest_height_error": -1.6643251977126877e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "pan/pan_1",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_1",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_1",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.003396068078250325,
+    0.0007703263497336951,
+    -0.02747208605864304
+   ],
+   "extent_canonical": [
+    0.42244193877504643,
+    0.21929174299950788,
+    0.05472716229868966
+   ],
+   "canonical_xy_min": [
+    -0.10964587149975394,
+    -0.10964587149975394
+   ],
+   "canonical_xy_max": [
+    0.31279606727529247,
+    0.10964587149975394
+   ],
+   "height": 0.05472716229868966,
+   "mass": 0.049110870387775264,
+   "inertia_diag": [
+    0.0007642040987047487,
+    0.0006426729048653742,
+    0.00012905619146631492
+   ],
+   "bbox_dims": [
+    0.2193,
+    0.4224,
+    0.0547
+   ],
+   "visual_bbox_dims": [
+    0.2267,
+    0.425,
+    0.0549
+   ],
+   "visual_collision_extent_ratio": [
+    1.034,
+    1.006,
+    1.004
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 488,
+   "n_collision_faces": 640,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 9.921678471881677e-07,
+    "tilt_deg": 0.0004740865988740713,
+    "xy_drift": 2.235331983904769e-07,
+    "max_penetration": 0.0017171735887212061,
+    "rest_height_error": -7.805741074097539e-07,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "pan/pan_2",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_2",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_2",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.006744917799664879,
+    0.0006346023648081886,
+    -0.03358669631414496
+   ],
+   "extent_canonical": [
+    0.4024434574165219,
+    0.2348951392351344,
+    0.06464623881749974
+   ],
+   "canonical_xy_min": [
+    -0.1174475696175672,
+    -0.1174475696175672
+   ],
+   "canonical_xy_max": [
+    0.2849958877989547,
+    0.1174475696175672
+   ],
+   "height": 0.06464623881749974,
+   "mass": 0.06883855407170539,
+   "inertia_diag": [
+    0.0006292546683453495,
+    0.00039093123390467245,
+    0.0002534236234356387
+   ],
+   "bbox_dims": [
+    0.2349,
+    0.4024,
+    0.0646
+   ],
+   "visual_bbox_dims": [
+    0.2401,
+    0.408,
+    0.0672
+   ],
+   "visual_collision_extent_ratio": [
+    1.022,
+    1.014,
+    1.039
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 350,
+   "n_collision_faces": 846,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.6505032594654875e-15,
+    "tilt_deg": 0.0014702230088218878,
+    "xy_drift": 8.500527933277798e-07,
+    "max_penetration": 0.0017203497879749426,
+    "rest_height_error": -4.832605395251044e-06,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "pan/pan_3",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_3",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_3",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    0.0031719182399935902,
+    0.000522953326876574,
+    -0.02598705974384522
+   ],
+   "extent_canonical": [
+    0.4181490045662602,
+    0.2380802779675414,
+    0.04983586231091415
+   ],
+   "canonical_xy_min": [
+    -0.1190401389837707,
+    -0.1190401389837707
+   ],
+   "canonical_xy_max": [
+    0.2991088655824895,
+    0.1190401389837707
+   ],
+   "height": 0.04983586231091415,
+   "mass": 0.049737790999917784,
+   "inertia_diag": [
+    0.0006027867073774022,
+    0.00039893971919881737,
+    0.00022265701355546675
+   ],
+   "bbox_dims": [
+    0.2381,
+    0.4181,
+    0.0498
+   ],
+   "visual_bbox_dims": [
+    0.2433,
+    0.425,
+    0.052
+   ],
+   "visual_collision_extent_ratio": [
+    1.022,
+    1.016,
+    1.043
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 946,
+   "n_collision_faces": 928,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.1096698779289875e-15,
+    "tilt_deg": 0.0002734635789449577,
+    "xy_drift": 1.2193958888476094e-07,
+    "max_penetration": 0.0017171853939488314,
+    "rest_height_error": -1.188308308117808e-06,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "pan/pan_4",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_4",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    0.0017793197181027731,
+    -4.354870004714961e-05,
+    -0.01922835006168411
+   ],
+   "extent_canonical": [
+    0.403420728289804,
+    0.25449364843022004,
+    0.036323069123708016
+   ],
+   "canonical_xy_min": [
+    -0.12724682421511002,
+    -0.12724682421511002
+   ],
+   "canonical_xy_max": [
+    0.276173904074694,
+    0.12724682421511002
+   ],
+   "height": 0.036323069123708016,
+   "mass": 0.04769091944741141,
+   "inertia_diag": [
+    0.0005313548685627369,
+    0.00031624588912471634,
+    0.0002222809198277101
+   ],
+   "bbox_dims": [
+    0.2545,
+    0.4034,
+    0.0363
+   ],
+   "visual_bbox_dims": [
+    0.2586,
+    0.408,
+    0.0385
+   ],
+   "visual_collision_extent_ratio": [
+    1.016,
+    1.011,
+    1.059
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 882,
+   "n_collision_faces": 888,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.0075369803172926e-05,
+    "tilt_deg": 1.3115919625095422e-05,
+    "xy_drift": 4.534483355758908e-09,
+    "max_penetration": 0.0017169563271158834,
+    "rest_height_error": -1.3487671639000887e-06,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "pan/pan_5",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_5",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_5",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    -0.0003120739415605339,
+    4.755516721059033e-05,
+    -0.01697287003856362
+   ],
+   "extent_canonical": [
+    0.4055185346398811,
+    0.23279457484422134,
+    0.033542426557444174
+   ],
+   "canonical_xy_min": [
+    -0.11639728742211067,
+    -0.11639728742211067
+   ],
+   "canonical_xy_max": [
+    0.2891212472177704,
+    0.11639728742211067
+   ],
+   "height": 0.033542426557444174,
+   "mass": 0.05519780986361261,
+   "inertia_diag": [
+    0.0006511657343064128,
+    0.00045520690616805926,
+    0.0002044802738494257
+   ],
+   "bbox_dims": [
+    0.2328,
+    0.4055,
+    0.0335
+   ],
+   "visual_bbox_dims": [
+    0.2375,
+    0.408,
+    0.0339
+   ],
+   "visual_collision_extent_ratio": [
+    1.02,
+    1.006,
+    1.012
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 2788,
+   "n_collision_faces": 972,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 7.054915069997921e-06,
+    "tilt_deg": 0.0006068306928045766,
+    "xy_drift": 1.7499471661567817e-07,
+    "max_penetration": 0.0017175498205081654,
+    "rest_height_error": -1.3995327093306587e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "pan/pan_6",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_6",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_6",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_6",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    0.001457669706429826,
+    -0.0003310808584606889,
+    -0.029636495158020054
+   ],
+   "extent_canonical": [
+    0.4030308411811947,
+    0.22472863589468697,
+    0.059258873146800554
+   ],
+   "canonical_xy_min": [
+    -0.11236431794734349,
+    -0.11236431794734349
+   ],
+   "canonical_xy_max": [
+    0.2906665232338512,
+    0.11236431794734349
+   ],
+   "height": 0.059258873146800554,
+   "mass": 0.06494484276505871,
+   "inertia_diag": [
+    0.0007384691289524905,
+    0.0005196874683444152,
+    0.000251755545470649
+   ],
+   "bbox_dims": [
+    0.2247,
+    0.403,
+    0.0593
+   ],
+   "visual_bbox_dims": [
+    0.2271,
+    0.408,
+    0.0593
+   ],
+   "visual_collision_extent_ratio": [
+    1.011,
+    1.012,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 5261,
+   "n_collision_faces": 1104,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 8.877046378660817e-16,
+    "tilt_deg": 0.005429155679715966,
+    "xy_drift": 2.7622637232618382e-06,
+    "max_penetration": 0.0017232188297914086,
+    "rest_height_error": -6.158709888126612e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "pan/pan_7",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_7",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    0.0013583782500512925,
+    -0.0005800718238131997,
+    -0.016155354334303075
+   ],
+   "extent_canonical": [
+    0.3869634909317857,
+    0.2015809657709037,
+    0.032310692857927106
+   ],
+   "canonical_xy_min": [
+    -0.10079048288545185,
+    -0.10079048288545185
+   ],
+   "canonical_xy_max": [
+    0.28617300804633383,
+    0.10079048288545185
+   ],
+   "height": 0.032310692857927106,
+   "mass": 0.043441482018045534,
+   "inertia_diag": [
+    0.0004042765108311154,
+    0.00030018870596912344,
+    0.00010948011750120496
+   ],
+   "bbox_dims": [
+    0.2016,
+    0.387,
+    0.0323
+   ],
+   "visual_bbox_dims": [
+    0.206,
+    0.391,
+    0.0323
+   ],
+   "visual_collision_extent_ratio": [
+    1.022,
+    1.01,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 578,
+   "n_collision_faces": 830,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.1730926174960606e-15,
+    "tilt_deg": 0.001788292032127666,
+    "xy_drift": 4.899612169376391e-07,
+    "max_penetration": 0.0017191682660876138,
+    "rest_height_error": -1.8789228063316454e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "pan/pan_8",
+   "category": "pan",
+   "robocasa_category": "pan",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "pan_8",
+   "scale": 1.7,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/pan/pan_8",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/pan/pan_8",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": 1.5707963267948966,
+   "anchor": [
+    0.004399292194522689,
+    0.00034101250448605874,
+    -0.015858131088303747
+   ],
+   "extent_canonical": [
+    0.4205090601086432,
+    0.22226731258846322,
+    0.03171626268329486
+   ],
+   "canonical_xy_min": [
+    -0.11113365629423161,
+    -0.11113365629423161
+   ],
+   "canonical_xy_max": [
+    0.3093754038144116,
+    0.11113365629423161
+   ],
+   "height": 0.03171626268329486,
+   "mass": 0.06746383068525515,
+   "inertia_diag": [
+    0.0006508144461411626,
+    0.00044876993749082717,
+    0.00020760444330365343
+   ],
+   "bbox_dims": [
+    0.2223,
+    0.4205,
+    0.0317
+   ],
+   "visual_bbox_dims": [
+    0.2271,
+    0.425,
+    0.0317
+   ],
+   "visual_collision_extent_ratio": [
+    1.022,
+    1.011,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 946,
+   "n_collision_faces": 836,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.1373063685917368e-15,
+    "tilt_deg": 0.0011425392757406637,
+    "xy_drift": 3.0707350660462617e-07,
+    "max_penetration": 0.0017196919371533833,
+    "rest_height_error": -3.7955168751754864e-06,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bottle/water_bottle_0",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_0",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_0",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_0",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.0600920141712322e-09,
+    -1.1203027013018119e-09,
+    -0.10235598143065198
+   ],
+   "extent_canonical": [
+    0.07763096198922824,
+    0.07763098405986077,
+    0.20471973554522493
+   ],
+   "canonical_xy_min": [
+    -0.03881548099461412,
+    -0.038815492029930385
+   ],
+   "canonical_xy_max": [
+    0.03881548099461412,
+    0.038815492029930385
+   ],
+   "height": 0.20471973554522493,
+   "mass": 0.9402497498205461,
+   "inertia_diag": [
+    0.003467505532360415,
+    0.0034666547161579207,
+    0.0006512126948962855
+   ],
+   "bbox_dims": [
+    0.0776,
+    0.0776,
+    0.2047
+   ],
+   "visual_bbox_dims": [
+    0.0756,
+    0.0756,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    0.973,
+    0.973,
+    0.989
+   ],
+   "n_collision_geoms": 5,
+   "n_visual_faces": 21792,
+   "n_collision_faces": 4022,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.01263311090288868,
+    "tilt_deg": 0.010364365762255124,
+    "xy_drift": 1.0630630713931425e-05,
+    "max_penetration": 0.0033032773304258467,
+    "rest_height_error": -0.00016755700153725517,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bottle/water_bottle_1",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_1",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_1",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    4.678917027301638e-05,
+    -2.576986661002867e-05,
+    -0.10209217971700826
+   ],
+   "extent_canonical": [
+    0.08098406271986446,
+    0.07598097638464497,
+    0.20417360600548035
+   ],
+   "canonical_xy_min": [
+    -0.04049203135993223,
+    -0.03799048819232249
+   ],
+   "canonical_xy_max": [
+    0.04049203135993223,
+    0.03799048819232249
+   ],
+   "height": 0.20417360600548035,
+   "mass": 0.8415622505063505,
+   "inertia_diag": [
+    0.0027232204066089424,
+    0.002654923534727266,
+    0.0005502590995416537
+   ],
+   "bbox_dims": [
+    0.076,
+    0.081,
+    0.2042
+   ],
+   "visual_bbox_dims": [
+    0.0742,
+    0.079,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    0.977,
+    0.976,
+    0.992
+   ],
+   "n_collision_geoms": 11,
+   "n_visual_faces": 1512,
+   "n_collision_faces": 3880,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 2.2429571970089792e-15,
+    "tilt_deg": 0.12877901081126888,
+    "xy_drift": 0.00022773127918026265,
+    "max_penetration": 0.003222710535199208,
+    "rest_height_error": -0.000119425029882686,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bottle/water_bottle_2",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_2",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_2",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    -0.00020726402069441707,
+    1.2800945448074308e-05,
+    -0.10233428803157019
+   ],
+   "extent_canonical": [
+    0.08985573307389488,
+    0.06959361246722924,
+    0.20442817010711384
+   ],
+   "canonical_xy_min": [
+    -0.04492786653694744,
+    -0.03479680623361462
+   ],
+   "canonical_xy_max": [
+    0.04492786653694744,
+    0.03479680623361462
+   ],
+   "height": 0.20442817010711384,
+   "mass": 0.6646783757625007,
+   "inertia_diag": [
+    0.0019592926304263236,
+    0.0019320891775666002,
+    0.00039060938622111985
+   ],
+   "bbox_dims": [
+    0.0696,
+    0.0899,
+    0.2044
+   ],
+   "visual_bbox_dims": [
+    0.0674,
+    0.0882,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    0.969,
+    0.981,
+    0.991
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 83952,
+   "n_collision_faces": 3862,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 3.2304194943795726e-15,
+    "tilt_deg": 0.7691290736946956,
+    "xy_drift": 0.0013581827137318491,
+    "max_penetration": 0.003274975623241999,
+    "rest_height_error": -0.00044684587595973657,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bottle/water_bottle_3",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_3",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_3",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    9.954542662393706e-08,
+    -0.00013960674354245722,
+    -0.12511122525911625
+   ],
+   "extent_canonical": [
+    0.07017736863268208,
+    0.07090049755326011,
+    0.2501900547818408
+   ],
+   "canonical_xy_min": [
+    -0.03508868431634104,
+    -0.035450248776630056
+   ],
+   "canonical_xy_max": [
+    0.03508868431634104,
+    0.035450248776630056
+   ],
+   "height": 0.2501900547818408,
+   "mass": 0.7589642325601008,
+   "inertia_diag": [
+    0.003343357435383399,
+    0.00333766937541206,
+    0.0004005963394516616
+   ],
+   "bbox_dims": [
+    0.0702,
+    0.0709,
+    0.2502
+   ],
+   "visual_bbox_dims": [
+    0.0676,
+    0.0686,
+    0.2475
+   ],
+   "visual_collision_extent_ratio": [
+    0.963,
+    0.967,
+    0.989
+   ],
+   "n_collision_geoms": 10,
+   "n_visual_faces": 67280,
+   "n_collision_faces": 3790,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.04905391137235544,
+    "tilt_deg": 0.018558249624457488,
+    "xy_drift": 0.0002002001112646703,
+    "max_penetration": 0.0033085595157086103,
+    "rest_height_error": -0.0002134027331875954,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "bottle/water_bottle_4",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_4",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_4",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    4.6959461740131436e-05,
+    -1.76839717300932e-05,
+    -0.10208314204775491
+   ],
+   "extent_canonical": [
+    0.08098373454536253,
+    0.07596484205116547,
+    0.20416828582499374
+   ],
+   "canonical_xy_min": [
+    -0.04049186727268127,
+    -0.03798242102558273
+   ],
+   "canonical_xy_max": [
+    0.04049186727268127,
+    0.03798242102558273
+   ],
+   "height": 0.20416828582499374,
+   "mass": 0.8533213291155168,
+   "inertia_diag": [
+    0.002736265772109466,
+    0.0026956638100061638,
+    0.0005422212442250102
+   ],
+   "bbox_dims": [
+    0.076,
+    0.081,
+    0.2042
+   ],
+   "visual_bbox_dims": [
+    0.0742,
+    0.079,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    0.977,
+    0.976,
+    0.992
+   ],
+   "n_collision_geoms": 11,
+   "n_visual_faces": 1512,
+   "n_collision_faces": 3942,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 2.159955463588205e-15,
+    "tilt_deg": 0.09450300562669979,
+    "xy_drift": 0.00016728178130263213,
+    "max_penetration": 0.0032314650553366964,
+    "rest_height_error": -0.00013166541243787855,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bottle/water_bottle_5",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_5",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_5",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_5",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    -3.0983169328271942e-06,
+    6.824771581204203e-10,
+    -0.10125000356089425
+   ],
+   "extent_canonical": [
+    0.06683782214229149,
+    0.06333245709538468,
+    0.20249804829098567
+   ],
+   "canonical_xy_min": [
+    -0.033418911071145745,
+    -0.03166622854769234
+   ],
+   "canonical_xy_max": [
+    0.033418911071145745,
+    0.03166622854769234
+   ],
+   "height": 0.20249804829098567,
+   "mass": 0.6300387381448573,
+   "inertia_diag": [
+    0.0022537710238383505,
+    0.002252021076035708,
+    0.00031412352507570826
+   ],
+   "bbox_dims": [
+    0.0633,
+    0.0668,
+    0.2025
+   ],
+   "visual_bbox_dims": [
+    0.0633,
+    0.0668,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 10,
+   "n_visual_faces": 2888,
+   "n_collision_faces": 988,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0019122798804547714,
+    "tilt_deg": 0.0092238123335636,
+    "xy_drift": 1.6730672212260855e-05,
+    "max_penetration": 0.003372907923367155,
+    "rest_height_error": -0.00020932768232698185,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bottle/water_bottle_6",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_6",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_6",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_6",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj",
+    "model_normalized_3.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    8.953090209935788e-06,
+    -7.752377286568413e-05,
+    -0.10234196757232429
+   ],
+   "extent_canonical": [
+    0.09151392100934345,
+    0.09494204041032372,
+    0.20430651985744058
+   ],
+   "canonical_xy_min": [
+    -0.04575696050467173,
+    -0.04747102020516186
+   ],
+   "canonical_xy_max": [
+    0.04575696050467173,
+    0.04747102020516186
+   ],
+   "height": 0.20430651985744058,
+   "mass": 0.5088956564214706,
+   "inertia_diag": [
+    0.002145891646935439,
+    0.002119365259006626,
+    0.0004907872693187557
+   ],
+   "bbox_dims": [
+    0.0915,
+    0.0949,
+    0.2043
+   ],
+   "visual_bbox_dims": [
+    0.0893,
+    0.0929,
+    0.2025
+   ],
+   "visual_collision_extent_ratio": [
+    0.976,
+    0.979,
+    0.991
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 177198,
+   "n_collision_faces": 10714,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.009468799751435228,
+    "tilt_deg": 0.004222196499846676,
+    "xy_drift": 3.428663341068392e-06,
+    "max_penetration": 0.003268119798140009,
+    "rest_height_error": -0.00014717839416930611,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "bottle/water_bottle_7",
+   "category": "bottle",
+   "robocasa_category": "water_bottle",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "water_bottle_7",
+   "scale": 1.5,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/water_bottle/water_bottle_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/water_bottle/water_bottle_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    2.19556503356505e-07,
+    4.905990544368244e-11,
+    -0.11373750441939841
+   ],
+   "extent_canonical": [
+    0.06539590730111025,
+    0.06539635988892956,
+    0.22676817989543602
+   ],
+   "canonical_xy_min": [
+    -0.032697953650555125,
+    -0.03269817994446478
+   ],
+   "canonical_xy_max": [
+    0.032697953650555125,
+    0.03269817994446478
+   ],
+   "height": 0.22676817989543602,
+   "mass": 0.38008922545400436,
+   "inertia_diag": [
+    0.0017753924686716852,
+    0.0017667487910750955,
+    0.0002862241225652232
+   ],
+   "bbox_dims": [
+    0.0654,
+    0.0654,
+    0.2268
+   ],
+   "visual_bbox_dims": [
+    0.0631,
+    0.0631,
+    0.225
+   ],
+   "visual_collision_extent_ratio": [
+    0.964,
+    0.964,
+    0.992
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 34816,
+   "n_collision_faces": 5998,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.01249298181673906,
+    "tilt_deg": 0.008190240755767573,
+    "xy_drift": 0.000244883286837828,
+    "max_penetration": 0.003366229213613254,
+    "rest_height_error": -0.00022570501869398352,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "can/can_0",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_0",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_0",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_0",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    8.601427903265346e-10,
+    -1.2220530941353669e-09,
+    -0.055429237903798
+   ],
+   "extent_canonical": [
+    0.06906277313828467,
+    0.06906288853003492,
+    0.11081291834928861
+   ],
+   "canonical_xy_min": [
+    -0.034531386569142335,
+    -0.03453144426501746
+   ],
+   "canonical_xy_max": [
+    0.034531386569142335,
+    0.03453144426501746
+   ],
+   "height": 0.11081291834928861,
+   "mass": 0.39511587368270096,
+   "inertia_diag": [
+    0.0004928133146280008,
+    0.0004928121097469769,
+    0.00022608109603327039
+   ],
+   "bbox_dims": [
+    0.0691,
+    0.0691,
+    0.1108
+   ],
+   "visual_bbox_dims": [
+    0.068,
+    0.068,
+    0.11
+   ],
+   "visual_collision_extent_ratio": [
+    0.985,
+    0.985,
+    0.993
+   ],
+   "n_collision_geoms": 2,
+   "n_visual_faces": 2839,
+   "n_collision_faces": 3384,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.01017115016950352,
+    "tilt_deg": 0.023271719819415684,
+    "xy_drift": 3.217659961738343e-05,
+    "max_penetration": 0.003424979062863827,
+    "rest_height_error": -0.00026945437465660665,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "can/can_2",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_2",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_2",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -2.7989291440100317e-10,
+    -7.962626938709527e-07,
+    -0.04500000172552449
+   ],
+   "extent_canonical": [
+    0.06828757241840233,
+    0.06828860174813396,
+    0.09000000342201162
+   ],
+   "canonical_xy_min": [
+    -0.034143786209201166,
+    -0.03414430087406698
+   ],
+   "canonical_xy_max": [
+    0.034143786209201166,
+    0.03414430087406698
+   ],
+   "height": 0.09000000342201162,
+   "mass": 0.3182886273233164,
+   "inertia_diag": [
+    0.00029824477825096576,
+    0.00029811754633163545,
+    0.00018111300965553193
+   ],
+   "bbox_dims": [
+    0.0683,
+    0.0683,
+    0.09
+   ],
+   "visual_bbox_dims": [
+    0.0683,
+    0.0683,
+    0.09
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 4,
+   "n_visual_faces": 280,
+   "n_collision_faces": 234,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.4338750109687287e-15,
+    "tilt_deg": 0.06906127144879627,
+    "xy_drift": 5.363236719284342e-05,
+    "max_penetration": 0.0032252663419533104,
+    "rest_height_error": -6.266503406655854e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "can/can_3",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_3",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_3",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_3",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -9.937978565077721e-11,
+    5.1097705927594106e-11,
+    -0.055473221962190414
+   ],
+   "extent_canonical": [
+    0.060314242839806416,
+    0.05836153047271328,
+    0.11095060152766145
+   ],
+   "canonical_xy_min": [
+    -0.030157121419903208,
+    -0.02918076523635664
+   ],
+   "canonical_xy_max": [
+    0.030157121419903208,
+    0.02918076523635664
+   ],
+   "height": 0.11095060152766145,
+   "mass": 0.28781979074742803,
+   "inertia_diag": [
+    0.00032896670312569903,
+    0.0003249161360537868,
+    0.00012255021794772977
+   ],
+   "bbox_dims": [
+    0.0603,
+    0.0584,
+    0.111
+   ],
+   "visual_bbox_dims": [
+    0.0592,
+    0.0572,
+    0.11
+   ],
+   "visual_collision_extent_ratio": [
+    0.981,
+    0.981,
+    0.991
+   ],
+   "n_collision_geoms": 10,
+   "n_visual_faces": 6868,
+   "n_collision_faces": 9440,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.309806350001515e-15,
+    "tilt_deg": 0.09547963764253362,
+    "xy_drift": 9.136087143316389e-05,
+    "max_penetration": 0.0032338323216399914,
+    "rest_height_error": -8.794876486097059e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "can/can_4",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_4",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    -1.2669144476562533e-08,
+    1.2832577729604555e-08,
+    -0.05537487552121543
+   ],
+   "extent_canonical": [
+    0.060336554422974586,
+    0.06034796312815669,
+    0.11095200591586024
+   ],
+   "canonical_xy_min": [
+    -0.030168277211487293,
+    -0.030173981564078346
+   ],
+   "canonical_xy_max": [
+    0.030168277211487293,
+    0.030173981564078346
+   ],
+   "height": 0.11095200591586024,
+   "mass": 0.29761293149396595,
+   "inertia_diag": [
+    0.00034159739249248574,
+    0.000341588257000226,
+    0.00012955647974663423
+   ],
+   "bbox_dims": [
+    0.0603,
+    0.0603,
+    0.111
+   ],
+   "visual_bbox_dims": [
+    0.0593,
+    0.0593,
+    0.11
+   ],
+   "visual_collision_extent_ratio": [
+    0.982,
+    0.982,
+    0.991
+   ],
+   "n_collision_geoms": 4,
+   "n_visual_faces": 1547,
+   "n_collision_faces": 4304,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.03236555474559401,
+    "tilt_deg": 0.022332764386292787,
+    "xy_drift": 2.1712586769889982e-05,
+    "max_penetration": 0.0032698153868238114,
+    "rest_height_error": -0.00017301533889981652,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "can/can_6",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_6",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_6",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_6",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    8.192694705283499e-08,
+    -8.172295740821456e-08,
+    -0.05554280138120892
+   ],
+   "extent_canonical": [
+    0.05615461501806623,
+    0.056154667439730174,
+    0.11104694563099513
+   ],
+   "canonical_xy_min": [
+    -0.028077307509033114,
+    -0.028077333719865087
+   ],
+   "canonical_xy_max": [
+    0.028077307509033114,
+    0.028077333719865087
+   ],
+   "height": 0.11104694563099513,
+   "mass": 0.2581046003849604,
+   "inertia_diag": [
+    0.0002903243924565712,
+    0.0002902773575118205,
+    9.856027167428861e-05
+   ],
+   "bbox_dims": [
+    0.0562,
+    0.0562,
+    0.111
+   ],
+   "visual_bbox_dims": [
+    0.0551,
+    0.0551,
+    0.11
+   ],
+   "visual_collision_extent_ratio": [
+    0.981,
+    0.981,
+    0.991
+   ],
+   "n_collision_geoms": 6,
+   "n_visual_faces": 5673,
+   "n_collision_faces": 2942,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.3425192909681807e-15,
+    "tilt_deg": 0.025175229044477963,
+    "xy_drift": 2.4108988985791092e-05,
+    "max_penetration": 0.0032171417311616865,
+    "rest_height_error": -5.9055900811594286e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "can/can_8",
+   "category": "can",
+   "robocasa_category": "can",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "can_8",
+   "scale": 1.0,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/can/can_8",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/can/can_8",
+   "visual_meshes": [
+    "model_normalized_0.obj",
+    "model_normalized_1.obj",
+    "model_normalized_2.obj"
+   ],
+   "collision_meshes": [
+    "collision_mesh_collision_0.obj",
+    "collision_mesh_collision_1.obj",
+    "collision_mesh_collision_10.obj",
+    "collision_mesh_collision_11.obj",
+    "collision_mesh_collision_12.obj",
+    "collision_mesh_collision_13.obj",
+    "collision_mesh_collision_14.obj",
+    "collision_mesh_collision_15.obj",
+    "collision_mesh_collision_2.obj",
+    "collision_mesh_collision_3.obj",
+    "collision_mesh_collision_4.obj",
+    "collision_mesh_collision_5.obj",
+    "collision_mesh_collision_6.obj",
+    "collision_mesh_collision_7.obj",
+    "collision_mesh_collision_8.obj",
+    "collision_mesh_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    1.8403020114108465e-05,
+    -4.837188127933961e-06,
+    -0.04539749802080238
+   ],
+   "extent_canonical": [
+    0.061799409373855245,
+    0.06278037766630959,
+    0.09079511941961149
+   ],
+   "canonical_xy_min": [
+    -0.030899704686927622,
+    -0.031390188833154795
+   ],
+   "canonical_xy_max": [
+    0.030899704686927622,
+    0.031390188833154795
+   ],
+   "height": 0.09079511941961149,
+   "mass": 0.24040851685913733,
+   "inertia_diag": [
+    0.00021533672124045286,
+    0.00020705261295452052,
+    0.00010521100931479341
+   ],
+   "bbox_dims": [
+    0.0618,
+    0.0628,
+    0.0908
+   ],
+   "visual_bbox_dims": [
+    0.0609,
+    0.0619,
+    0.09
+   ],
+   "visual_collision_extent_ratio": [
+    0.985,
+    0.985,
+    0.991
+   ],
+   "n_collision_geoms": 16,
+   "n_visual_faces": 2674,
+   "n_collision_faces": 9756,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 0.0015248482666259857,
+    "tilt_deg": 0.9320832118016372,
+    "xy_drift": 0.0007189917019470565,
+    "max_penetration": 0.003210385857569789,
+    "rest_height_error": -0.0004342818382637864,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "category quota reached (kept in pool, not selected)"
+   ]
+  },
+  {
+   "asset_id": "box/boxed_food_0",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_0",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_0",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_0",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    -4.738827386052691e-11,
+    -3.570697383603605e-11,
+    -0.03979900644835879
+   ],
+   "extent_canonical": [
+    0.13200000014547422,
+    0.04989618418346667,
+    0.07959800500158389
+   ],
+   "canonical_xy_min": [
+    -0.06600000007273711,
+    -0.024948092091733334
+   ],
+   "canonical_xy_max": [
+    0.06600000007273711,
+    0.024948092091733334
+   ],
+   "height": 0.07959800500158389,
+   "mass": 0.04881539619769686,
+   "inertia_diag": [
+    9.026960387675238e-05,
+    7.641761381646018e-05,
+    3.407506080275662e-05
+   ],
+   "bbox_dims": [
+    0.0499,
+    0.132,
+    0.0796
+   ],
+   "visual_bbox_dims": [
+    0.0499,
+    0.132,
+    0.0796
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 116,
+   "n_collision_faces": 446,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 8.112052702127244e-05,
+    "tilt_deg": 1.5185297464527663,
+    "xy_drift": 0.0010321078168958682,
+    "max_penetration": 0.0017204281101553393,
+    "rest_height_error": -0.00048092805143033074,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "dimensions outside category range"
+   ]
+  },
+  {
+   "asset_id": "box/boxed_food_1",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_1",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_1",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_1",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    0.0,
+    0.0,
+    -0.07134674546999999
+   ],
+   "extent_canonical": [
+    0.14299989989999995,
+    0.04085709342,
+    0.14269349093999997
+   ],
+   "canonical_xy_min": [
+    -0.07149994994999997,
+    -0.02042854671
+   ],
+   "canonical_xy_max": [
+    0.07149994994999997,
+    0.02042854671
+   ],
+   "height": 0.14269349093999997,
+   "mass": 0.08336953208487613,
+   "inertia_diag": [
+    0.0002835286885835612,
+    0.0001530576684747346,
+    0.00015366584236642
+   ],
+   "bbox_dims": [
+    0.0409,
+    0.143,
+    0.1427
+   ],
+   "visual_bbox_dims": [
+    0.0409,
+    0.143,
+    0.1427
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 1,
+   "n_visual_faces": 16,
+   "n_collision_faces": 12,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.8235225761590083e-15,
+    "tilt_deg": 0.0,
+    "xy_drift": 2.0335407478933325e-18,
+    "max_penetration": 0.0017264381189498745,
+    "rest_height_error": -1.4522581391923639e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "box/boxed_food_2",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_2",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_2",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_2",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    0.0,
+    0.0,
+    -0.08249999999999999
+   ],
+   "extent_canonical": [
+    0.0973430568,
+    0.0347906361,
+    0.16499999999999998
+   ],
+   "canonical_xy_min": [
+    -0.0486715284,
+    -0.01739531805
+   ],
+   "canonical_xy_max": [
+    0.0486715284,
+    0.01739531805
+   ],
+   "height": 0.16499999999999998,
+   "mass": 0.05587934328884209,
+   "inertia_diag": [
+    0.00017090078144804937,
+    0.00013241256897779513,
+    4.9760830252723605e-05
+   ],
+   "bbox_dims": [
+    0.0348,
+    0.0973,
+    0.165
+   ],
+   "visual_bbox_dims": [
+    0.0348,
+    0.0973,
+    0.165
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 1,
+   "n_visual_faces": 12,
+   "n_collision_faces": 12,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.8233332822306452e-15,
+    "tilt_deg": 0.0,
+    "xy_drift": 4.423821024144408e-19,
+    "max_penetration": 0.0017264381189498745,
+    "rest_height_error": -1.4522581391923639e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "box/boxed_food_4",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_4",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_4",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_4",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [
+    "model_normalized_collision_0.obj",
+    "model_normalized_collision_1.obj",
+    "model_normalized_collision_10.obj",
+    "model_normalized_collision_11.obj",
+    "model_normalized_collision_12.obj",
+    "model_normalized_collision_13.obj",
+    "model_normalized_collision_14.obj",
+    "model_normalized_collision_15.obj",
+    "model_normalized_collision_16.obj",
+    "model_normalized_collision_17.obj",
+    "model_normalized_collision_18.obj",
+    "model_normalized_collision_19.obj",
+    "model_normalized_collision_2.obj",
+    "model_normalized_collision_20.obj",
+    "model_normalized_collision_21.obj",
+    "model_normalized_collision_22.obj",
+    "model_normalized_collision_23.obj",
+    "model_normalized_collision_24.obj",
+    "model_normalized_collision_25.obj",
+    "model_normalized_collision_26.obj",
+    "model_normalized_collision_27.obj",
+    "model_normalized_collision_28.obj",
+    "model_normalized_collision_29.obj",
+    "model_normalized_collision_3.obj",
+    "model_normalized_collision_30.obj",
+    "model_normalized_collision_31.obj",
+    "model_normalized_collision_4.obj",
+    "model_normalized_collision_5.obj",
+    "model_normalized_collision_6.obj",
+    "model_normalized_collision_7.obj",
+    "model_normalized_collision_8.obj",
+    "model_normalized_collision_9.obj"
+   ],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    0.0003920606424833821,
+    -0.0010899379048818197,
+    -0.0714038252686656
+   ],
+   "extent_canonical": [
+    0.07092443044250346,
+    0.03507222567907431,
+    0.14270380267567104
+   ],
+   "canonical_xy_min": [
+    -0.03546221522125173,
+    -0.017536112839537155
+   ],
+   "canonical_xy_max": [
+    0.03546221522125173,
+    0.017536112839537155
+   ],
+   "height": 0.14270380267567104,
+   "mass": 0.031176919485826807,
+   "inertia_diag": [
+    6.131682628092496e-05,
+    5.1454903410124126e-05,
+    1.445690429571361e-05
+   ],
+   "bbox_dims": [
+    0.0351,
+    0.0709,
+    0.1427
+   ],
+   "visual_bbox_dims": [
+    0.0353,
+    0.0712,
+    0.143
+   ],
+   "visual_collision_extent_ratio": [
+    1.007,
+    1.003,
+    1.002
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 20000,
+   "n_collision_faces": 894,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 3.23438497091753e-15,
+    "tilt_deg": 1.9286938838812429,
+    "xy_drift": 0.0023296514131652232,
+    "max_penetration": 0.0017515112950008465,
+    "rest_height_error": -0.00043239809193283685,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "box/boxed_food_6",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_6",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_6",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_6",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    0.0,
+    0.0,
+    -0.07134674546999999
+   ],
+   "extent_canonical": [
+    0.14299989989999995,
+    0.04085709342,
+    0.14269349093999997
+   ],
+   "canonical_xy_min": [
+    -0.07149994994999997,
+    -0.02042854671
+   ],
+   "canonical_xy_max": [
+    0.07149994994999997,
+    0.02042854671
+   ],
+   "height": 0.14269349093999997,
+   "mass": 0.08336953208487613,
+   "inertia_diag": [
+    0.0002835286885835612,
+    0.0001530576684747346,
+    0.00015366584236642
+   ],
+   "bbox_dims": [
+    0.0409,
+    0.143,
+    0.1427
+   ],
+   "visual_bbox_dims": [
+    0.0409,
+    0.143,
+    0.1427
+   ],
+   "visual_collision_extent_ratio": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "n_collision_geoms": 1,
+   "n_visual_faces": 16,
+   "n_collision_faces": 12,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.8235225761590083e-15,
+    "tilt_deg": 0.0,
+    "xy_drift": 2.0335407478933325e-18,
+    "max_penetration": 0.0017264381189498745,
+    "rest_height_error": -1.4522581391923639e-05,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  },
+  {
+   "asset_id": "box/boxed_food_7",
+   "category": "box",
+   "robocasa_category": "boxed_food",
+   "source_key": "robocasa",
+   "archive": "objaverse",
+   "upstream_id": "boxed_food_7",
+   "scale": 1.1,
+   "source_repository": "https://github.com/robocasa/robocasa",
+   "upstream_version": "456174f62b89b8fca99eaaf33949c29fec9cfc2a",
+   "license": "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)",
+   "upstream_asset": "objaverse:objaverse/boxed_food/boxed_food_7",
+   "local_cache_path": ".asset_cache/robocasa/objaverse/objaverse/boxed_food/boxed_food_7",
+   "visual_meshes": [
+    "model_normalized_0.obj"
+   ],
+   "collision_meshes": [],
+   "canonical_yaw": -1.5707963267948966,
+   "anchor": [
+    -0.0001005097499999913,
+    3.200752500000063e-05,
+    -0.04129772294999999
+   ],
+   "extent_canonical": [
+    0.1626166146,
+    0.020280635100000007,
+    0.08248366334999999
+   ],
+   "canonical_xy_min": [
+    -0.0813083073,
+    -0.010140317550000003
+   ],
+   "canonical_xy_max": [
+    0.0813083073,
+    0.010140317550000003
+   ],
+   "height": 0.08248366334999999,
+   "mass": 0.0272028500554192,
+   "inertia_diag": [
+    7.536939076408266e-05,
+    1.6355393689613833e-05,
+    6.087877130667963e-05
+   ],
+   "bbox_dims": [
+    0.0203,
+    0.1626,
+    0.0825
+   ],
+   "visual_bbox_dims": [
+    0.0204,
+    0.165,
+    0.0849
+   ],
+   "visual_collision_extent_ratio": [
+    1.006,
+    1.015,
+    1.03
+   ],
+   "n_collision_geoms": 1,
+   "n_visual_faces": 2144,
+   "n_collision_faces": 12,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.177898908642993e-15,
+    "tilt_deg": 0.0,
+    "xy_drift": 3.310851023425173e-18,
+    "max_penetration": 0.0017264381189498676,
+    "rest_height_error": -1.4522581391909761e-05,
+    "passed": true
+   },
+   "accepted": false,
+   "rejection_reasons": [
+    "dimensions outside category range"
+   ]
+  },
+  {
+   "asset_id": "utensil_holder/BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028",
+   "category": "utensil_holder",
+   "robocasa_category": "utensil_holder",
+   "source_key": "scanned_objects",
+   "archive": "git",
+   "upstream_id": "BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028",
+   "scale": 1.0,
+   "source_repository": "https://github.com/kevinzakka/mujoco_scanned_objects",
+   "upstream_version": "6ff8d275cebfd5b47e49685e3cfbe64b20e49a3c",
+   "license": "CC BY 4.0 (Google Scanned Objects)",
+   "upstream_asset": "models/BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028",
+   "local_cache_path": ".asset_cache/mujoco_scanned_objects/models/BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028",
+   "visual_meshes": [
+    "model.obj"
+   ],
+   "collision_meshes": [
+    "model_collision_0.obj",
+    "model_collision_1.obj",
+    "model_collision_10.obj",
+    "model_collision_11.obj",
+    "model_collision_12.obj",
+    "model_collision_13.obj",
+    "model_collision_14.obj",
+    "model_collision_15.obj",
+    "model_collision_16.obj",
+    "model_collision_17.obj",
+    "model_collision_18.obj",
+    "model_collision_19.obj",
+    "model_collision_2.obj",
+    "model_collision_20.obj",
+    "model_collision_21.obj",
+    "model_collision_22.obj",
+    "model_collision_23.obj",
+    "model_collision_24.obj",
+    "model_collision_25.obj",
+    "model_collision_26.obj",
+    "model_collision_27.obj",
+    "model_collision_28.obj",
+    "model_collision_29.obj",
+    "model_collision_3.obj",
+    "model_collision_30.obj",
+    "model_collision_31.obj",
+    "model_collision_4.obj",
+    "model_collision_5.obj",
+    "model_collision_6.obj",
+    "model_collision_7.obj",
+    "model_collision_8.obj",
+    "model_collision_9.obj"
+   ],
+   "canonical_yaw": 0.0,
+   "anchor": [
+    0.0004483689841878469,
+    0.00011697778763614108,
+    0.00021077275589584388
+   ],
+   "extent_canonical": [
+    0.1457819936170487,
+    0.14558020951625197,
+    0.17460000909279813
+   ],
+   "canonical_xy_min": [
+    -0.07289099680852434,
+    -0.07279010475812599
+   ],
+   "canonical_xy_max": [
+    0.07289099680852434,
+    0.07279010475812599
+   ],
+   "height": 0.17460000909279813,
+   "mass": 0.8006274793718751,
+   "inertia_diag": [
+    0.0040886676619549655,
+    0.003982136502477399,
+    0.003160502883846856
+   ],
+   "bbox_dims": [
+    0.1458,
+    0.1456,
+    0.1746
+   ],
+   "visual_bbox_dims": [
+    0.1476,
+    0.1488,
+    0.1752
+   ],
+   "visual_collision_extent_ratio": [
+    1.012,
+    1.022,
+    1.003
+   ],
+   "n_collision_geoms": 32,
+   "n_visual_faces": 14542,
+   "n_collision_faces": 1826,
+   "drop_test": {
+    "finite": true,
+    "settled_speed": 1.1183188624963707e-15,
+    "tilt_deg": 0.6901067594557827,
+    "xy_drift": 2.229587099529076e-05,
+    "max_penetration": 0.0031971860902062985,
+    "rest_height_error": -0.0007832845463136106,
+    "passed": true
+   },
+   "accepted": true,
+   "rejection_reasons": []
+  }
+ ]
+}

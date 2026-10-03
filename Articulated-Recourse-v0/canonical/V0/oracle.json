@@ -1,0 +1,1084 @@
+{
+ "schema": "artrecourse.scene.v0",
+ "scene_id": "canonical_V0",
+ "split": "canonical",
+ "variant": "V0",
+ "variant_requested": "V0",
+ "variant_satisfied": true,
+ "fixture_id": "RoboCasa:Dishwasher054",
+ "story": "The skillet's handle sticks out of the front of the pulled upper rack. Once the rack is pushed in, the closing door hits the handle. Turning the skillet so the handle lies across the rack (one relocation) makes CLOSE_DISHWASHER feasible.",
+ "spec": {
+  "scene_id": "canonical_V0",
+  "split": "canonical",
+  "variant_requested": "V0",
+  "story": "The skillet's handle sticks out of the front of the pulled upper rack. Once the rack is pushed in, the closing door hits the handle. Turning the skillet so the handle lies across the rack (one relocation) makes CLOSE_DISHWASHER feasible.",
+  "seed": null,
+  "objects": [
+   {
+    "key": "pan",
+    "asset_id": "pan/pan_2",
+    "slot": "upper_center_back",
+    "yaw_deg": -90,
+    "dxy": [
+     0.0,
+     -0.005
+    ]
+   },
+   {
+    "key": "mug",
+    "asset_id": "mug/mug_1",
+    "slot": "counter_buffer_left",
+    "yaw_deg": 90,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "cup",
+    "asset_id": "cup/cup_3",
+    "slot": "counter_buffer_center",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "can",
+    "asset_id": "can/can_2",
+    "slot": "counter_left_near",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "bowl",
+    "asset_id": "bowl/bowl_2",
+    "slot": "counter_buffer_far_right",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "interventions": [
+   {
+    "obj": "pan",
+    "slot": "upper_tines_handle_left",
+    "yaw_deg": 180,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_pan_to_upper_tines_handle_left"
+   },
+   {
+    "obj": "pan",
+    "slot": "upper_tines_handle_right",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_pan_to_upper_tines_handle_right"
+   },
+   {
+    "obj": "mug",
+    "slot": "counter_buffer_right",
+    "yaw_deg": 90,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_mug_to_counter_buffer_right"
+   },
+   {
+    "obj": "can",
+    "slot": "counter_left_mid",
+    "yaw_deg": 0,
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_can_to_counter_left_mid"
+   }
+  ]
+ },
+ "INPUT_KEYS_ALLOWED_FOR_MODELS": [
+  "objects",
+  "initial_poses",
+  "articulation",
+  "target_action",
+  "placement_candidates",
+  "candidate_interventions"
+ ],
+ "LABEL_KEYS_SUPERVISION_ONLY": [
+  "F_initial",
+  "direct_target_blockers",
+  "target_clearance",
+  "per_action",
+  "enable_edges",
+  "disable_edges",
+  "compatibility_edges",
+  "optimal_sequences",
+  "optimal_cost",
+  "sequence_length",
+  "no_recourse",
+  "sequence_proofs",
+  "irreducible_solutions"
+ ],
+ "inputs": {
+  "objects": [
+   {
+    "key": "pan",
+    "asset_id": "pan/pan_2",
+    "category": "pan",
+    "scale": 1.7,
+    "extent_canonical": [
+     0.4024,
+     0.2349,
+     0.0646
+    ],
+    "mass": 0.0688
+   },
+   {
+    "key": "mug",
+    "asset_id": "mug/mug_1",
+    "category": "mug",
+    "scale": 1.0,
+    "extent_canonical": [
+     0.115,
+     0.0786,
+     0.0904
+    ],
+    "mass": 0.1826
+   },
+   {
+    "key": "cup",
+    "asset_id": "cup/cup_3",
+    "category": "cup",
+    "scale": 1.0,
+    "extent_canonical": [
+     0.086,
+     0.0866,
+     0.105
+    ],
+    "mass": 0.1102
+   },
+   {
+    "key": "can",
+    "asset_id": "can/can_2",
+    "category": "can",
+    "scale": 1.0,
+    "extent_canonical": [
+     0.0683,
+     0.0683,
+     0.09
+    ],
+    "mass": 0.3183
+   },
+   {
+    "key": "bowl",
+    "asset_id": "bowl/bowl_2",
+    "category": "bowl",
+    "scale": 1.4,
+    "extent_canonical": [
+     0.161,
+     0.161,
+     0.0678
+    ],
+    "mass": 0.4879
+   }
+  ],
+  "initial_poses": {
+   "pan": [
+    0.003,
+    -0.445,
+    0.566688,
+    0.0,
+    0.0,
+    -0.707107,
+    0.707107
+   ],
+   "mug": [
+    0.45,
+    -0.205,
+    0.91,
+    0.0,
+    0.0,
+    0.707107,
+    0.707107
+   ],
+   "cup": [
+    0.61,
+    -0.205,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "can": [
+    -0.45,
+    -0.205,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "bowl": [
+    0.93,
+    -0.205,
+    0.91,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  },
+  "articulation": {
+   "door_joint": 0.673599,
+   "rack1_joint_upper": 0.4,
+   "rack0_joint_lower": 0.0
+  },
+  "target_action": {
+   "name": "CLOSE_DISHWASHER",
+   "primitive": "PUSH_RACK(rack1_joint 0.40->0) then CLOSE_DOOR(door_joint 0.6736->0)",
+   "phases": {
+    "push_rack": [
+     0.0,
+     0.5
+    ],
+    "close_door": [
+     0.5,
+     1.0
+    ]
+   },
+   "moving_bodies": [
+    "upper rack (rack1)",
+    "door",
+    "gripper",
+    "objects resting on the upper rack"
+   ],
+   "trajectory_ref": "inputs.npz:TARGET",
+   "n_samples": 91
+  },
+  "placement_candidates": [
+   {
+    "object": "pan",
+    "pose_index": 1,
+    "slot": "upper_tines_handle_left",
+    "support": "rack_tines",
+    "pose": [
+     0.06,
+     -0.465,
+     0.566688,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ]
+   },
+   {
+    "object": "pan",
+    "pose_index": 2,
+    "slot": "upper_tines_handle_right",
+    "support": "rack_tines",
+    "pose": [
+     -0.06,
+     -0.465,
+     0.566688,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "mug",
+    "pose_index": 1,
+    "slot": "counter_buffer_right",
+    "support": "counter",
+    "pose": [
+     0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ]
+   },
+   {
+    "object": "can",
+    "pose_index": 1,
+    "slot": "counter_left_mid",
+    "support": "counter",
+    "pose": [
+     -0.61,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   }
+  ],
+  "candidate_interventions": [
+   {
+    "id": "move_pan_to_upper_tines_handle_left",
+    "object": "pan",
+    "primitive": "RELOCATE",
+    "destination_slot": "upper_tines_handle_left",
+    "source_pose": [
+     0.003,
+     -0.445,
+     0.566688,
+     0.0,
+     0.0,
+     -0.707107,
+     0.707107
+    ],
+    "destination_pose": [
+     0.06,
+     -0.465,
+     0.566688,
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "grasp_template": {
+     "name": "pan_handle_topdown_75",
+     "tcp_in_object_frame": [
+      0.2431,
+      0.0,
+      0.0509
+     ],
+     "finger_axis_yaw_in_object_frame": 0.0,
+     "open_width": 0.05,
+     "closed_width": 0.02,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "dishwasher_right",
+      "lift": "dishwasher_center",
+      "transfer": "dishwasher_center",
+      "above_place": "dishwasher_center",
+      "place": "dishwasher_center"
+     }
+    },
+    "grasp_pose": [
+     0.003,
+     -0.688109,
+     0.617573,
+     0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_pan_to_upper_tines_handle_left",
+    "n_samples": 88,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:pan"
+    ]
+   },
+   {
+    "id": "move_pan_to_upper_tines_handle_right",
+    "object": "pan",
+    "primitive": "RELOCATE",
+    "destination_slot": "upper_tines_handle_right",
+    "source_pose": [
+     0.003,
+     -0.445,
+     0.566688,
+     0.0,
+     0.0,
+     -0.707107,
+     0.707107
+    ],
+    "destination_pose": [
+     -0.06,
+     -0.465,
+     0.566688,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "pan_handle_topdown_75",
+     "tcp_in_object_frame": [
+      0.2431,
+      0.0,
+      0.0509
+     ],
+     "finger_axis_yaw_in_object_frame": 0.0,
+     "open_width": 0.05,
+     "closed_width": 0.02,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "dishwasher_right",
+      "lift": "dishwasher_center",
+      "transfer": "dishwasher_center",
+      "above_place": "dishwasher_center",
+      "place": "dishwasher_center"
+     }
+    },
+    "grasp_pose": [
+     0.003,
+     -0.688109,
+     0.617573,
+     0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_pan_to_upper_tines_handle_right",
+    "n_samples": 88,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:pan"
+    ]
+   },
+   {
+    "id": "move_mug_to_counter_buffer_right",
+    "object": "mug",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_buffer_right",
+    "source_pose": [
+     0.45,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ],
+    "destination_pose": [
+     0.77,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.707107,
+     0.707107
+    ],
+    "grasp_template": {
+     "name": "mug_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0323,
+      0.0,
+      0.0744
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter",
+      "place": "counter"
+     }
+    },
+    "grasp_pose": [
+     0.45,
+     -0.237282,
+     0.984389,
+     1.0,
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_mug_to_counter_buffer_right",
+    "n_samples": 83,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:mug"
+    ]
+   },
+   {
+    "id": "move_can_to_counter_left_mid",
+    "object": "can",
+    "primitive": "RELOCATE",
+    "destination_slot": "counter_left_mid",
+    "source_pose": [
+     -0.45,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     -0.61,
+     -0.205,
+     0.91,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "can_body_topdown_90",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.06
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.08,
+     "closed_width": 0.06828860174813396,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter_left",
+      "lift": "counter_left",
+      "transfer": "counter_left",
+      "above_place": "counter_left",
+      "place": "counter_left"
+     }
+    },
+    "grasp_pose": [
+     -0.45,
+     -0.205,
+     0.97,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_can_to_counter_left_mid",
+    "n_samples": 65,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:can"
+    ]
+   }
+  ]
+ },
+ "labels": {
+  "F_initial": 1,
+  "direct_target_blockers": [
+   "pan"
+  ],
+  "target_clearance": {
+   "pan": -0.01921,
+   "mug": 0.05,
+   "cup": 0.05,
+   "can": 0.05,
+   "bowl": 0.05
+  },
+  "enable_edges": [],
+  "disable_edges": [],
+  "compatibility_edges": {
+   "same_object": [
+    [
+     "move_pan_to_upper_tines_handle_left",
+     "move_pan_to_upper_tines_handle_right"
+    ]
+   ],
+   "destination_overlap": [],
+   "final_placement_collision": [],
+   "support_incompatibility": []
+  },
+  "optimal_sequences": [
+   [
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_pan_to_upper_tines_handle_right"
+   ]
+  ],
+  "optimal_cost": 1,
+  "sequence_length": 1,
+  "no_recourse": false,
+  "sequence_proofs": [
+   {
+    "sequence": [
+     "move_pan_to_upper_tines_handle_left"
+    ],
+    "edges": [
+     {
+      "from": "move_pan_to_upper_tines_handle_left",
+      "to": "TARGET",
+      "blocker": "pan",
+      "proof": {
+       "TARGET feasible without move_pan_to_upper_tines_handle_left": false,
+       "TARGET feasible after sequence": true
+      },
+      "cause": {
+       "type": "target_blocker",
+       "min_dist": -0.01921,
+       "tau_star": 0.96,
+       "phase_star": "close_door",
+       "part_star": "object:pan|door",
+       "status": "conflict",
+       "conflict_magnitude": 0.01921,
+       "phases_in_conflict": [
+        "close_door",
+        "push_rack"
+       ],
+       "parts_in_conflict": [
+        "object:pan|door",
+        "object:pan|gripper"
+       ]
+      }
+     }
+    ],
+    "final_F": 0
+   },
+   {
+    "sequence": [
+     "move_pan_to_upper_tines_handle_right"
+    ],
+    "edges": [
+     {
+      "from": "move_pan_to_upper_tines_handle_right",
+      "to": "TARGET",
+      "blocker": "pan",
+      "proof": {
+       "TARGET feasible without move_pan_to_upper_tines_handle_right": false,
+       "TARGET feasible after sequence": true
+      },
+      "cause": {
+       "type": "target_blocker",
+       "min_dist": -0.01921,
+       "tau_star": 0.96,
+       "phase_star": "close_door",
+       "part_star": "object:pan|door",
+       "status": "conflict",
+       "conflict_magnitude": 0.01921,
+       "phases_in_conflict": [
+        "close_door",
+        "push_rack"
+       ],
+       "parts_in_conflict": [
+        "object:pan|door",
+        "object:pan|gripper"
+       ]
+      }
+     }
+    ],
+    "final_F": 0
+   }
+  ],
+  "irreducible_solutions": [
+   {
+    "interventions": [
+     "move_pan_to_upper_tines_handle_left"
+    ],
+    "example_order": [
+     "move_pan_to_upper_tines_handle_left"
+    ],
+    "length": 1
+   },
+   {
+    "interventions": [
+     "move_pan_to_upper_tines_handle_right"
+    ],
+    "example_order": [
+     "move_pan_to_upper_tines_handle_right"
+    ],
+    "length": 1
+   }
+  ],
+  "per_action": {
+   "move_pan_to_upper_tines_handle_left": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": 0.0,
+     "tau_star": 0.8661,
+     "phase_star": "lower",
+     "part_star": "carried:pan|fixture:rack1",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_pan_to_upper_tines_handle_right": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": 0.0,
+     "tau_star": 0.8655,
+     "phase_star": "lower",
+     "part_star": "carried:pan|fixture:rack1",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_mug_to_counter_buffer_right": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.025,
+      "tau_star": 0.5369,
+      "phase_star": "transfer",
+      "part_star": "carried:mug",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.04023,
+      "tau_star": 0.7952,
+      "phase_star": "lower",
+      "part_star": "carried:mug",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.8567,
+     "phase_star": "lower",
+     "part_star": "carried:mug|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_can_to_counter_left_mid": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.8281,
+     "phase_star": "lower",
+     "part_star": "carried:can|env:countertop",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "TARGET": {
+    "F_initial": 1,
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": -0.01921,
+      "tau_star": 0.96,
+      "phase_star": "close_door",
+      "part_star": "object:pan|door",
+      "status": "conflict",
+      "conflict_magnitude": 0.01921,
+      "phases_in_conflict": [
+       "close_door",
+       "push_rack"
+      ],
+      "parts_in_conflict": [
+       "object:pan|door",
+       "object:pan|gripper"
+      ]
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_rack",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    }
+   }
+  },
+  "direct_target_blocker_details": {
+   "pan": {
+    "min_dist": -0.01921,
+    "tau_star": 0.96,
+    "phase_star": "close_door",
+    "part_star": "object:pan|door",
+    "status": "conflict",
+    "conflict_magnitude": 0.01921,
+    "phases_in_conflict": [
+     "close_door",
+     "push_rack"
+    ],
+    "parts_in_conflict": [
+     "object:pan|door",
+     "object:pan|gripper"
+    ]
+   }
+  }
+ },
+ "quality": {
+  "static_problems": [],
+  "consulted_ambiguities": [],
+  "coarse_fine": {
+   "coarse_spacing_samples": 415,
+   "fine_spacing_samples": 1629,
+   "disagreements": [],
+   "agree": true,
+   "max_min_distance_shift_coarse_vs_fine_m": 0.0,
+   "fine_consulted_ambiguities": []
+  },
+  "target_robot_coverage": {
+   "waypoints": {
+    "push_0": "ok@dishwasher_center",
+    "push_8": "ok@dishwasher_center",
+    "push_16": "ok@dishwasher_center",
+    "push_24": "ok@dishwasher_center",
+    "push_32": "ok@counter_left",
+    "push_40": "ok@dishwasher_right",
+    "door_41": "no_ik",
+    "door_53": "ok@dishwasher_center",
+    "door_65": "no_ik",
+    "door_77": "no_ik",
+    "door_90": "no_ik"
+   },
+   "fully_admissible": false
+  },
+  "target_gripper_vs_fixed_env": {
+   "min_dist": 0.02116,
+   "tau_star": 0.3125,
+   "phase_star": "push_rack",
+   "part_star": "gripper|env:dishwasher",
+   "status": "clear",
+   "conflict_magnitude": 0.0,
+   "phases_in_conflict": [],
+   "parts_in_conflict": []
+  },
+  "distance_glitch_retries": 117,
+  "n_inadmissible_interventions": 0,
+  "accepted": true
+ },
+ "constants": {
+  "distance_cap_m": 0.05,
+  "conflict_if_min_dist_le": -0.004,
+  "clear_if_min_dist_ge": 0.004,
+  "lift_clearance_m": 0.13,
+  "approach_m": 0.1,
+  "retreat_m": 0.1,
+  "coarse_spacing_m": 0.01,
+  "fine_spacing_m": 0.0025,
+  "max_repair_depth": 4
+ },
+ "verification": {
+  "requested_variant": "V0",
+  "satisfied": true,
+  "unmet": [],
+  "all_variant_definitions_satisfied": [
+   "V0"
+  ],
+  "factorisation_spot_check": {
+   "checks": 10,
+   "mismatches": []
+  }
+ }
+}

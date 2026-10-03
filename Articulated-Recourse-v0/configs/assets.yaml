@@ -1,0 +1,63 @@
+# Asset sources and selection for Articulated-Recourse-v0.
+#
+# Everything is fetched by assets/download_assets.py into .asset_cache/ (gitignored).
+# RoboCasa assets live inside large Box-hosted zip archives; the downloader reads the
+# zip central directory with HTTP range requests and extracts ONLY the members listed
+# here, so the full ~10 GB RoboCasa asset universe is never downloaded.
+
+sources:
+  robocasa:
+    repo: https://github.com/robocasa/robocasa
+    commit: 456174f62b89b8fca99eaaf33949c29fec9cfc2a   # upstream HEAD inspected 2026-10-03
+    box_links_file: robocasa/models/assets/box_links/box_links_assets.json
+    license: "CC BY 4.0 (RoboCasa assets and datasets); MIT (RoboCasa code)"
+    archives:
+      fixtures_lightwheel: {box_url: "https://utexas.box.com/s/idbncsadpnaz1jfl4i6m8qejawk7p9pi", bytes: 529745465}
+      objaverse:           {box_url: "https://utexas.box.com/s/03eionyo8fk3a9dsksq9jb8du5lqfw8h", bytes: 2163884721}
+      objects_lightwheel:  {box_url: "https://utexas.box.com/s/vckqvvkh1z8t69k8qcpcmee6k66stii4", bytes: 791939656}
+      textures:            {box_url: "https://utexas.box.com/s/4i85ileasdvstmlln5sbvzptz7keuoy1", bytes: 543180421}
+  menagerie:
+    repo: https://github.com/google-deepmind/mujoco_menagerie
+    commit: 4d038b3feae26ec82b46a4d586379114012a8ac7
+    subdir: franka_emika_panda
+    license: "Apache-2.0"
+  scanned_objects:   # fallback only; not needed while RoboCasa covers every category
+    repo: https://github.com/kevinzakka/mujoco_scanned_objects
+    commit: 6ff8d275cebfd5b47e49685e3cfbe64b20e49a3c
+    license: "CC BY 4.0 (Google Scanned Objects)"
+
+fixture:
+  id: Dishwasher054
+  archive: fixtures_lightwheel
+  member_prefix: fixtures/dishwashers/Dishwasher054/
+  # Selection rationale (see README): articulated hinge door, two prismatic racks with
+  # 0.40 m travel, box collision geoms, clean articulation (the fully pulled upper rack
+  # does not intersect the fully opened door, unlike Dishwasher031/034/048).
+  door_joint: door_joint
+  upper_rack_joint: rack1_joint
+  lower_rack_joint: rack0_joint
+
+textures:
+  counter: textures/marble/marble_3.png
+  cabinet: textures/wood/light_wood_planks.png
+  floor: textures/tiles/white_square_tiles.png
+  wall: textures/cream-plaster.png
+
+# Object screening pool. Scales are RoboCasa's own per-category registry scales
+# (robocasa/models/objects/kitchen_objects.py, objaverse branch), except bowl: RoboCasa's
+# 2.0 gives 0.23-0.26 m serving bowls, we use 1.4 (0.16-0.18 m, a realistic cereal bowl). Instances that RoboCasa
+# itself excludes as broken are never listed.
+objects:
+  archive: objaverse
+  categories:
+    mug:     {robocasa_category: mug,          scale: 1.0,  pool: [mug_1, mug_2, mug_3, mug_4, mug_5, mug_7, mug_8, mug_9]}
+    cup:     {robocasa_category: cup,          scale: 1.0,  pool: [cup_2, cup_3, cup_4, cup_5]}
+    bowl:    {robocasa_category: bowl,         scale: 1.4,  pool: [bowl_0, bowl_1, bowl_2, bowl_3, bowl_5, bowl_6, bowl_7, bowl_8]}
+    plate:   {robocasa_category: plate,        scale: 1.35, pool: [plate_0, plate_1, plate_2, plate_3, plate_4, plate_5, plate_7, plate_8]}
+    pan:     {robocasa_category: pan,          scale: 1.70, pool: [pan_1, pan_2, pan_3, pan_4, pan_5, pan_6, pan_7, pan_8]}
+    bottle:  {robocasa_category: water_bottle, scale: 1.5,  pool: [water_bottle_0, water_bottle_1, water_bottle_2, water_bottle_3, water_bottle_4, water_bottle_5, water_bottle_6, water_bottle_7]}
+    can:     {robocasa_category: can,          scale: 1.0,  pool: [can_0, can_2, can_3, can_4, can_6, can_8]}
+    box:     {robocasa_category: boxed_food,   scale: 1.1,  pool: [boxed_food_0, boxed_food_1, boxed_food_2, boxed_food_4, boxed_food_6, boxed_food_7]}
+    # RoboCasa has no free-standing utensil container (lightwheel 'utensil_rack' items are
+    # wall racks that topple), so this category uses the priority-2 fallback source.
+    utensil_holder: {source: scanned_objects, scale: 1.0, pool: [BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028]}

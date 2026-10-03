@@ -1,0 +1,257 @@
+[
+ {
+  "variant": "V0",
+  "pass": true,
+  "accepted": true,
+  "L": 1,
+  "blockers": [
+   "pan"
+  ],
+  "sequences": [
+   [
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_pan_to_upper_tines_handle_right"
+   ]
+  ]
+ },
+ {
+  "variant": "V1",
+  "pass": true,
+  "accepted": true,
+  "L": 2,
+  "blockers": [
+   "bottle",
+   "pan"
+  ],
+  "sequences": [
+   [
+    "move_bottle_to_counter_buffer_center",
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_bottle_to_counter_buffer_right",
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_pan_to_upper_tines_handle_left",
+    "move_bottle_to_counter_buffer_center"
+   ],
+   [
+    "move_pan_to_upper_tines_handle_left",
+    "move_bottle_to_counter_buffer_right"
+   ]
+  ]
+ },
+ {
+  "variant": "V2",
+  "pass": true,
+  "accepted": true,
+  "L": 2,
+  "blockers": [
+   "bottle"
+  ],
+  "sequences": [
+   [
+    "move_bowl_to_counter_buffer_left",
+    "move_bottle_to_counter_buffer_center"
+   ],
+   [
+    "move_can_to_counter_buffer_far_right",
+    "move_bottle_to_counter_buffer_right"
+   ]
+  ]
+ },
+ {
+  "variant": "V3",
+  "pass": true,
+  "accepted": true,
+  "L": 2,
+  "blockers": [
+   "bottle"
+  ],
+  "sequences": [
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_to_counter_buffer_far_right"
+   ],
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_to_counter_buffer_right"
+   ],
+   [
+    "move_box_to_counter_left_mid",
+    "move_bottle_to_counter_buffer_far_right"
+   ],
+   [
+    "move_box_to_counter_left_mid",
+    "move_bottle_to_counter_buffer_right"
+   ]
+  ]
+ },
+ {
+  "variant": "V4",
+  "pass": true,
+  "accepted": true,
+  "L": 4,
+  "blockers": [
+   "bottle_l",
+   "bottle_r"
+  ],
+  "sequences": [
+   [
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_far_right"
+   ],
+   [
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right"
+   ],
+   [
+    "move_box_l_to_counter_left_near",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_l_to_counter_left_far",
+    "move_bottle_r_to_counter_buffer_far_right"
+   ],
+   [
+    "move_box_l_to_counter_left_near",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_l_to_counter_left_far",
+    "move_bottle_r_to_counter_buffer_right"
+   ],
+   [
+    "move_box_l_to_counter_left_near",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_far_right",
+    "move_bottle_l_to_counter_left_far"
+   ],
+   [
+    "move_box_l_to_counter_left_near",
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_bottle_l_to_counter_left_far"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_far_right",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far",
+    "move_bottle_r_to_counter_buffer_far_right"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_l_to_counter_left_far",
+    "move_bottle_r_to_counter_buffer_right"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_r_to_counter_buffer_far_right",
+    "move_bottle_l_to_counter_left_far"
+   ],
+   [
+    "move_box_r_to_counter_buffer_left",
+    "move_box_l_to_counter_left_near",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_bottle_l_to_counter_left_far"
+   ]
+  ]
+ },
+ {
+  "variant": "V5",
+  "pass": true,
+  "accepted": true,
+  "L": 3,
+  "blockers": [
+   "bottle_a"
+  ],
+  "sequences": [
+   [
+    "move_bottle_c_to_counter_buffer_left",
+    "move_box_to_counter_buffer_center",
+    "move_bottle_a_to_counter_buffer_far_right"
+   ]
+  ]
+ },
+ {
+  "variant": "V6",
+  "pass": true,
+  "accepted": true,
+  "L": 2,
+  "blockers": [
+   "bottle_a"
+  ],
+  "sequences": [
+   [
+    "move_bowl_to_counter_buffer_left",
+    "move_bottle_a_to_counter_buffer_center"
+   ]
+  ]
+ },
+ {
+  "variant": "V7",
+  "pass": true,
+  "accepted": true,
+  "L": 4,
+  "blockers": [
+   "bottle_l",
+   "bottle_r",
+   "pan"
+  ],
+  "sequences": [
+   [
+    "move_bottle_l_to_counter_left_mid",
+    "move_box_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_bottle_l_to_counter_left_mid",
+    "move_box_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_pan_to_upper_tines_handle_right"
+   ],
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_l_to_counter_left_mid",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_l_to_counter_left_mid",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_pan_to_upper_tines_handle_right"
+   ],
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_bottle_l_to_counter_left_mid",
+    "move_pan_to_upper_tines_handle_left"
+   ],
+   [
+    "move_box_to_counter_buffer_left",
+    "move_bottle_r_to_counter_buffer_right",
+    "move_bottle_l_to_counter_left_mid",
+    "move_pan_to_upper_tines_handle_right"
+   ]
+  ]
+ }
+]

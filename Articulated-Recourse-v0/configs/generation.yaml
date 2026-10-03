@@ -1,0 +1,18 @@
+# Quick-v0 randomized generation (NOT run yet: awaiting approval after the canonical stage).
+seeds: {train: 101, val: 211, test: 307}          # fixed, independent namespaces; never changed
+quota:
+  core: {variants: [V0, V1, V2, V3, V4, V5, V6, V7], train: 200, val: 50, test: 50}
+  controls: {C0: 200, C1: 200}
+objects_per_scene: [6, 9]
+candidates_per_object: [2, 4]
+sampling:
+  rack_blocker_probability: 0.8        # pan handle out / tall bottle in a bay / utensil holder on tines
+  counter_clutter: [2, 5]
+  initial_pose_jitter_m: 0.04
+max_attempts_per_accepted: 400        # STOP and report if a variant cannot reach its quota
+quality:
+  coarse_fine_agreement: required
+  consulted_ambiguity: reject
+  max_repair_depth: 4
+split_rule: "no duplicate (asset combination, exact initial poses, exact catalogue) across splits"
+future_splits: [asset_disjoint, unseen_dishwasher, unseen_dependency_graph, longer_chain]

@@ -1,0 +1,17 @@
+# Structural variant definitions (implemented in src/artrecourse/variants.py).
+# A scene is labelled V_k only if the ORACLE OUTPUT satisfies these conditions; how the
+# scene was generated is irrelevant. "Repair dependency edge" = interventional prerequisite
+# edge inside an optimal sequence (step j -> step k such that I_k is not executable without
+# I_j and is executable after it), each with blocker identity, cause type and tau*.
+common: {target_initially_infeasible: true, max_repair_depth: 4}
+V0: {optimal_length: 1, direct_blockers: 1, repair_dependency_edges: 0}
+V1: {direct_blockers_min: 2, optimal_length_min: 2, repair_dependency_edges: 0, repairs_executable_in_s0: true}
+V2: {optimal_length_min: 2, needs_edge: destination_occupied}
+V3: {optimal_length_min: 2, needs_edge: swept_volume_with_free_destination}
+V4: {optimal_length_min: 3, distinct_edges_min: 2, chains_min: 2, objects_in_chains_min: 4}
+V5: {optimal_length: 3, chain: "C->B->A->TARGET", swept_volume_edges_min: 2}
+V6: {irreducible_plans_min: 2, plans_differ_in_length_or_cost: true}
+V7: {objects: [7, 9], candidate_interventions: [12, 20], direct_blockers_min: 2, optimal_length: [3, 4],
+     dependency_edges_min: 3, swept_volume_edges_min: 2, compatibility_edges_min: 1, not_all_occupancy: true}
+C0: {target_initially_feasible: true, near_miss_m: 0.03}
+C1: {target_initially_infeasible: true, no_recourse_within_depth: 4}
