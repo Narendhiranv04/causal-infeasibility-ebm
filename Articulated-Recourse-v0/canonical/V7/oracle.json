@@ -6,39 +6,38 @@
  "variant_requested": "V7",
  "variant_satisfied": true,
  "fixture_id": "RoboCasa:Dishwasher054",
- "story": "Dense scene, three objects block CLOSE_DISHWASHER: the skillet handle (door), a 0.20 m water bottle (right bay) and a 0.25 m bottle (left bay) (tub ceiling). The cereal box on the counter stands in the transfer corridors of BOTH bottles; the tall bottle also stands under the skillet's handle-across pose and in its swing. Minimal recourse: box -> water bottle -> tall bottle -> skillet (or the skillet turned right once the water bottle is gone).",
+ "story": "Dense scene, two blockers: the skillet's handle sits where the push-hand grasps the rack, and the water bottle in the left-front bay would jam the tub ceiling. Turning the skillet either way needs the bottle gone (its handle swings over it, or its pan body lands on it). The bottle's tray cells lie behind the cereal box on B2, and the box can only slide back to B6, where a can stands. Lower-rack bowls and cups are context.",
  "spec": {
   "scene_id": "canonical_V7",
   "split": "canonical",
   "variant_requested": "V7",
-  "story": "Dense scene, three objects block CLOSE_DISHWASHER: the skillet handle (door), a 0.20 m water bottle (right bay) and a 0.25 m bottle (left bay) (tub ceiling). The cereal box on the counter stands in the transfer corridors of BOTH bottles; the tall bottle also stands under the skillet's handle-across pose and in its swing. Minimal recourse: box -> water bottle -> tall bottle -> skillet (or the skillet turned right once the water bottle is gone).",
+  "story": "Dense scene, two blockers: the skillet's handle sits where the push-hand grasps the rack, and the water bottle in the left-front bay would jam the tub ceiling. Turning the skillet either way needs the bottle gone (its handle swings over it, or its pan body lands on it). The bottle's tray cells lie behind the cereal box on B2, and the box can only slide back to B6, where a can stands. Lower-rack bowls and cups are context.",
   "seed": null,
+  "target": {
+   "skill": "PUSH_RACK",
+   "rack": "rack1"
+  },
+  "articulation": {
+   "door": "max",
+   "rack1": 0.39,
+   "rack0": 0.0
+  },
   "objects": [
    {
     "key": "pan",
     "asset_id": "pan/pan_2",
-    "slot": "upper_center_back",
-    "yaw_deg": -90,
-    "dxy": [
-     0.0,
-     -0.005
-    ]
-   },
-   {
-    "key": "bottle_r",
-    "asset_id": "bottle/water_bottle_1",
-    "slot": "upper_right_back",
-    "yaw_deg": 0,
+    "slot": "U5",
+    "orient": "handle_out",
     "dxy": [
      0.0,
      0.0
     ]
    },
    {
-    "key": "bottle_l",
-    "asset_id": "bottle/water_bottle_3",
-    "slot": "upper_left_back",
-    "yaw_deg": 0,
+    "key": "bottle",
+    "asset_id": "bottle/water_bottle_1",
+    "slot": "U1",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
@@ -47,38 +46,8 @@
    {
     "key": "box",
     "asset_id": "box/boxed_food_2",
-    "slot": "counter_buffer_right",
-    "yaw_deg": 0,
-    "dxy": [
-     -0.07,
-     -0.055
-    ]
-   },
-   {
-    "key": "mug",
-    "asset_id": "mug/mug_1",
-    "slot": "counter_left_far",
-    "yaw_deg": 90,
-    "dxy": [
-     -0.04,
-     0.0
-    ]
-   },
-   {
-    "key": "cup",
-    "asset_id": "cup/cup_3",
-    "slot": "counter_left_near",
-    "yaw_deg": 0,
-    "dxy": [
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "key": "bowl",
-    "asset_id": "bowl/bowl_2",
-    "slot": "counter_buffer_far_right",
-    "yaw_deg": 0,
+    "slot": "B2",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
@@ -87,165 +56,196 @@
    {
     "key": "can",
     "asset_id": "can/can_2",
-    "slot": "counter_buffer_center",
-    "yaw_deg": 0,
+    "slot": "B6",
+    "orient": "upright",
     "dxy": [
      0.0,
-     0.025
+     0.0
+    ]
+   },
+   {
+    "key": "mug",
+    "asset_id": "mug/mug_1",
+    "slot": "B4",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "cup",
+    "asset_id": "cup/cup_3",
+    "slot": "B8",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "bowl",
+    "asset_id": "bowl/bowl_0",
+    "slot": "L1",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "key": "cup_l",
+    "asset_id": "cup/cup_4",
+    "slot": "L3",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
     ]
    }
   ],
   "interventions": [
    {
     "obj": "pan",
-    "slot": "upper_tines_handle_left",
-    "yaw_deg": 180,
+    "slot": "U5",
+    "orient": "handle_left",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_pan_to_upper_tines_handle_left"
+    "id": "move_pan_to_U5_handle_left"
    },
    {
     "obj": "pan",
-    "slot": "upper_tines_handle_right",
-    "yaw_deg": 0,
+    "slot": "U5",
+    "orient": "handle_right",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_pan_to_upper_tines_handle_right"
+    "id": "move_pan_to_U5_handle_right"
    },
    {
-    "obj": "bottle_r",
-    "slot": "counter_buffer_far_right",
-    "yaw_deg": 0,
+    "obj": "bottle",
+    "slot": "B3",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_bottle_r_to_counter_buffer_far_right"
+    "id": "move_bottle_to_B3"
    },
    {
-    "obj": "bottle_r",
-    "slot": "counter_buffer_right",
-    "yaw_deg": 0,
+    "obj": "bottle",
+    "slot": "B7",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_bottle_r_to_counter_buffer_right"
+    "id": "move_bottle_to_B7"
    },
    {
-    "obj": "bottle_l",
-    "slot": "counter_buffer_right",
-    "yaw_deg": 0,
+    "obj": "bottle",
+    "slot": "B8",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_bottle_l_to_counter_buffer_right"
-   },
-   {
-    "obj": "bottle_l",
-    "slot": "counter_left_mid",
-    "yaw_deg": 0,
-    "dxy": [
-     0.0,
-     0.0
-    ],
-    "name": "",
-    "id": "move_bottle_l_to_counter_left_mid"
+    "id": "move_bottle_to_B8"
    },
    {
     "obj": "box",
-    "slot": "counter_buffer_left",
-    "yaw_deg": 0,
+    "slot": "B6",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_box_to_counter_buffer_left"
+    "id": "move_box_to_B6"
    },
    {
     "obj": "box",
-    "slot": "counter_left_mid",
-    "yaw_deg": 0,
+    "slot": "B5",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_box_to_counter_left_mid"
-   },
-   {
-    "obj": "mug",
-    "slot": "counter_buffer_center",
-    "yaw_deg": 90,
-    "dxy": [
-     0.0,
-     0.0
-    ],
-    "name": "",
-    "id": "move_mug_to_counter_buffer_center"
-   },
-   {
-    "obj": "mug",
-    "slot": "counter_left_mid",
-    "yaw_deg": 90,
-    "dxy": [
-     0.0,
-     0.0
-    ],
-    "name": "",
-    "id": "move_mug_to_counter_left_mid"
-   },
-   {
-    "obj": "cup",
-    "slot": "upper_right_back",
-    "yaw_deg": 0,
-    "dxy": [
-     0.0,
-     0.0
-    ],
-    "name": "",
-    "id": "move_cup_to_upper_right_back"
-   },
-   {
-    "obj": "bowl",
-    "slot": "counter_buffer_left",
-    "yaw_deg": 0,
-    "dxy": [
-     0.0,
-     0.0
-    ],
-    "name": "",
-    "id": "move_bowl_to_counter_buffer_left"
+    "id": "move_box_to_B5"
    },
    {
     "obj": "can",
-    "slot": "counter_buffer_far_right",
-    "yaw_deg": 0,
+    "slot": "B5",
+    "orient": "upright",
     "dxy": [
      0.0,
      0.0
     ],
     "name": "",
-    "id": "move_can_to_counter_buffer_far_right"
+    "id": "move_can_to_B5"
+   },
+   {
+    "obj": "can",
+    "slot": "B1",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_can_to_B1"
+   },
+   {
+    "obj": "mug",
+    "slot": "B1",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_mug_to_B1"
+   },
+   {
+    "obj": "mug",
+    "slot": "B8",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_mug_to_B8"
+   },
+   {
+    "obj": "cup",
+    "slot": "U3",
+    "orient": "upright",
+    "dxy": [
+     0.0,
+     0.0
+    ],
+    "name": "",
+    "id": "move_cup_to_U3"
    }
   ]
  },
  "INPUT_KEYS_ALLOWED_FOR_MODELS": [
   "objects",
   "initial_poses",
+  "initial_slots",
   "articulation",
   "target_action",
+  "placement_topology",
   "placement_candidates",
   "candidate_interventions"
  ],
@@ -262,7 +262,8 @@
   "sequence_length",
   "no_recourse",
   "sequence_proofs",
-  "irreducible_solutions"
+  "irreducible_solutions",
+  "state_conditioned"
  ],
  "inputs": {
   "objects": [
@@ -279,7 +280,7 @@
     "mass": 0.0688
    },
    {
-    "key": "bottle_r",
+    "key": "bottle",
     "asset_id": "bottle/water_bottle_1",
     "category": "bottle",
     "scale": 1.5,
@@ -289,18 +290,6 @@
      0.2042
     ],
     "mass": 0.8416
-   },
-   {
-    "key": "bottle_l",
-    "asset_id": "bottle/water_bottle_3",
-    "category": "bottle",
-    "scale": 1.5,
-    "extent_canonical": [
-     0.0702,
-     0.0709,
-     0.2502
-    ],
-    "mass": 0.759
    },
    {
     "key": "box",
@@ -313,6 +302,18 @@
      0.165
     ],
     "mass": 0.0559
+   },
+   {
+    "key": "can",
+    "asset_id": "can/can_2",
+    "category": "can",
+    "scale": 1.0,
+    "extent_canonical": [
+     0.0683,
+     0.0683,
+     0.09
+    ],
+    "mass": 0.3183
    },
    {
     "key": "mug",
@@ -340,140 +341,1046 @@
    },
    {
     "key": "bowl",
-    "asset_id": "bowl/bowl_2",
+    "asset_id": "bowl/bowl_0",
     "category": "bowl",
     "scale": 1.4,
     "extent_canonical": [
-     0.161,
-     0.161,
-     0.0678
+     0.182,
+     0.182,
+     0.0515
     ],
-    "mass": 0.4879
+    "mass": 0.5674
    },
    {
-    "key": "can",
-    "asset_id": "can/can_2",
-    "category": "can",
+    "key": "cup_l",
+    "asset_id": "cup/cup_4",
+    "category": "cup",
     "scale": 1.0,
     "extent_canonical": [
-     0.0683,
-     0.0683,
-     0.09
+     0.0871,
+     0.0871,
+     0.105
     ],
-    "mass": 0.3183
+    "mass": 0.0991
    }
   ],
   "initial_poses": {
    "pan": [
-    0.003,
-    -0.445,
-    0.566688,
+    0.003437,
+    -0.381901,
+    0.566098,
     0.0,
     0.0,
     -0.707107,
     0.707107
    ],
-   "bottle_r": [
-    0.174,
-    -0.43,
-    0.489978,
-    0.0,
-    0.0,
-    0.0,
-    1.0
-   ],
-   "bottle_l": [
-    -0.17,
-    -0.43,
-    0.489978,
+   "bottle": [
+    -0.170875,
+    -0.503011,
+    0.489388,
     0.0,
     0.0,
     0.0,
     1.0
    ],
    "box": [
-    0.7,
-    -0.26,
-    0.91,
-    0.0,
-    0.0,
-    0.0,
-    1.0
-   ],
-   "mug": [
-    -0.81,
-    -0.205,
-    0.91,
-    0.0,
-    0.0,
-    0.707107,
-    0.707107
-   ],
-   "cup": [
-    -0.45,
-    -0.205,
-    0.91,
-    0.0,
-    0.0,
-    0.0,
-    1.0
-   ],
-   "bowl": [
-    0.93,
-    -0.205,
-    0.91,
+    0.6125,
+    -0.258,
+    0.922,
     0.0,
     0.0,
     0.0,
     1.0
    ],
    "can": [
-    0.61,
-    -0.18,
-    0.91,
+    0.6125,
+    -0.158,
+    0.922,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "mug": [
+    0.944282,
+    -0.258,
+    0.922,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "cup": [
+    0.9625,
+    -0.158,
+    0.922,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "bowl": [
+    0.005851,
+    -0.059824,
+    0.265207,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "cup_l": [
+    -0.169669,
+    0.053701,
+    0.188497,
     0.0,
     0.0,
     0.0,
     1.0
    ]
   },
+  "initial_slots": {
+   "pan": {
+    "slot": "U5",
+    "orientation": "handle_out"
+   },
+   "bottle": {
+    "slot": "U1",
+    "orientation": "upright"
+   },
+   "box": {
+    "slot": "B2",
+    "orientation": "upright"
+   },
+   "can": {
+    "slot": "B6",
+    "orientation": "upright"
+   },
+   "mug": {
+    "slot": "B4",
+    "orientation": "upright"
+   },
+   "cup": {
+    "slot": "B8",
+    "orientation": "upright"
+   },
+   "bowl": {
+    "slot": "L1",
+    "orientation": "upright"
+   },
+   "cup_l": {
+    "slot": "L3",
+    "orientation": "upright"
+   }
+  },
   "articulation": {
    "door_joint": 0.673599,
-   "rack1_joint_upper": 0.4,
+   "rack1_joint_upper": 0.39,
    "rack0_joint_lower": 0.0
   },
   "target_action": {
-   "name": "CLOSE_DISHWASHER",
-   "primitive": "PUSH_RACK(rack1_joint 0.40->0) then CLOSE_DOOR(door_joint 0.6736->0)",
-   "phases": {
-    "push_rack": [
-     0.0,
-     0.5
-    ],
-    "close_door": [
-     0.5,
-     1.0
-    ]
-   },
+   "name": "PUSH_RACK",
+   "atomic": true,
+   "manipulated_joint": "rack1_joint",
+   "from": 0.39,
+   "to": 0.0,
+   "internal_phases": [
+    "push_grasp",
+    "push_palm"
+   ],
    "moving_bodies": [
     "upper rack (rack1)",
-    "door",
     "gripper",
     "objects resting on the upper rack"
    ],
+   "robot_station": "rack_push",
    "trajectory_ref": "inputs.npz:TARGET",
-   "n_samples": 91
+   "n_samples": 40
+  },
+  "placement_topology": {
+   "U1": {
+    "slot_id": "U1",
+    "support_id": "rack_left_bay",
+    "semantic": "upper_rack",
+    "center": [
+     -0.1708754595285189,
+     -0.5030113143017307
+    ],
+    "z": 0.48938761830550137,
+    "half_extent": [
+     0.06389887850319266,
+     0.05633710476724357
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "handle_back"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [],
+    "world_pose_xyz": [
+     -0.1709,
+     -0.503,
+     0.4894
+    ]
+   },
+   "U2": {
+    "slot_id": "U2",
+    "support_id": "rack_left_bay",
+    "semantic": "upper_rack",
+    "center": [
+     -0.1708754595285189,
+     -0.3903371047672436
+    ],
+    "z": 0.48938761830550137,
+    "half_extent": [
+     0.06389887850319266,
+     0.056337104767243545
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "handle_back"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [],
+    "world_pose_xyz": [
+     -0.1709,
+     -0.3903,
+     0.4894
+    ]
+   },
+   "U3": {
+    "slot_id": "U3",
+    "support_id": "rack_right_bay",
+    "semantic": "upper_rack",
+    "center": [
+     0.1745069045285189,
+     -0.5030113143017307
+    ],
+    "z": 0.48938761830550137,
+    "half_extent": [
+     0.06065675350319266,
+     0.05633710476724357
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "handle_back"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.1745,
+     -0.503,
+     0.4894
+    ]
+   },
+   "U4": {
+    "slot_id": "U4",
+    "support_id": "rack_right_bay",
+    "semantic": "upper_rack",
+    "center": [
+     0.1745069045285189,
+     -0.3903371047672436
+    ],
+    "z": 0.48938761830550137,
+    "half_extent": [
+     0.06065675350319266,
+     0.056337104767243545
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "handle_back"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.1745,
+     -0.3903,
+     0.4894
+    ]
+   },
+   "U5": {
+    "slot_id": "U5",
+    "support_id": "rack_tines",
+    "semantic": "upper_rack",
+    "center": [
+     0.0034367849999999978,
+     -0.4466742095344871
+    ],
+    "z": 0.5660976820185375,
+    "half_extent": [
+     0.118211685,
+     0.11267420953448712
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl",
+     "pan",
+     "utensil_holder"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ],
+     "utensil_holder": [
+      "upright"
+     ],
+     "pan": [
+      "handle_out",
+      "handle_left",
+      "handle_right"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.0034,
+     -0.4467,
+     0.5661
+    ]
+   },
+   "L1": {
+    "slot_id": "L1",
+    "support_id": "lower_tines",
+    "semantic": "lower_rack",
+    "center": [
+     0.0058506450000000015,
+     -0.059823618852615924
+    ],
+    "z": 0.2652071720185376,
+    "half_extent": [
+     0.23496899803171156,
+     0.1135248002163583
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ]
+    },
+    "reachable": false,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.0059,
+     -0.0598,
+     0.2652
+    ]
+   },
+   "L2": {
+    "slot_id": "L2",
+    "support_id": "lower_tines",
+    "semantic": "lower_rack",
+    "center": [
+     0.0058506450000000015,
+     0.16722598158010066
+    ],
+    "z": 0.2652071720185376,
+    "half_extent": [
+     0.23496899803171156,
+     0.1135248002163583
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ]
+    },
+    "reachable": false,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.0059,
+     0.1672,
+     0.2652
+    ]
+   },
+   "L3": {
+    "slot_id": "L3",
+    "support_id": "lower_left_bay",
+    "semantic": "lower_rack",
+    "center": [
+     -0.1696685295285189,
+     0.05370118136374237
+    ],
+    "z": 0.18849709830550135,
+    "half_extent": [
+     0.06510580850319267,
+     0.1135248002163583
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ]
+    },
+    "reachable": false,
+    "overlaps": [],
+    "world_pose_xyz": [
+     -0.1697,
+     0.0537,
+     0.1885
+    ]
+   },
+   "L4": {
+    "slot_id": "L4",
+    "support_id": "lower_right_bay",
+    "semantic": "lower_rack",
+    "center": [
+     0.1757138345285189,
+     0.05370118136374237
+    ],
+    "z": 0.18849709830550135,
+    "half_extent": [
+     0.05944982350319266,
+     0.1135248002163583
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ]
+    },
+    "reachable": false,
+    "overlaps": [],
+    "world_pose_xyz": [
+     0.1757,
+     0.0537,
+     0.1885
+    ]
+   },
+   "B1": {
+    "slot_id": "B1",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.4375,
+     -0.258
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW1"
+    ],
+    "world_pose_xyz": [
+     0.4375,
+     -0.258,
+     0.922
+    ]
+   },
+   "B5": {
+    "slot_id": "B5",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.4375,
+     -0.15799999999999997
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW1"
+    ],
+    "world_pose_xyz": [
+     0.4375,
+     -0.158,
+     0.922
+    ]
+   },
+   "BW1": {
+    "slot_id": "BW1",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.4375,
+     -0.208
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.1
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl",
+     "utensil_holder"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ],
+     "utensil_holder": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "B1",
+     "B5"
+    ],
+    "world_pose_xyz": [
+     0.4375,
+     -0.208,
+     0.922
+    ]
+   },
+   "B2": {
+    "slot_id": "B2",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.6125,
+     -0.258
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW2"
+    ],
+    "world_pose_xyz": [
+     0.6125,
+     -0.258,
+     0.922
+    ]
+   },
+   "B6": {
+    "slot_id": "B6",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.6125,
+     -0.15799999999999997
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW2"
+    ],
+    "world_pose_xyz": [
+     0.6125,
+     -0.158,
+     0.922
+    ]
+   },
+   "BW2": {
+    "slot_id": "BW2",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.6125,
+     -0.208
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.1
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl",
+     "utensil_holder"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ],
+     "utensil_holder": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "B2",
+     "B6"
+    ],
+    "world_pose_xyz": [
+     0.6125,
+     -0.208,
+     0.922
+    ]
+   },
+   "B3": {
+    "slot_id": "B3",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.7875000000000001,
+     -0.258
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW3"
+    ],
+    "world_pose_xyz": [
+     0.7875,
+     -0.258,
+     0.922
+    ]
+   },
+   "B7": {
+    "slot_id": "B7",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.7875000000000001,
+     -0.15799999999999997
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW3"
+    ],
+    "world_pose_xyz": [
+     0.7875,
+     -0.158,
+     0.922
+    ]
+   },
+   "BW3": {
+    "slot_id": "BW3",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.7875000000000001,
+     -0.208
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.1
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl",
+     "utensil_holder"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ],
+     "utensil_holder": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "B3",
+     "B7"
+    ],
+    "world_pose_xyz": [
+     0.7875,
+     -0.208,
+     0.922
+    ]
+   },
+   "B4": {
+    "slot_id": "B4",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.9624999999999999,
+     -0.258
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW4"
+    ],
+    "world_pose_xyz": [
+     0.9625,
+     -0.258,
+     0.922
+    ]
+   },
+   "B8": {
+    "slot_id": "B8",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.9624999999999999,
+     -0.15799999999999997
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.05
+    ],
+    "capacity": 1,
+    "categories": [
+     "mug",
+     "cup",
+     "bottle",
+     "can",
+     "box"
+    ],
+    "orientations": {
+     "mug": [
+      "upright"
+     ],
+     "cup": [
+      "upright"
+     ],
+     "bottle": [
+      "upright"
+     ],
+     "can": [
+      "upright"
+     ],
+     "box": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "BW4"
+    ],
+    "world_pose_xyz": [
+     0.9625,
+     -0.158,
+     0.922
+    ]
+   },
+   "BW4": {
+    "slot_id": "BW4",
+    "support_id": "staging_tray",
+    "semantic": "temporary_buffer",
+    "center": [
+     0.9624999999999999,
+     -0.208
+    ],
+    "z": 0.922,
+    "half_extent": [
+     0.0875,
+     0.1
+    ],
+    "capacity": 1,
+    "categories": [
+     "bowl",
+     "utensil_holder"
+    ],
+    "orientations": {
+     "bowl": [
+      "upright"
+     ],
+     "utensil_holder": [
+      "upright"
+     ]
+    },
+    "reachable": true,
+    "overlaps": [
+     "B4",
+     "B8"
+    ],
+    "world_pose_xyz": [
+     0.9625,
+     -0.208,
+     0.922
+    ]
+   }
   },
   "placement_candidates": [
    {
     "object": "pan",
     "pose_index": 1,
-    "slot": "upper_tines_handle_left",
+    "slot": "U5",
+    "orientation": "handle_left",
     "support": "rack_tines",
     "pose": [
-     0.06,
-     -0.465,
-     0.566688,
+     0.083969,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      1.0,
@@ -483,12 +1390,13 @@
    {
     "object": "pan",
     "pose_index": 2,
-    "slot": "upper_tines_handle_right",
+    "slot": "U5",
+    "orientation": "handle_right",
     "support": "rack_tines",
     "pose": [
-     -0.06,
-     -0.465,
-     0.566688,
+     -0.083579,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      0.0,
@@ -496,14 +1404,15 @@
     ]
    },
    {
-    "object": "bottle_r",
+    "object": "bottle",
     "pose_index": 1,
-    "slot": "counter_buffer_far_right",
-    "support": "counter",
+    "slot": "B3",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     0.93,
-     -0.205,
-     0.91,
+     0.7875,
+     -0.258,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -511,14 +1420,15 @@
     ]
    },
    {
-    "object": "bottle_r",
+    "object": "bottle",
     "pose_index": 2,
-    "slot": "counter_buffer_right",
-    "support": "counter",
+    "slot": "B7",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     0.77,
-     -0.205,
-     0.91,
+     0.7875,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -526,29 +1436,15 @@
     ]
    },
    {
-    "object": "bottle_l",
-    "pose_index": 1,
-    "slot": "counter_buffer_right",
-    "support": "counter",
+    "object": "bottle",
+    "pose_index": 3,
+    "slot": "B8",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     0.77,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ]
-   },
-   {
-    "object": "bottle_l",
-    "pose_index": 2,
-    "slot": "counter_left_mid",
-    "support": "counter",
-    "pose": [
-     -0.61,
-     -0.205,
-     0.91,
+     0.9625,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -558,12 +1454,13 @@
    {
     "object": "box",
     "pose_index": 1,
-    "slot": "counter_buffer_left",
-    "support": "counter",
+    "slot": "B6",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     0.45,
-     -0.205,
-     0.91,
+     0.6125,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -573,72 +1470,13 @@
    {
     "object": "box",
     "pose_index": 2,
-    "slot": "counter_left_mid",
-    "support": "counter",
+    "slot": "B5",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     -0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ]
-   },
-   {
-    "object": "mug",
-    "pose_index": 1,
-    "slot": "counter_buffer_center",
-    "support": "counter",
-    "pose": [
-     0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ]
-   },
-   {
-    "object": "mug",
-    "pose_index": 2,
-    "slot": "counter_left_mid",
-    "support": "counter",
-    "pose": [
-     -0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ]
-   },
-   {
-    "object": "cup",
-    "pose_index": 1,
-    "slot": "upper_right_back",
-    "support": "rack_right_bay",
-    "pose": [
-     0.174,
-     -0.43,
-     0.489978,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ]
-   },
-   {
-    "object": "bowl",
-    "pose_index": 1,
-    "slot": "counter_buffer_left",
-    "support": "counter",
-    "pose": [
-     0.45,
-     -0.205,
-     0.91,
+     0.4375,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -648,12 +1486,77 @@
    {
     "object": "can",
     "pose_index": 1,
-    "slot": "counter_buffer_far_right",
-    "support": "counter",
+    "slot": "B5",
+    "orientation": "upright",
+    "support": "staging_tray",
     "pose": [
-     0.93,
-     -0.205,
-     0.91,
+     0.4375,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "can",
+    "pose_index": 2,
+    "slot": "B1",
+    "orientation": "upright",
+    "support": "staging_tray",
+    "pose": [
+     0.4375,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "mug",
+    "pose_index": 1,
+    "slot": "B1",
+    "orientation": "upright",
+    "support": "staging_tray",
+    "pose": [
+     0.419282,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "mug",
+    "pose_index": 2,
+    "slot": "B8",
+    "orientation": "upright",
+    "support": "staging_tray",
+    "pose": [
+     0.944282,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "object": "cup",
+    "pose_index": 1,
+    "slot": "U3",
+    "orientation": "upright",
+    "support": "rack_right_bay",
+    "pose": [
+     0.174507,
+     -0.503011,
+     0.489388,
      0.0,
      0.0,
      0.0,
@@ -663,23 +1566,29 @@
   ],
   "candidate_interventions": [
    {
-    "id": "move_pan_to_upper_tines_handle_left",
+    "id": "move_pan_to_U5_handle_left",
     "object": "pan",
     "primitive": "RELOCATE",
-    "destination_slot": "upper_tines_handle_left",
+    "destination_slot": "U5",
+    "destination_orientation": "handle_left",
+    "source_slot": "U5",
+    "transfer_carry_bottom_z": 0.6358,
+    "transfer_lips_cleared": [
+     "fixture:rack1"
+    ],
     "source_pose": [
-     0.003,
-     -0.445,
-     0.566688,
+     0.003437,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      -0.707107,
      0.707107
     ],
     "destination_pose": [
-     0.06,
-     -0.465,
-     0.566688,
+     0.083969,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      1.0,
@@ -701,47 +1610,53 @@
     "rejection_reasons": [],
     "robot": {
      "stations": {
-      "pick": "dishwasher_right",
-      "lift": "dishwasher_center",
-      "transfer": "dishwasher_center",
-      "above_place": "dishwasher_center",
-      "place": "dishwasher_center"
+      "pick": "rack_push",
+      "lift": "rack_push",
+      "transfer": "rack_push",
+      "above_place": "rack_push",
+      "place": "rack_push"
      }
     },
     "grasp_pose": [
-     0.003,
-     -0.688109,
-     0.617573,
+     0.003437,
+     -0.62501,
+     0.616983,
      0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_pan_to_upper_tines_handle_left",
-    "n_samples": 88,
+    "trajectory_ref": "inputs.npz:move_pan_to_U5_handle_left",
+    "n_samples": 77,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
      "carried:pan"
     ]
    },
    {
-    "id": "move_pan_to_upper_tines_handle_right",
+    "id": "move_pan_to_U5_handle_right",
     "object": "pan",
     "primitive": "RELOCATE",
-    "destination_slot": "upper_tines_handle_right",
+    "destination_slot": "U5",
+    "destination_orientation": "handle_right",
+    "source_slot": "U5",
+    "transfer_carry_bottom_z": 0.6358,
+    "transfer_lips_cleared": [
+     "fixture:rack1"
+    ],
     "source_pose": [
-     0.003,
-     -0.445,
-     0.566688,
+     0.003437,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      -0.707107,
      0.707107
     ],
     "destination_pose": [
-     -0.06,
-     -0.465,
-     0.566688,
+     -0.083579,
+     -0.381901,
+     0.566098,
      0.0,
      0.0,
      0.0,
@@ -763,47 +1678,53 @@
     "rejection_reasons": [],
     "robot": {
      "stations": {
-      "pick": "dishwasher_right",
-      "lift": "dishwasher_center",
-      "transfer": "dishwasher_center",
-      "above_place": "dishwasher_center",
-      "place": "dishwasher_center"
+      "pick": "rack_push",
+      "lift": "rack_push",
+      "transfer": "rack_push",
+      "above_place": "rack_push",
+      "place": "rack_push"
      }
     },
     "grasp_pose": [
-     0.003,
-     -0.688109,
-     0.617573,
+     0.003437,
+     -0.62501,
+     0.616983,
      0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_pan_to_upper_tines_handle_right",
-    "n_samples": 88,
+    "trajectory_ref": "inputs.npz:move_pan_to_U5_handle_right",
+    "n_samples": 76,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
      "carried:pan"
     ]
    },
    {
-    "id": "move_bottle_r_to_counter_buffer_far_right",
-    "object": "bottle_r",
+    "id": "move_bottle_to_B3",
+    "object": "bottle",
     "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_far_right",
+    "destination_slot": "B3",
+    "destination_orientation": "upright",
+    "source_slot": "U1",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
     "source_pose": [
-     0.174,
-     -0.43,
-     0.489978,
+     -0.170875,
+     -0.503011,
+     0.489388,
      0.0,
      0.0,
      0.0,
      1.0
     ],
     "destination_pose": [
-     0.93,
-     -0.205,
-     0.91,
+     0.7875,
+     -0.258,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -825,47 +1746,53 @@
     "rejection_reasons": [],
     "robot": {
      "stations": {
-      "pick": "dishwasher_center",
-      "lift": "counter_high",
-      "transfer": "counter",
-      "above_place": "counter_high",
-      "place": "counter_high"
+      "pick": "rack_push",
+      "lift": "rack_push",
+      "transfer": "rack_push",
+      "above_place": "counter",
+      "place": "counter_right"
      }
     },
     "grasp_pose": [
-     0.174,
-     -0.43,
-     0.672151,
+     -0.170875,
+     -0.503011,
+     0.671561,
      -0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_bottle_r_to_counter_buffer_far_right",
-    "n_samples": 174,
+    "trajectory_ref": "inputs.npz:move_bottle_to_B3",
+    "n_samples": 180,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
-     "carried:bottle_r"
+     "carried:bottle"
     ]
    },
    {
-    "id": "move_bottle_r_to_counter_buffer_right",
-    "object": "bottle_r",
+    "id": "move_bottle_to_B7",
+    "object": "bottle",
     "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_right",
+    "destination_slot": "B7",
+    "destination_orientation": "upright",
+    "source_slot": "U1",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
     "source_pose": [
-     0.174,
-     -0.43,
-     0.489978,
+     -0.170875,
+     -0.503011,
+     0.489388,
      0.0,
      0.0,
      0.0,
      1.0
     ],
     "destination_pose": [
-     0.77,
-     -0.205,
-     0.91,
+     0.7875,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -887,47 +1814,53 @@
     "rejection_reasons": [],
     "robot": {
      "stations": {
-      "pick": "dishwasher_center",
-      "lift": "counter_high",
-      "transfer": "counter",
+      "pick": "rack_push",
+      "lift": "rack_push",
+      "transfer": "rack_push",
       "above_place": "counter_high",
       "place": "counter_high"
      }
     },
     "grasp_pose": [
-     0.174,
-     -0.43,
-     0.672151,
+     -0.170875,
+     -0.503011,
+     0.671561,
      -0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_bottle_r_to_counter_buffer_right",
-    "n_samples": 159,
+    "trajectory_ref": "inputs.npz:move_bottle_to_B7",
+    "n_samples": 183,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
-     "carried:bottle_r"
+     "carried:bottle"
     ]
    },
    {
-    "id": "move_bottle_l_to_counter_buffer_right",
-    "object": "bottle_l",
+    "id": "move_bottle_to_B8",
+    "object": "bottle",
     "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_right",
+    "destination_slot": "B8",
+    "destination_orientation": "upright",
+    "source_slot": "U1",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
     "source_pose": [
-     -0.17,
-     -0.43,
-     0.489978,
+     -0.170875,
+     -0.503011,
+     0.489388,
      0.0,
      0.0,
      0.0,
      1.0
     ],
     "destination_pose": [
-     0.77,
-     -0.205,
-     0.91,
+     0.9625,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -938,120 +1871,126 @@
      "tcp_in_object_frame": [
       0.0,
       0.0,
-      0.2282
+      0.1822
      ],
      "finger_axis_yaw_in_object_frame": 1.5708,
      "open_width": 0.055,
      "closed_width": 0.03,
      "approach": "top-down (TCP z = -world z)"
     },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "dishwasher_center",
-      "lift": "dishwasher_center_high",
-      "transfer": "counter_high",
-      "above_place": "counter_high",
-      "place": "counter_high"
-     }
-    },
+    "admissible": false,
+    "rejection_reasons": [
+     "no grasp candidate is clear of the fixed environment and robot-admissible: bottle_cap_topdown_90: robot inadmissible (IK); bottle_cap_topdown_0: robot inadmissible (IK)"
+    ],
+    "robot": null,
     "grasp_pose": [
-     -0.17,
-     -0.43,
-     0.718168,
+     -0.170875,
+     -0.503011,
+     0.671561,
      -0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_bottle_l_to_counter_buffer_right",
-    "n_samples": 193,
+    "trajectory_ref": "inputs.npz:move_bottle_to_B8",
+    "n_samples": 200,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
-     "carried:bottle_l"
+     "carried:bottle"
     ]
    },
    {
-    "id": "move_bottle_l_to_counter_left_mid",
-    "object": "bottle_l",
-    "primitive": "RELOCATE",
-    "destination_slot": "counter_left_mid",
-    "source_pose": [
-     -0.17,
-     -0.43,
-     0.489978,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "destination_pose": [
-     -0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "grasp_template": {
-     "name": "bottle_cap_topdown_90",
-     "tcp_in_object_frame": [
-      0.0,
-      0.0,
-      0.2282
-     ],
-     "finger_axis_yaw_in_object_frame": 1.5708,
-     "open_width": 0.055,
-     "closed_width": 0.03,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "dishwasher_center",
-      "lift": "dishwasher_center_high",
-      "transfer": "counter_left_high",
-      "above_place": "counter_left_high",
-      "place": "counter_left_high"
-     }
-    },
-    "grasp_pose": [
-     -0.17,
-     -0.43,
-     0.718168,
-     -0.707107,
-     0.707107,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_bottle_l_to_counter_left_mid",
-    "n_samples": 146,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:bottle_l"
-    ]
-   },
-   {
-    "id": "move_box_to_counter_buffer_left",
+    "id": "move_box_to_B6",
     "object": "box",
     "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_left",
+    "destination_slot": "B6",
+    "destination_orientation": "upright",
+    "source_slot": "B2",
+    "transfer_carry_bottom_z": 0.952,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
     "source_pose": [
-     0.7,
-     -0.26,
-     0.91,
+     0.6125,
+     -0.258,
+     0.922,
      0.0,
      0.0,
      0.0,
      1.0
     ],
     "destination_pose": [
-     0.45,
-     -0.205,
-     0.91,
+     0.6125,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "box_thin_topdown",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.135
+     ],
+     "finger_axis_yaw_in_object_frame": 0.0,
+     "open_width": 0.065,
+     "closed_width": 0.0347906361,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter",
+      "place": "counter_high"
+     }
+    },
+    "grasp_pose": [
+     0.6125,
+     -0.258,
+     1.057,
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_box_to_B6",
+    "n_samples": 46,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:box"
+    ]
+   },
+   {
+    "id": "move_box_to_B5",
+    "object": "box",
+    "primitive": "RELOCATE",
+    "destination_slot": "B5",
+    "destination_orientation": "upright",
+    "source_slot": "B2",
+    "transfer_carry_bottom_z": 0.952,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
+    "source_pose": [
+     0.6125,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.4375,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -1081,349 +2020,45 @@
      }
     },
     "grasp_pose": [
-     0.7,
-     -0.26,
-     1.045,
+     0.6125,
+     -0.258,
+     1.057,
      0.0,
      1.0,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_box_to_counter_buffer_left",
-    "n_samples": 79,
+    "trajectory_ref": "inputs.npz:move_box_to_B5",
+    "n_samples": 56,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
      "carried:box"
     ]
    },
    {
-    "id": "move_box_to_counter_left_mid",
-    "object": "box",
-    "primitive": "RELOCATE",
-    "destination_slot": "counter_left_mid",
-    "source_pose": [
-     0.7,
-     -0.26,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "destination_pose": [
-     -0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "grasp_template": {
-     "name": "box_thin_topdown",
-     "tcp_in_object_frame": [
-      0.0,
-      0.0,
-      0.135
-     ],
-     "finger_axis_yaw_in_object_frame": 0.0,
-     "open_width": 0.065,
-     "closed_width": 0.0347906361,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "counter",
-      "lift": "counter",
-      "transfer": "dishwasher_center_high",
-      "above_place": "counter_left_high",
-      "place": "counter_left"
-     }
-    },
-    "grasp_pose": [
-     0.7,
-     -0.26,
-     1.045,
-     0.0,
-     1.0,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_box_to_counter_left_mid",
-    "n_samples": 185,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:box"
-    ]
-   },
-   {
-    "id": "move_mug_to_counter_buffer_center",
-    "object": "mug",
-    "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_center",
-    "source_pose": [
-     -0.81,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ],
-    "destination_pose": [
-     0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ],
-    "grasp_template": {
-     "name": "mug_rim_topdown_az180",
-     "tcp_in_object_frame": [
-      -0.0323,
-      0.0,
-      0.0744
-     ],
-     "finger_axis_yaw_in_object_frame": 1.5708,
-     "open_width": 0.045,
-     "closed_width": 0.012,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "counter_left",
-      "lift": "counter_left",
-      "transfer": "dishwasher_center_high",
-      "above_place": "counter",
-      "place": "counter"
-     }
-    },
-    "grasp_pose": [
-     -0.81,
-     -0.237282,
-     0.984389,
-     1.0,
-     -0.0,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_mug_to_counter_buffer_center",
-    "n_samples": 193,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:mug"
-    ]
-   },
-   {
-    "id": "move_mug_to_counter_left_mid",
-    "object": "mug",
-    "primitive": "RELOCATE",
-    "destination_slot": "counter_left_mid",
-    "source_pose": [
-     -0.81,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ],
-    "destination_pose": [
-     -0.61,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.707107,
-     0.707107
-    ],
-    "grasp_template": {
-     "name": "mug_rim_topdown_az180",
-     "tcp_in_object_frame": [
-      -0.0323,
-      0.0,
-      0.0744
-     ],
-     "finger_axis_yaw_in_object_frame": 1.5708,
-     "open_width": 0.045,
-     "closed_width": 0.012,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "counter_left",
-      "lift": "counter_left",
-      "transfer": "counter_left",
-      "above_place": "counter_left",
-      "place": "counter_left"
-     }
-    },
-    "grasp_pose": [
-     -0.81,
-     -0.237282,
-     0.984389,
-     1.0,
-     -0.0,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_mug_to_counter_left_mid",
-    "n_samples": 72,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:mug"
-    ]
-   },
-   {
-    "id": "move_cup_to_upper_right_back",
-    "object": "cup",
-    "primitive": "RELOCATE",
-    "destination_slot": "upper_right_back",
-    "source_pose": [
-     -0.45,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "destination_pose": [
-     0.174,
-     -0.43,
-     0.489978,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "grasp_template": {
-     "name": "cup_rim_topdown_az180",
-     "tcp_in_object_frame": [
-      -0.0363,
-      0.0,
-      0.089
-     ],
-     "finger_axis_yaw_in_object_frame": 1.5708,
-     "open_width": 0.045,
-     "closed_width": 0.012,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "counter_left",
-      "lift": "counter_left",
-      "transfer": "dishwasher_center_high",
-      "above_place": "counter",
-      "place": "dishwasher_center"
-     }
-    },
-    "grasp_pose": [
-     -0.486296,
-     -0.205,
-     0.998998,
-     -0.707107,
-     0.707107,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_cup_to_upper_right_back",
-    "n_samples": 162,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:cup"
-    ]
-   },
-   {
-    "id": "move_bowl_to_counter_buffer_left",
-    "object": "bowl",
-    "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_left",
-    "source_pose": [
-     0.93,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "destination_pose": [
-     0.45,
-     -0.205,
-     0.91,
-     0.0,
-     0.0,
-     0.0,
-     1.0
-    ],
-    "grasp_template": {
-     "name": "bowl_rim_topdown_az180",
-     "tcp_in_object_frame": [
-      -0.0735,
-      0.0,
-      0.0518
-     ],
-     "finger_axis_yaw_in_object_frame": 1.5708,
-     "open_width": 0.045,
-     "closed_width": 0.012,
-     "approach": "top-down (TCP z = -world z)"
-    },
-    "admissible": true,
-    "rejection_reasons": [],
-    "robot": {
-     "stations": {
-      "pick": "counter",
-      "lift": "counter",
-      "transfer": "counter",
-      "above_place": "counter",
-      "place": "counter"
-     }
-    },
-    "grasp_pose": [
-     0.856501,
-     -0.205,
-     0.961807,
-     -0.707107,
-     0.707107,
-     0.0,
-     0.0
-    ],
-    "trajectory_ref": "inputs.npz:move_bowl_to_counter_buffer_left",
-    "n_samples": 103,
-    "moving_bodies": [
-     "gripper(panda hand + fingers)",
-     "carried:bowl"
-    ]
-   },
-   {
-    "id": "move_can_to_counter_buffer_far_right",
+    "id": "move_can_to_B5",
     "object": "can",
     "primitive": "RELOCATE",
-    "destination_slot": "counter_buffer_far_right",
+    "destination_slot": "B5",
+    "destination_orientation": "upright",
+    "source_slot": "B6",
+    "transfer_carry_bottom_z": 0.952,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
     "source_pose": [
-     0.61,
-     -0.18,
-     0.91,
+     0.6125,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
      1.0
     ],
     "destination_pose": [
-     0.93,
-     -0.205,
-     0.91,
+     0.4375,
+     -0.158,
+     0.922,
      0.0,
      0.0,
      0.0,
@@ -1448,24 +2083,296 @@
       "pick": "counter",
       "lift": "counter",
       "transfer": "counter",
-      "above_place": "counter_right",
-      "place": "counter"
+      "above_place": "counter",
+      "place": "counter_high"
      }
     },
     "grasp_pose": [
-     0.61,
-     -0.18,
-     0.97,
+     0.6125,
+     -0.158,
+     0.982,
      -0.707107,
      0.707107,
      0.0,
      0.0
     ],
-    "trajectory_ref": "inputs.npz:move_can_to_counter_buffer_far_right",
-    "n_samples": 82,
+    "trajectory_ref": "inputs.npz:move_can_to_B5",
+    "n_samples": 49,
     "moving_bodies": [
      "gripper(panda hand + fingers)",
      "carried:can"
+    ]
+   },
+   {
+    "id": "move_can_to_B1",
+    "object": "can",
+    "primitive": "RELOCATE",
+    "destination_slot": "B1",
+    "destination_orientation": "upright",
+    "source_slot": "B6",
+    "transfer_carry_bottom_z": 0.952,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
+    "source_pose": [
+     0.6125,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.4375,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "can_body_topdown_90",
+     "tcp_in_object_frame": [
+      0.0,
+      0.0,
+      0.06
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.08,
+     "closed_width": 0.06828860174813396,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter",
+      "place": "counter"
+     }
+    },
+    "grasp_pose": [
+     0.6125,
+     -0.158,
+     0.982,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_can_to_B1",
+    "n_samples": 52,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:can"
+    ]
+   },
+   {
+    "id": "move_mug_to_B1",
+    "object": "mug",
+    "primitive": "RELOCATE",
+    "destination_slot": "B1",
+    "destination_orientation": "upright",
+    "source_slot": "B4",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
+    "source_pose": [
+     0.944282,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.419282,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "mug_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0323,
+      0.0,
+      0.0744
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter",
+      "place": "counter"
+     }
+    },
+    "grasp_pose": [
+     0.912,
+     -0.258,
+     0.996389,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_mug_to_B1",
+    "n_samples": 90,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:mug"
+    ]
+   },
+   {
+    "id": "move_mug_to_B8",
+    "object": "mug",
+    "primitive": "RELOCATE",
+    "destination_slot": "B8",
+    "destination_orientation": "upright",
+    "source_slot": "B4",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
+    "source_pose": [
+     0.944282,
+     -0.258,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.944282,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "mug_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0323,
+      0.0,
+      0.0744
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter",
+      "lift": "counter",
+      "transfer": "counter",
+      "above_place": "counter_right",
+      "place": "counter_right"
+     }
+    },
+    "grasp_pose": [
+     0.912,
+     -0.258,
+     0.996389,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_mug_to_B8",
+    "n_samples": 48,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:mug"
+    ]
+   },
+   {
+    "id": "move_cup_to_U3",
+    "object": "cup",
+    "primitive": "RELOCATE",
+    "destination_slot": "U3",
+    "destination_orientation": "upright",
+    "source_slot": "B8",
+    "transfer_carry_bottom_z": 0.974,
+    "transfer_lips_cleared": [
+     "env:tray"
+    ],
+    "source_pose": [
+     0.9625,
+     -0.158,
+     0.922,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "destination_pose": [
+     0.174507,
+     -0.503011,
+     0.489388,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "grasp_template": {
+     "name": "cup_rim_topdown_az180",
+     "tcp_in_object_frame": [
+      -0.0363,
+      0.0,
+      0.089
+     ],
+     "finger_axis_yaw_in_object_frame": 1.5708,
+     "open_width": 0.045,
+     "closed_width": 0.012,
+     "approach": "top-down (TCP z = -world z)"
+    },
+    "admissible": true,
+    "rejection_reasons": [],
+    "robot": {
+     "stations": {
+      "pick": "counter_right",
+      "lift": "counter_right",
+      "transfer": "counter",
+      "above_place": "rack_push",
+      "place": "rack_push"
+     }
+    },
+    "grasp_pose": [
+     0.926204,
+     -0.158,
+     1.010998,
+     -0.707107,
+     0.707107,
+     0.0,
+     0.0
+    ],
+    "trajectory_ref": "inputs.npz:move_cup_to_U3",
+    "n_samples": 168,
+    "moving_bodies": [
+     "gripper(panda hand + fingers)",
+     "carried:cup"
     ]
    }
   ]
@@ -1473,24 +2380,23 @@
  "labels": {
   "F_initial": 1,
   "direct_target_blockers": [
-   "bottle_l",
-   "bottle_r",
+   "bottle",
    "pan"
   ],
   "target_clearance": {
-   "pan": -0.01921,
-   "bottle_r": -0.01722,
-   "bottle_l": -0.05809,
+   "pan": -0.02073,
+   "bottle": -0.01722,
    "box": 0.05,
+   "can": 0.05,
    "mug": 0.05,
    "cup": 0.05,
    "bowl": 0.05,
-   "can": 0.05
+   "cup_l": 0.05
   },
   "enable_edges": [
    {
-    "from": "move_box_to_counter_buffer_left",
-    "to": "move_bottle_r_to_counter_buffer_right",
+    "from": "move_box_to_B5",
+    "to": "move_bottle_to_B3",
     "blocker": "box",
     "blocked_before": true,
     "executable_after": true,
@@ -1498,165 +2404,121 @@
      "type": "sweep",
      "swept_volume": true,
      "destination_occupied": false,
-     "final_pose_distance": 0.00435,
-     "min_dist": -0.035,
-     "tau_star": 0.7653,
-     "phase_star": "transfer",
-     "part_star": "carried:bottle_r",
-     "status": "conflict",
-     "conflict_magnitude": 0.035,
-     "phases_in_conflict": [
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_r"
-     ]
-    }
-   },
-   {
-    "from": "move_box_to_counter_buffer_left",
-    "to": "move_bottle_l_to_counter_buffer_right",
-    "blocker": "box",
-    "blocked_before": true,
-    "executable_after": true,
-    "cause": {
-     "type": "sweep",
-     "swept_volume": true,
-     "destination_occupied": false,
-     "final_pose_distance": 0.00797,
-     "min_dist": -0.02568,
-     "tau_star": 0.8065,
-     "phase_star": "transfer",
-     "part_star": "carried:bottle_l",
-     "status": "conflict",
-     "conflict_magnitude": 0.02568,
-     "phases_in_conflict": [
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_l"
-     ]
-    }
-   },
-   {
-    "from": "move_box_to_counter_left_mid",
-    "to": "move_bottle_r_to_counter_buffer_right",
-    "blocker": "box",
-    "blocked_before": true,
-    "executable_after": true,
-    "cause": {
-     "type": "sweep",
-     "swept_volume": true,
-     "destination_occupied": false,
-     "final_pose_distance": 0.00435,
-     "min_dist": -0.035,
-     "tau_star": 0.7653,
-     "phase_star": "transfer",
-     "part_star": "carried:bottle_r",
-     "status": "conflict",
-     "conflict_magnitude": 0.035,
-     "phases_in_conflict": [
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_r"
-     ]
-    }
-   },
-   {
-    "from": "move_box_to_counter_left_mid",
-    "to": "move_bottle_l_to_counter_buffer_right",
-    "blocker": "box",
-    "blocked_before": true,
-    "executable_after": true,
-    "cause": {
-     "type": "sweep",
-     "swept_volume": true,
-     "destination_occupied": false,
-     "final_pose_distance": 0.00797,
-     "min_dist": -0.02568,
-     "tau_star": 0.8065,
-     "phase_star": "transfer",
-     "part_star": "carried:bottle_l",
-     "status": "conflict",
-     "conflict_magnitude": 0.02568,
-     "phases_in_conflict": [
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_l"
-     ]
-    }
-   },
-   {
-    "from": "move_box_to_counter_left_mid",
-    "to": "move_bowl_to_counter_buffer_left",
-    "blocker": "box",
-    "blocked_before": true,
-    "executable_after": true,
-    "cause": {
-     "type": "sweep",
-     "swept_volume": true,
-     "destination_occupied": false,
+     "mechanism": "carried_object",
      "final_pose_distance": 0.05,
-     "min_dist": -0.02675,
-     "tau_star": 0.5,
+     "min_dist": -0.02321,
+     "tau_star": 0.8319,
      "phase_star": "transfer",
-     "part_star": "carried:bowl",
+     "part_star": "carried:bottle",
      "status": "conflict",
-     "conflict_magnitude": 0.02675,
+     "conflict_magnitude": 0.02321,
      "phases_in_conflict": [
       "transfer"
      ],
      "parts_in_conflict": [
-      "carried:bowl"
+      "carried:bottle"
+     ]
+    }
+   },
+   {
+    "from": "move_box_to_B5",
+    "to": "move_mug_to_B1",
+    "blocker": "box",
+    "blocked_before": true,
+    "executable_after": true,
+    "cause": {
+     "type": "sweep",
+     "swept_volume": true,
+     "destination_occupied": false,
+     "mechanism": "carried_object",
+     "final_pose_distance": 0.05,
+     "min_dist": -0.03042,
+     "tau_star": 0.5172,
+     "phase_star": "transfer",
+     "part_star": "carried:mug",
+     "status": "conflict",
+     "conflict_magnitude": 0.03042,
+     "phases_in_conflict": [
+      "transfer"
+     ],
+     "parts_in_conflict": [
+      "carried:mug",
+      "gripper"
+     ]
+    }
+   },
+   {
+    "from": "move_box_to_B5",
+    "to": "move_cup_to_U3",
+    "blocker": "box",
+    "blocked_before": true,
+    "executable_after": true,
+    "cause": {
+     "type": "sweep",
+     "swept_volume": true,
+     "destination_occupied": false,
+     "mechanism": "carried_object",
+     "final_pose_distance": 0.05,
+     "min_dist": -0.02723,
+     "tau_star": 0.2975,
+     "phase_star": "transfer",
+     "part_star": "carried:cup",
+     "status": "conflict",
+     "conflict_magnitude": 0.02723,
+     "phases_in_conflict": [
+      "transfer"
+     ],
+     "parts_in_conflict": [
+      "carried:cup",
+      "gripper"
+     ]
+    }
+   },
+   {
+    "from": "move_can_to_B5",
+    "to": "move_box_to_B6",
+    "blocker": "can",
+    "blocked_before": true,
+    "executable_after": true,
+    "cause": {
+     "type": "occupancy+sweep",
+     "swept_volume": true,
+     "destination_occupied": true,
+     "mechanism": "carried_object",
+     "final_pose_distance": -0.03735,
+     "min_dist": -0.03735,
+     "tau_star": 0.6048,
+     "phase_star": "transfer",
+     "part_star": "carried:box",
+     "status": "conflict",
+     "conflict_magnitude": 0.03735,
+     "phases_in_conflict": [
+      "lower",
+      "transfer"
+     ],
+     "parts_in_conflict": [
+      "carried:box"
      ]
     }
    }
   ],
   "disable_edges": [
    {
-    "from": "move_bottle_l_to_counter_left_mid",
-    "to": "move_box_to_counter_left_mid",
-    "blocker": "bottle_l",
+    "from": "move_box_to_B5",
+    "to": "move_can_to_B5",
+    "blocker": "box",
     "cause": {
      "type": "occupancy+sweep",
      "swept_volume": true,
      "destination_occupied": true,
-     "final_pose_distance": -0.05213,
-     "min_dist": -0.05213,
-     "tau_star": 0.925,
+     "mechanism": "gripper",
+     "final_pose_distance": -0.03735,
+     "min_dist": -0.04901,
+     "tau_star": 0.7582,
      "phase_star": "lower",
-     "part_star": "carried:box",
-     "status": "conflict",
-     "conflict_magnitude": 0.05213,
-     "phases_in_conflict": [
-      "lower",
-      "release",
-      "retreat",
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:box",
-      "gripper"
-     ]
-    }
-   },
-   {
-    "from": "move_bottle_l_to_counter_left_mid",
-    "to": "move_mug_to_counter_left_mid",
-    "blocker": "bottle_l",
-    "cause": {
-     "type": "occupancy+sweep",
-     "swept_volume": true,
-     "destination_occupied": true,
-     "final_pose_distance": -0.01299,
-     "min_dist": -0.06145,
-     "tau_star": 0.8701,
-     "phase_star": "retreat",
      "part_star": "gripper",
      "status": "conflict",
-     "conflict_magnitude": 0.06145,
+     "conflict_magnitude": 0.04901,
      "phases_in_conflict": [
       "lower",
       "release",
@@ -1664,102 +2526,29 @@
       "transfer"
      ],
      "parts_in_conflict": [
-      "carried:mug",
       "gripper"
      ]
     }
    },
    {
-    "from": "move_box_to_counter_left_mid",
-    "to": "move_bottle_l_to_counter_left_mid",
-    "blocker": "box",
+    "from": "move_can_to_B5",
+    "to": "move_box_to_B5",
+    "blocker": "can",
     "cause": {
      "type": "occupancy+sweep",
      "swept_volume": true,
      "destination_occupied": true,
-     "final_pose_distance": -0.05213,
-     "min_dist": -0.05213,
-     "tau_star": 0.8665,
-     "phase_star": "lower",
-     "part_star": "carried:bottle_l",
-     "status": "conflict",
-     "conflict_magnitude": 0.05213,
-     "phases_in_conflict": [
-      "lower",
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_l"
-     ]
-    }
-   },
-   {
-    "from": "move_box_to_counter_left_mid",
-    "to": "move_mug_to_counter_left_mid",
-    "blocker": "box",
-    "cause": {
-     "type": "occupancy+sweep",
-     "swept_volume": true,
-     "destination_occupied": true,
-     "final_pose_distance": -0.02023,
-     "min_dist": -0.05668,
-     "tau_star": 0.6876,
-     "phase_star": "lower",
-     "part_star": "carried:mug",
-     "status": "conflict",
-     "conflict_magnitude": 0.05668,
-     "phases_in_conflict": [
-      "lower",
-      "release",
-      "retreat",
-      "transfer"
-     ],
-     "parts_in_conflict": [
-      "carried:mug",
-      "gripper"
-     ]
-    }
-   },
-   {
-    "from": "move_mug_to_counter_left_mid",
-    "to": "move_bottle_l_to_counter_left_mid",
-    "blocker": "mug",
-    "cause": {
-     "type": "occupancy",
-     "swept_volume": false,
-     "destination_occupied": true,
-     "final_pose_distance": -0.01299,
-     "min_dist": -0.01299,
-     "tau_star": 0.9196,
-     "phase_star": "lower",
-     "part_star": "carried:bottle_l",
-     "status": "conflict",
-     "conflict_magnitude": 0.01299,
-     "phases_in_conflict": [
-      "lower"
-     ],
-     "parts_in_conflict": [
-      "carried:bottle_l"
-     ]
-    }
-   },
-   {
-    "from": "move_mug_to_counter_left_mid",
-    "to": "move_box_to_counter_left_mid",
-    "blocker": "mug",
-    "cause": {
-     "type": "occupancy",
-     "swept_volume": false,
-     "destination_occupied": true,
-     "final_pose_distance": -0.02023,
-     "min_dist": -0.02023,
-     "tau_star": 0.9361,
-     "phase_star": "lower",
+     "mechanism": "carried_object",
+     "final_pose_distance": -0.03735,
+     "min_dist": -0.04471,
+     "tau_star": 0.6854,
+     "phase_star": "transfer",
      "part_star": "carried:box",
      "status": "conflict",
-     "conflict_magnitude": 0.02023,
+     "conflict_magnitude": 0.04471,
      "phases_in_conflict": [
-      "lower"
+      "lower",
+      "transfer"
      ],
      "parts_in_conflict": [
       "carried:box"
@@ -1770,259 +2559,186 @@
   "compatibility_edges": {
    "same_object": [
     [
-     "move_pan_to_upper_tines_handle_left",
-     "move_pan_to_upper_tines_handle_right"
+     "move_pan_to_U5_handle_left",
+     "move_pan_to_U5_handle_right"
     ],
     [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_bottle_r_to_counter_buffer_right"
+     "move_bottle_to_B3",
+     "move_bottle_to_B7"
     ],
     [
-     "move_bottle_l_to_counter_buffer_right",
-     "move_bottle_l_to_counter_left_mid"
+     "move_bottle_to_B3",
+     "move_bottle_to_B8"
     ],
     [
-     "move_box_to_counter_buffer_left",
-     "move_box_to_counter_left_mid"
+     "move_bottle_to_B7",
+     "move_bottle_to_B8"
     ],
     [
-     "move_mug_to_counter_buffer_center",
-     "move_mug_to_counter_left_mid"
+     "move_box_to_B5",
+     "move_box_to_B6"
+    ],
+    [
+     "move_can_to_B1",
+     "move_can_to_B5"
+    ],
+    [
+     "move_mug_to_B1",
+     "move_mug_to_B8"
     ]
    ],
    "destination_overlap": [
     [
-     "move_cup_to_upper_right_back",
-     "move_pan_to_upper_tines_handle_left",
-     -0.0144
+     "move_cup_to_U3",
+     "move_pan_to_U5_handle_left",
+     -0.0097
     ],
     [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_can_to_counter_buffer_far_right",
-     -0.0242
+     "move_bottle_to_B8",
+     "move_mug_to_B8",
+     -0.0193
     ],
     [
-     "move_bottle_l_to_counter_buffer_right",
-     "move_bottle_r_to_counter_buffer_right",
-     -0.0362
+     "move_box_to_B5",
+     "move_can_to_B5",
+     -0.0373
     ],
     [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_left_mid",
-     -0.0521
-    ],
-    [
-     "move_bottle_l_to_counter_left_mid",
-     "move_mug_to_counter_left_mid",
-     -0.013
-    ],
-    [
-     "move_bowl_to_counter_buffer_left",
-     "move_box_to_counter_buffer_left",
-     -0.0306
-    ],
-    [
-     "move_box_to_counter_left_mid",
-     "move_mug_to_counter_left_mid",
-     -0.0202
+     "move_can_to_B1",
+     "move_mug_to_B1",
+     -0.0203
     ]
    ],
    "final_placement_collision": [
     [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_pan_to_upper_tines_handle_left",
-     -0.0261
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_right",
+     -0.0091
     ],
     [
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_left",
-     -0.0261
+     "move_bottle_to_B7",
+     "move_pan_to_U5_handle_right",
+     -0.0091
     ],
     [
-     "move_bottle_l_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_left",
-     -0.0117
+     "move_bottle_to_B8",
+     "move_pan_to_U5_handle_right",
+     -0.0091
     ],
     [
-     "move_bottle_l_to_counter_left_mid",
-     "move_pan_to_upper_tines_handle_left",
-     -0.0117
-    ],
-    [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_pan_to_upper_tines_handle_right",
-     -0.0176
-    ],
-    [
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_right",
-     -0.0176
-    ],
-    [
-     "move_bottle_l_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_right",
-     -0.0273
-    ],
-    [
-     "move_bottle_l_to_counter_left_mid",
-     "move_pan_to_upper_tines_handle_right",
-     -0.0273
-    ],
-    [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_cup_to_upper_right_back",
+     "move_bottle_to_B8",
+     "move_cup_to_U3",
      -0.0159
     ],
     [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_bowl_to_counter_buffer_left",
-     -0.0291
+     "move_box_to_B6",
+     "move_can_to_B5",
+     -0.0373
     ],
     [
-     "move_bottle_r_to_counter_buffer_right",
-     "move_cup_to_upper_right_back",
-     -0.0159
+     "move_box_to_B6",
+     "move_can_to_B1",
+     -0.0373
     ],
     [
-     "move_can_to_counter_buffer_far_right",
-     "move_mug_to_counter_buffer_center",
-     -0.0216
-    ],
-    [
-     "move_bowl_to_counter_buffer_left",
-     "move_can_to_counter_buffer_far_right",
-     -0.0307
+     "move_cup_to_U3",
+     "move_mug_to_B8",
+     -0.0148
     ]
    ],
    "support_incompatibility": [
     [
-     "move_bottle_r_to_counter_buffer_far_right",
-     "move_can_to_counter_buffer_far_right",
-     "counter_buffer_far_right"
+     "move_bottle_to_B8",
+     "move_mug_to_B8",
+     "B8/B8"
     ],
     [
-     "move_bottle_l_to_counter_buffer_right",
-     "move_bottle_r_to_counter_buffer_right",
-     "counter_buffer_right"
+     "move_box_to_B5",
+     "move_can_to_B5",
+     "B5/B5"
     ],
     [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_left_mid",
-     "counter_left_mid"
-    ],
-    [
-     "move_bottle_l_to_counter_left_mid",
-     "move_mug_to_counter_left_mid",
-     "counter_left_mid"
-    ],
-    [
-     "move_bowl_to_counter_buffer_left",
-     "move_box_to_counter_buffer_left",
-     "counter_buffer_left"
-    ],
-    [
-     "move_box_to_counter_left_mid",
-     "move_mug_to_counter_left_mid",
-     "counter_left_mid"
+     "move_can_to_B1",
+     "move_mug_to_B1",
+     "B1/B1"
     ]
    ]
   },
   "optimal_sequences": [
    [
-    "move_bottle_l_to_counter_left_mid",
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_left"
+    "move_box_to_B5",
+    "move_bottle_to_B3",
+    "move_pan_to_U5_handle_left"
    ],
    [
-    "move_bottle_l_to_counter_left_mid",
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_right"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_mid",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_mid",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_right"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_mid",
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_mid",
-    "move_pan_to_upper_tines_handle_right"
+    "move_box_to_B5",
+    "move_bottle_to_B3",
+    "move_pan_to_U5_handle_right"
    ]
   ],
-  "optimal_cost": 4,
-  "sequence_length": 4,
+  "optimal_cost": 3,
+  "sequence_length": 3,
   "no_recourse": false,
   "sequence_proofs": [
    {
     "sequence": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_left"
+     "move_box_to_B5",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_left"
     ],
     "edges": [
      {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
+      "from": "move_box_to_B5",
+      "to": "move_bottle_to_B3",
       "blocker": "box",
+      "destination_slot": "B3",
+      "destination_slot_free_before_prerequisite": true,
       "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
+       "move_bottle_to_B3 executable without move_box_to_B5": false,
+       "move_bottle_to_B3 executable after move_box_to_B5": true
       },
       "cause": {
        "type": "sweep",
        "swept_volume": true,
        "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
+       "mechanism": "carried_object",
+       "final_pose_distance": 0.05,
+       "min_dist": -0.02321,
+       "tau_star": 0.8319,
        "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
+       "part_star": "carried:bottle",
        "status": "conflict",
-       "conflict_magnitude": 0.035,
+       "conflict_magnitude": 0.02321,
        "phases_in_conflict": [
         "transfer"
        ],
        "parts_in_conflict": [
-        "carried:bottle_r"
+        "carried:bottle"
        ]
       }
      },
      {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_l",
+      "from": "move_bottle_to_B3",
+      "to": "move_pan_to_U5_handle_left",
+      "blocker": "bottle",
+      "destination_slot": "U5",
+      "destination_slot_free_before_prerequisite": true,
       "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_l_to_counter_left_mid": true
+       "move_pan_to_U5_handle_left executable without move_bottle_to_B3": false,
+       "move_pan_to_U5_handle_left executable after move_bottle_to_B3": true
       },
       "cause": {
-       "type": "occupancy+sweep",
+       "type": "sweep",
        "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.0117,
-       "min_dist": -0.0384,
-       "tau_star": 0.8661,
+       "destination_occupied": false,
+       "mechanism": "gripper",
+       "final_pose_distance": 0.05,
+       "min_dist": -0.0094,
+       "tau_star": 0.8447,
        "phase_star": "lower",
        "part_star": "gripper",
        "status": "conflict",
-       "conflict_magnitude": 0.0384,
+       "conflict_magnitude": 0.0094,
        "phases_in_conflict": [
         "lower",
         "release",
@@ -2034,24 +2750,119 @@
       }
      },
      {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_r",
+      "from": "move_bottle_to_B3",
+      "to": "TARGET",
+      "blocker": "bottle",
       "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_r_to_counter_buffer_right": true
+       "TARGET feasible without move_bottle_to_B3": false,
+       "TARGET feasible after sequence": true
+      },
+      "cause": {
+       "type": "target_blocker",
+       "min_dist": -0.01722,
+       "tau_star": 0.7692,
+       "phase_star": "push_palm",
+       "part_star": "object:bottle|env:dishwasher",
+       "status": "conflict",
+       "conflict_magnitude": 0.01722,
+       "phases_in_conflict": [
+        "push_palm"
+       ],
+       "parts_in_conflict": [
+        "object:bottle|env:dishwasher"
+       ]
+      }
+     },
+     {
+      "from": "move_pan_to_U5_handle_left",
+      "to": "TARGET",
+      "blocker": "pan",
+      "proof": {
+       "TARGET feasible without move_pan_to_U5_handle_left": false,
+       "TARGET feasible after sequence": true
+      },
+      "cause": {
+       "type": "target_blocker",
+       "min_dist": -0.02073,
+       "tau_star": 0.0256,
+       "phase_star": "push_grasp",
+       "part_star": "object:pan|gripper",
+       "status": "conflict",
+       "conflict_magnitude": 0.02073,
+       "phases_in_conflict": [
+        "push_grasp"
+       ],
+       "parts_in_conflict": [
+        "object:pan|gripper"
+       ]
+      }
+     }
+    ],
+    "final_F": 0,
+    "target_blocking_mechanisms": {
+     "pan": "rack_borne_object",
+     "bottle": "rack_borne_object"
+    }
+   },
+   {
+    "sequence": [
+     "move_box_to_B5",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_right"
+    ],
+    "edges": [
+     {
+      "from": "move_box_to_B5",
+      "to": "move_bottle_to_B3",
+      "blocker": "box",
+      "destination_slot": "B3",
+      "destination_slot_free_before_prerequisite": true,
+      "proof": {
+       "move_bottle_to_B3 executable without move_box_to_B5": false,
+       "move_bottle_to_B3 executable after move_box_to_B5": true
+      },
+      "cause": {
+       "type": "sweep",
+       "swept_volume": true,
+       "destination_occupied": false,
+       "mechanism": "carried_object",
+       "final_pose_distance": 0.05,
+       "min_dist": -0.02321,
+       "tau_star": 0.8319,
+       "phase_star": "transfer",
+       "part_star": "carried:bottle",
+       "status": "conflict",
+       "conflict_magnitude": 0.02321,
+       "phases_in_conflict": [
+        "transfer"
+       ],
+       "parts_in_conflict": [
+        "carried:bottle"
+       ]
+      }
+     },
+     {
+      "from": "move_bottle_to_B3",
+      "to": "move_pan_to_U5_handle_right",
+      "blocker": "bottle",
+      "destination_slot": "U5",
+      "destination_slot_free_before_prerequisite": true,
+      "proof": {
+       "move_pan_to_U5_handle_right executable without move_bottle_to_B3": false,
+       "move_pan_to_U5_handle_right executable after move_bottle_to_B3": true
       },
       "cause": {
        "type": "occupancy",
        "swept_volume": false,
        "destination_occupied": true,
-       "final_pose_distance": -0.02611,
-       "min_dist": -0.02611,
-       "tau_star": 0.8661,
+       "mechanism": "occupancy",
+       "final_pose_distance": -0.00913,
+       "min_dist": -0.00984,
+       "tau_star": 0.7899,
        "phase_star": "lower",
        "part_star": "carried:pan",
        "status": "conflict",
-       "conflict_magnitude": 0.02611,
+       "conflict_magnitude": 0.00984,
        "phases_in_conflict": [
         "lower"
        ],
@@ -2061,999 +2872,829 @@
       }
      },
      {
-      "from": "move_bottle_l_to_counter_left_mid",
+      "from": "move_bottle_to_B3",
       "to": "TARGET",
-      "blocker": "bottle_l",
+      "blocker": "bottle",
       "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
+       "TARGET feasible without move_bottle_to_B3": false,
        "TARGET feasible after sequence": true
       },
       "cause": {
        "type": "target_blocker",
        "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
+       "tau_star": 0.7692,
+       "phase_star": "push_palm",
+       "part_star": "object:bottle|env:dishwasher",
        "status": "conflict",
        "conflict_magnitude": 0.01722,
        "phases_in_conflict": [
-        "close_door",
-        "push_rack"
+        "push_palm"
        ],
        "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
+        "object:bottle|env:dishwasher"
        ]
       }
      },
      {
-      "from": "move_pan_to_upper_tines_handle_left",
+      "from": "move_pan_to_U5_handle_right",
       "to": "TARGET",
       "blocker": "pan",
       "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_left": false,
+       "TARGET feasible without move_pan_to_U5_handle_right": false,
        "TARGET feasible after sequence": true
       },
       "cause": {
        "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
+       "min_dist": -0.02073,
+       "tau_star": 0.0256,
+       "phase_star": "push_grasp",
+       "part_star": "object:pan|gripper",
        "status": "conflict",
-       "conflict_magnitude": 0.01921,
+       "conflict_magnitude": 0.02073,
        "phases_in_conflict": [
-        "close_door",
-        "push_rack"
+        "push_grasp"
        ],
        "parts_in_conflict": [
-        "object:pan|door",
         "object:pan|gripper"
        ]
       }
      }
     ],
-    "final_F": 0
-   },
-   {
-    "sequence": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_right"
-    ],
-    "edges": [
-     {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
-      "blocker": "box",
-      "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
-      },
-      "cause": {
-       "type": "sweep",
-       "swept_volume": true,
-       "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
-       "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
-       "status": "conflict",
-       "conflict_magnitude": 0.035,
-       "phases_in_conflict": [
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:bottle_r"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_l",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_l_to_counter_left_mid": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.02726,
-       "min_dist": -0.03808,
-       "tau_star": 0.7954,
-       "phase_star": "lower",
-       "part_star": "carried:pan",
-       "status": "conflict",
-       "conflict_magnitude": 0.03808,
-       "phases_in_conflict": [
-        "lower",
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:pan"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_r",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_r_to_counter_buffer_right": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.01761,
-       "min_dist": -0.03587,
-       "tau_star": 0.8655,
-       "phase_star": "lower",
-       "part_star": "gripper",
-       "status": "conflict",
-       "conflict_magnitude": 0.03587,
-       "phases_in_conflict": [
-        "lower",
-        "release",
-        "retreat"
-       ],
-       "parts_in_conflict": [
-        "gripper"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "TARGET",
-      "blocker": "bottle_l",
-      "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.01722,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_pan_to_upper_tines_handle_right",
-      "to": "TARGET",
-      "blocker": "pan",
-      "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
-       "status": "conflict",
-       "conflict_magnitude": 0.01921,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:pan|door",
-        "object:pan|gripper"
-       ]
-      }
-     }
-    ],
-    "final_F": 0
-   },
-   {
-    "sequence": [
-     "move_box_to_counter_buffer_left",
-     "move_bottle_l_to_counter_left_mid",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_left"
-    ],
-    "edges": [
-     {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
-      "blocker": "box",
-      "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
-      },
-      "cause": {
-       "type": "sweep",
-       "swept_volume": true,
-       "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
-       "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
-       "status": "conflict",
-       "conflict_magnitude": 0.035,
-       "phases_in_conflict": [
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:bottle_r"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_l",
-      "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_l_to_counter_left_mid": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.0117,
-       "min_dist": -0.0384,
-       "tau_star": 0.8661,
-       "phase_star": "lower",
-       "part_star": "gripper",
-       "status": "conflict",
-       "conflict_magnitude": 0.0384,
-       "phases_in_conflict": [
-        "lower",
-        "release",
-        "retreat"
-       ],
-       "parts_in_conflict": [
-        "gripper"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_r",
-      "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_r_to_counter_buffer_right": true
-      },
-      "cause": {
-       "type": "occupancy",
-       "swept_volume": false,
-       "destination_occupied": true,
-       "final_pose_distance": -0.02611,
-       "min_dist": -0.02611,
-       "tau_star": 0.8661,
-       "phase_star": "lower",
-       "part_star": "carried:pan",
-       "status": "conflict",
-       "conflict_magnitude": 0.02611,
-       "phases_in_conflict": [
-        "lower"
-       ],
-       "parts_in_conflict": [
-        "carried:pan"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "TARGET",
-      "blocker": "bottle_l",
-      "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.01722,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_pan_to_upper_tines_handle_left",
-      "to": "TARGET",
-      "blocker": "pan",
-      "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_left": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
-       "status": "conflict",
-       "conflict_magnitude": 0.01921,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:pan|door",
-        "object:pan|gripper"
-       ]
-      }
-     }
-    ],
-    "final_F": 0
-   },
-   {
-    "sequence": [
-     "move_box_to_counter_buffer_left",
-     "move_bottle_l_to_counter_left_mid",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_right"
-    ],
-    "edges": [
-     {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
-      "blocker": "box",
-      "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
-      },
-      "cause": {
-       "type": "sweep",
-       "swept_volume": true,
-       "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
-       "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
-       "status": "conflict",
-       "conflict_magnitude": 0.035,
-       "phases_in_conflict": [
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:bottle_r"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_l",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_l_to_counter_left_mid": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.02726,
-       "min_dist": -0.03808,
-       "tau_star": 0.7954,
-       "phase_star": "lower",
-       "part_star": "carried:pan",
-       "status": "conflict",
-       "conflict_magnitude": 0.03808,
-       "phases_in_conflict": [
-        "lower",
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:pan"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_r",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_r_to_counter_buffer_right": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.01761,
-       "min_dist": -0.03587,
-       "tau_star": 0.8655,
-       "phase_star": "lower",
-       "part_star": "gripper",
-       "status": "conflict",
-       "conflict_magnitude": 0.03587,
-       "phases_in_conflict": [
-        "lower",
-        "release",
-        "retreat"
-       ],
-       "parts_in_conflict": [
-        "gripper"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "TARGET",
-      "blocker": "bottle_l",
-      "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.01722,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_pan_to_upper_tines_handle_right",
-      "to": "TARGET",
-      "blocker": "pan",
-      "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
-       "status": "conflict",
-       "conflict_magnitude": 0.01921,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:pan|door",
-        "object:pan|gripper"
-       ]
-      }
-     }
-    ],
-    "final_F": 0
-   },
-   {
-    "sequence": [
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_bottle_l_to_counter_left_mid",
-     "move_pan_to_upper_tines_handle_left"
-    ],
-    "edges": [
-     {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
-      "blocker": "box",
-      "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
-      },
-      "cause": {
-       "type": "sweep",
-       "swept_volume": true,
-       "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
-       "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
-       "status": "conflict",
-       "conflict_magnitude": 0.035,
-       "phases_in_conflict": [
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:bottle_r"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_r",
-      "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_r_to_counter_buffer_right": true
-      },
-      "cause": {
-       "type": "occupancy",
-       "swept_volume": false,
-       "destination_occupied": true,
-       "final_pose_distance": -0.02611,
-       "min_dist": -0.02611,
-       "tau_star": 0.8661,
-       "phase_star": "lower",
-       "part_star": "carried:pan",
-       "status": "conflict",
-       "conflict_magnitude": 0.02611,
-       "phases_in_conflict": [
-        "lower"
-       ],
-       "parts_in_conflict": [
-        "carried:pan"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_left",
-      "blocker": "bottle_l",
-      "proof": {
-       "move_pan_to_upper_tines_handle_left executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_left executable after move_bottle_l_to_counter_left_mid": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.0117,
-       "min_dist": -0.0384,
-       "tau_star": 0.8661,
-       "phase_star": "lower",
-       "part_star": "gripper",
-       "status": "conflict",
-       "conflict_magnitude": 0.0384,
-       "phases_in_conflict": [
-        "lower",
-        "release",
-        "retreat"
-       ],
-       "parts_in_conflict": [
-        "gripper"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.01722,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "TARGET",
-      "blocker": "bottle_l",
-      "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_pan_to_upper_tines_handle_left",
-      "to": "TARGET",
-      "blocker": "pan",
-      "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_left": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
-       "status": "conflict",
-       "conflict_magnitude": 0.01921,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:pan|door",
-        "object:pan|gripper"
-       ]
-      }
-     }
-    ],
-    "final_F": 0
-   },
-   {
-    "sequence": [
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_bottle_l_to_counter_left_mid",
-     "move_pan_to_upper_tines_handle_right"
-    ],
-    "edges": [
-     {
-      "from": "move_box_to_counter_buffer_left",
-      "to": "move_bottle_r_to_counter_buffer_right",
-      "blocker": "box",
-      "proof": {
-       "move_bottle_r_to_counter_buffer_right executable without move_box_to_counter_buffer_left": false,
-       "move_bottle_r_to_counter_buffer_right executable after move_box_to_counter_buffer_left": true
-      },
-      "cause": {
-       "type": "sweep",
-       "swept_volume": true,
-       "destination_occupied": false,
-       "final_pose_distance": 0.00435,
-       "min_dist": -0.035,
-       "tau_star": 0.7653,
-       "phase_star": "transfer",
-       "part_star": "carried:bottle_r",
-       "status": "conflict",
-       "conflict_magnitude": 0.035,
-       "phases_in_conflict": [
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:bottle_r"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_r",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_r_to_counter_buffer_right": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_r_to_counter_buffer_right": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.01761,
-       "min_dist": -0.03587,
-       "tau_star": 0.8655,
-       "phase_star": "lower",
-       "part_star": "gripper",
-       "status": "conflict",
-       "conflict_magnitude": 0.03587,
-       "phases_in_conflict": [
-        "lower",
-        "release",
-        "retreat"
-       ],
-       "parts_in_conflict": [
-        "gripper"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "move_pan_to_upper_tines_handle_right",
-      "blocker": "bottle_l",
-      "proof": {
-       "move_pan_to_upper_tines_handle_right executable without move_bottle_l_to_counter_left_mid": false,
-       "move_pan_to_upper_tines_handle_right executable after move_bottle_l_to_counter_left_mid": true
-      },
-      "cause": {
-       "type": "occupancy+sweep",
-       "swept_volume": true,
-       "destination_occupied": true,
-       "final_pose_distance": -0.02726,
-       "min_dist": -0.03808,
-       "tau_star": 0.7954,
-       "phase_star": "lower",
-       "part_star": "carried:pan",
-       "status": "conflict",
-       "conflict_magnitude": 0.03808,
-       "phases_in_conflict": [
-        "lower",
-        "transfer"
-       ],
-       "parts_in_conflict": [
-        "carried:pan"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_r_to_counter_buffer_right",
-      "to": "TARGET",
-      "blocker": "bottle_r",
-      "proof": {
-       "TARGET feasible without move_bottle_r_to_counter_buffer_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01722,
-       "tau_star": 0.225,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_r|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.01722,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_r|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_bottle_l_to_counter_left_mid",
-      "to": "TARGET",
-      "blocker": "bottle_l",
-      "proof": {
-       "TARGET feasible without move_bottle_l_to_counter_left_mid": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.05809,
-       "tau_star": 0.3,
-       "phase_star": "push_rack",
-       "part_star": "object:bottle_l|env:dishwasher",
-       "status": "conflict",
-       "conflict_magnitude": 0.05809,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:bottle_l|env:dishwasher"
-       ]
-      }
-     },
-     {
-      "from": "move_pan_to_upper_tines_handle_right",
-      "to": "TARGET",
-      "blocker": "pan",
-      "proof": {
-       "TARGET feasible without move_pan_to_upper_tines_handle_right": false,
-       "TARGET feasible after sequence": true
-      },
-      "cause": {
-       "type": "target_blocker",
-       "min_dist": -0.01921,
-       "tau_star": 0.96,
-       "phase_star": "close_door",
-       "part_star": "object:pan|door",
-       "status": "conflict",
-       "conflict_magnitude": 0.01921,
-       "phases_in_conflict": [
-        "close_door",
-        "push_rack"
-       ],
-       "parts_in_conflict": [
-        "object:pan|door",
-        "object:pan|gripper"
-       ]
-      }
-     }
-    ],
-    "final_F": 0
+    "final_F": 0,
+    "target_blocking_mechanisms": {
+     "pan": "rack_borne_object",
+     "bottle": "rack_borne_object"
+    }
    }
   ],
   "irreducible_solutions": [
    {
     "interventions": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_box_to_counter_buffer_left",
-     "move_pan_to_upper_tines_handle_left"
+     "move_bottle_to_B3",
+     "move_box_to_B5",
+     "move_pan_to_U5_handle_left"
     ],
     "example_order": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_left"
+     "move_box_to_B5",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_left"
+    ],
+    "length": 3
+   },
+   {
+    "interventions": [
+     "move_bottle_to_B3",
+     "move_box_to_B5",
+     "move_pan_to_U5_handle_right"
+    ],
+    "example_order": [
+     "move_box_to_B5",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_right"
+    ],
+    "length": 3
+   },
+   {
+    "interventions": [
+     "move_bottle_to_B3",
+     "move_box_to_B6",
+     "move_can_to_B5",
+     "move_pan_to_U5_handle_left"
+    ],
+    "example_order": [
+     "move_can_to_B5",
+     "move_box_to_B6",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_left"
     ],
     "length": 4
    },
    {
     "interventions": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_box_to_counter_buffer_left",
-     "move_pan_to_upper_tines_handle_right"
+     "move_bottle_to_B3",
+     "move_box_to_B6",
+     "move_can_to_B5",
+     "move_pan_to_U5_handle_right"
     ],
     "example_order": [
-     "move_bottle_l_to_counter_left_mid",
-     "move_box_to_counter_buffer_left",
-     "move_bottle_r_to_counter_buffer_right",
-     "move_pan_to_upper_tines_handle_right"
+     "move_can_to_B5",
+     "move_box_to_B6",
+     "move_bottle_to_B3",
+     "move_pan_to_U5_handle_right"
     ],
     "length": 4
    }
   ],
+  "state_conditioned": [
+   {
+    "depth": 0,
+    "state": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B2:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_box_to_B5",
+     "move_can_to_B5"
+    ],
+    "effects": [
+     {
+      "p": "move_box_to_B5",
+      "enables": [
+       "move_bottle_to_B3",
+       "move_mug_to_B1",
+       "move_cup_to_U3"
+      ],
+      "disables": [
+       "move_can_to_B5"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_can_to_B5",
+      "enables": [
+       "move_box_to_B6"
+      ],
+      "disables": [
+       "move_box_to_B5"
+      ],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 1,
+    "state": [
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B2:upright",
+     "can": "B5:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_box_to_B6"
+    ],
+    "effects": [
+     {
+      "p": "move_box_to_B6",
+      "enables": [
+       "move_bottle_to_B3",
+       "move_mug_to_B1",
+       "move_cup_to_U3"
+      ],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 1,
+    "state": [
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_cup_to_U3",
+     "move_mug_to_B1"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_left",
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_mug_to_B1",
+       "move_cup_to_U3"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B1",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     },
+     {
+      "p": "move_cup_to_U3",
+      "enables": [
+       "move_mug_to_B8"
+      ],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 2,
+    "state": [
+     0,
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B6:upright",
+     "can": "B5:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_cup_to_U3",
+     "move_mug_to_B1"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_left",
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_mug_to_B1",
+       "move_cup_to_U3"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B1",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     },
+     {
+      "p": "move_cup_to_U3",
+      "enables": [
+       "move_mug_to_B8"
+      ],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 2,
+    "state": [
+     0,
+     0,
+     2,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "U3:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_mug_to_B1",
+     "move_mug_to_B8"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_mug_to_B1",
+       "move_mug_to_B8"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B1",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B8",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 2,
+    "state": [
+     0,
+     0,
+     2,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B1:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_cup_to_U3"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_left",
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_cup_to_U3"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_cup_to_U3",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 2,
+    "state": [
+     0,
+     1,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "B3:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_pan_to_U5_handle_left",
+     "move_pan_to_U5_handle_right"
+    ],
+    "effects": [
+     {
+      "p": "move_pan_to_U5_handle_left",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     },
+     {
+      "p": "move_pan_to_U5_handle_right",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     0,
+     1,
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B6:upright",
+     "can": "B5:upright",
+     "mug": "B4:upright",
+     "cup": "U3:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_mug_to_B1",
+     "move_mug_to_B8"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_mug_to_B1",
+       "move_mug_to_B8"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B1",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     },
+     {
+      "p": "move_mug_to_B8",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     0,
+     1,
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B6:upright",
+     "can": "B5:upright",
+     "mug": "B1:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3",
+     "move_cup_to_U3"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_left",
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [
+       "move_cup_to_U3"
+      ],
+      "F_after": 1
+     },
+     {
+      "p": "move_cup_to_U3",
+      "enables": [],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     0,
+     2,
+     0,
+     1,
+     1,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B1:upright",
+     "cup": "U3:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     0,
+     2,
+     0,
+     2,
+     1,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "U1:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B8:upright",
+     "cup": "U3:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_bottle_to_B3"
+    ],
+    "effects": [
+     {
+      "p": "move_bottle_to_B3",
+      "enables": [
+       "move_pan_to_U5_handle_right"
+      ],
+      "disables": [],
+      "F_after": 1
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     1,
+     1,
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "B3:upright",
+     "box": "B6:upright",
+     "can": "B5:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_pan_to_U5_handle_left",
+     "move_pan_to_U5_handle_right"
+    ],
+    "effects": [
+     {
+      "p": "move_pan_to_U5_handle_left",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     },
+     {
+      "p": "move_pan_to_U5_handle_right",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     1,
+     2,
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "B3:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "U3:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_pan_to_U5_handle_right"
+    ],
+    "effects": [
+     {
+      "p": "move_pan_to_U5_handle_right",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     0,
+     1,
+     2,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_out",
+     "bottle": "B3:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B1:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 1,
+    "executable": [
+     "move_pan_to_U5_handle_left",
+     "move_pan_to_U5_handle_right"
+    ],
+    "effects": [
+     {
+      "p": "move_pan_to_U5_handle_left",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     },
+     {
+      "p": "move_pan_to_U5_handle_right",
+      "enables": [],
+      "disables": [],
+      "F_after": 0
+     }
+    ]
+   },
+   {
+    "depth": 3,
+    "state": [
+     1,
+     1,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_left",
+     "bottle": "B3:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 0,
+    "executable": [],
+    "effects": []
+   },
+   {
+    "depth": 3,
+    "state": [
+     2,
+     1,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "state_slots": {
+     "pan": "U5:handle_right",
+     "bottle": "B3:upright",
+     "box": "B5:upright",
+     "can": "B6:upright",
+     "mug": "B4:upright",
+     "cup": "B8:upright",
+     "bowl": "L1:upright",
+     "cup_l": "L3:upright"
+    },
+    "F": 0,
+    "executable": [],
+    "effects": []
+   }
+  ],
   "per_action": {
-   "move_pan_to_upper_tines_handle_left": {
+   "move_pan_to_U5_handle_left": {
     "executable_initially": false,
     "blockers_initially": [
-     "bottle_l",
-     "bottle_r"
+     "bottle"
     ],
     "min_clearance_per_entity_initially": {
-     "bottle_r": {
-      "min_dist": -0.02611,
-      "tau_star": 0.8661,
-      "phase_star": "lower",
-      "part_star": "carried:pan",
-      "status": "conflict",
-      "conflict_magnitude": 0.02611,
-      "phases_in_conflict": [
-       "lower"
-      ],
-      "parts_in_conflict": [
-       "carried:pan"
-      ]
-     },
-     "bottle_l": {
-      "min_dist": -0.0384,
-      "tau_star": 0.8661,
+     "bottle": {
+      "min_dist": -0.0094,
+      "tau_star": 0.8447,
       "phase_star": "lower",
       "part_star": "gripper",
       "status": "conflict",
-      "conflict_magnitude": 0.0384,
+      "conflict_magnitude": 0.0094,
       "phases_in_conflict": [
        "lower",
        "release",
@@ -3073,6 +3714,16 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
      "mug": {
       "min_dist": 0.05,
       "tau_star": 0.0,
@@ -3103,7 +3754,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
+     "cup_l": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3116,7 +3767,7 @@
     },
     "fixed_environment": {
      "min_dist": 0.0,
-     "tau_star": 0.8661,
+     "tau_star": 0.8447,
      "phase_star": "lower",
      "part_star": "carried:pan|fixture:rack1",
      "status": "ambiguous",
@@ -3125,39 +3776,21 @@
      "parts_in_conflict": []
     }
    },
-   "move_pan_to_upper_tines_handle_right": {
+   "move_pan_to_U5_handle_right": {
     "executable_initially": false,
     "blockers_initially": [
-     "bottle_l",
-     "bottle_r"
+     "bottle"
     ],
     "min_clearance_per_entity_initially": {
-     "bottle_r": {
-      "min_dist": -0.03587,
-      "tau_star": 0.8655,
-      "phase_star": "lower",
-      "part_star": "gripper",
-      "status": "conflict",
-      "conflict_magnitude": 0.03587,
-      "phases_in_conflict": [
-       "lower",
-       "release",
-       "retreat"
-      ],
-      "parts_in_conflict": [
-       "gripper"
-      ]
-     },
-     "bottle_l": {
-      "min_dist": -0.03808,
-      "tau_star": 0.7954,
+     "bottle": {
+      "min_dist": -0.00984,
+      "tau_star": 0.7899,
       "phase_star": "lower",
       "part_star": "carried:pan",
       "status": "conflict",
-      "conflict_magnitude": 0.03808,
+      "conflict_magnitude": 0.00984,
       "phases_in_conflict": [
-       "lower",
-       "transfer"
+       "lower"
       ],
       "parts_in_conflict": [
        "carried:pan"
@@ -3173,6 +3806,16 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
      "mug": {
       "min_dist": 0.05,
       "tau_star": 0.0,
@@ -3203,7 +3846,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
+     "cup_l": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3216,7 +3859,7 @@
     },
     "fixed_environment": {
      "min_dist": 0.0,
-     "tau_star": 0.8655,
+     "tau_star": 0.8439,
      "phase_star": "lower",
      "part_star": "carried:pan|fixture:rack1",
      "status": "ambiguous",
@@ -3225,120 +3868,37 @@
      "parts_in_conflict": []
     }
    },
-   "move_bottle_r_to_counter_buffer_far_right": {
-    "executable_initially": false,
-    "blockers_initially": [
-     "bowl",
-     "box"
-    ],
-    "min_clearance_per_entity_initially": {
-     "pan": {
-      "min_dist": 0.01339,
-      "tau_star": 0.0838,
-      "phase_star": "lift",
-      "part_star": "carried:bottle_r",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "box": {
-      "min_dist": -0.0301,
-      "tau_star": 0.6977,
-      "phase_star": "transfer",
-      "part_star": "carried:bottle_r",
-      "status": "conflict",
-      "conflict_magnitude": 0.0301,
-      "phases_in_conflict": [
-       "transfer"
-      ],
-      "parts_in_conflict": [
-       "carried:bottle_r"
-      ]
-     },
-     "mug": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "cup": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bowl": {
-      "min_dist": -0.02911,
-      "tau_star": 0.9336,
-      "phase_star": "lower",
-      "part_star": "carried:bottle_r",
-      "status": "conflict",
-      "conflict_magnitude": 0.02911,
-      "phases_in_conflict": [
-       "lower"
-      ],
-      "parts_in_conflict": [
-       "carried:bottle_r"
-      ]
-     },
-     "can": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     }
-    },
-    "fixed_environment": {
-     "min_dist": -0.0,
-     "tau_star": 0.9336,
-     "phase_star": "lower",
-     "part_star": "carried:bottle_r|env:countertop",
-     "status": "ambiguous",
-     "conflict_magnitude": 0.0,
-     "phases_in_conflict": [],
-     "parts_in_conflict": []
-    }
-   },
-   "move_bottle_r_to_counter_buffer_right": {
+   "move_bottle_to_B3": {
     "executable_initially": false,
     "blockers_initially": [
      "box"
     ],
     "min_clearance_per_entity_initially": {
      "pan": {
-      "min_dist": 0.01339,
-      "tau_star": 0.0921,
+      "min_dist": 0.04555,
+      "tau_star": 0.0699,
       "phase_star": "lift",
-      "part_star": "carried:bottle_r",
+      "part_star": "carried:bottle",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_l": {
+     "box": {
+      "min_dist": -0.02321,
+      "tau_star": 0.8319,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle",
+      "status": "conflict",
+      "conflict_magnitude": 0.02321,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle"
+      ]
+     },
+     "can": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3347,20 +3907,6 @@
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
-     },
-     "box": {
-      "min_dist": -0.035,
-      "tau_star": 0.7653,
-      "phase_star": "transfer",
-      "part_star": "carried:bottle_r",
-      "status": "conflict",
-      "conflict_magnitude": 0.035,
-      "phases_in_conflict": [
-       "transfer"
-      ],
-      "parts_in_conflict": [
-       "carried:bottle_r"
-      ]
      },
      "mug": {
       "min_dist": 0.05,
@@ -3383,20 +3929,20 @@
       "parts_in_conflict": []
      },
      "bowl": {
-      "min_dist": 0.04145,
-      "tau_star": 0.927,
-      "phase_star": "lower",
-      "part_star": "carried:bottle_r",
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
-      "min_dist": 0.04364,
-      "tau_star": 0.7524,
-      "phase_star": "transfer",
-      "part_star": "carried:bottle_r",
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
@@ -3405,53 +3951,58 @@
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.927,
+     "tau_star": 0.9357,
      "phase_star": "lower",
-     "part_star": "carried:bottle_r|env:countertop",
+     "part_star": "carried:bottle|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_bottle_l_to_counter_buffer_right": {
+   "move_bottle_to_B7": {
     "executable_initially": false,
     "blockers_initially": [
-     "box"
+     "box",
+     "can"
     ],
     "min_clearance_per_entity_initially": {
      "pan": {
-      "min_dist": 0.02047,
-      "tau_star": 0.1073,
+      "min_dist": 0.04555,
+      "tau_star": 0.0688,
       "phase_star": "lift",
-      "part_star": "carried:bottle_l",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
+      "part_star": "carried:bottle",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
      "box": {
-      "min_dist": -0.02568,
-      "tau_star": 0.8065,
+      "min_dist": -0.03351,
+      "tau_star": 0.773,
       "phase_star": "transfer",
-      "part_star": "carried:bottle_l",
+      "part_star": "carried:bottle",
       "status": "conflict",
-      "conflict_magnitude": 0.02568,
+      "conflict_magnitude": 0.03351,
       "phases_in_conflict": [
        "transfer"
       ],
       "parts_in_conflict": [
-       "carried:bottle_l"
+       "carried:bottle"
+      ]
+     },
+     "can": {
+      "min_dist": -0.0114,
+      "tau_star": 0.8178,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle",
+      "status": "conflict",
+      "conflict_magnitude": 0.0114,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle"
       ]
      },
      "mug": {
@@ -3475,20 +4026,20 @@
       "parts_in_conflict": []
      },
      "bowl": {
-      "min_dist": 0.04446,
-      "tau_star": 0.92,
-      "phase_star": "lower",
-      "part_star": "carried:bottle_l",
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
-      "min_dist": 0.04005,
-      "tau_star": 0.7906,
-      "phase_star": "transfer",
-      "part_star": "carried:bottle_l",
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
@@ -3497,68 +4048,77 @@
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.9399,
+     "tau_star": 0.9368,
      "phase_star": "lower",
-     "part_star": "carried:bottle_l|env:countertop",
+     "part_star": "carried:bottle|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_bottle_l_to_counter_left_mid": {
-    "executable_initially": true,
+   "move_bottle_to_B8": {
+    "executable_initially": false,
     "blockers_initially": [],
     "min_clearance_per_entity_initially": {
      "pan": {
-      "min_dist": 0.02047,
-      "tau_star": 0.1436,
+      "min_dist": 0.04555,
+      "tau_star": 0.0629,
       "phase_star": "lift",
-      "part_star": "carried:bottle_l",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
+      "part_star": "carried:bottle",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
      "box": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
+      "min_dist": -0.03441,
+      "tau_star": 0.7569,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle",
+      "status": "conflict",
+      "conflict_magnitude": 0.03441,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle"
+      ]
+     },
+     "can": {
+      "min_dist": 0.03103,
+      "tau_star": 0.7467,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
      "mug": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
+      "min_dist": 0.01564,
+      "tau_star": 0.8899,
+      "phase_star": "transfer",
+      "part_star": "carried:bottle",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
      "cup": {
-      "min_dist": 0.02504,
-      "tau_star": 0.7207,
+      "min_dist": -0.03012,
+      "tau_star": 0.895,
       "phase_star": "transfer",
-      "part_star": "carried:bottle_l",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
+      "part_star": "carried:bottle",
+      "status": "conflict",
+      "conflict_magnitude": 0.03012,
+      "phases_in_conflict": [
+       "lower",
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:bottle"
+      ]
      },
      "bowl": {
       "min_dist": 0.05,
@@ -3570,7 +4130,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
+     "cup_l": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3583,188 +4143,16 @@
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.9196,
+     "tau_star": 0.9422,
      "phase_star": "lower",
-     "part_star": "carried:bottle_l|env:countertop",
+     "part_star": "carried:bottle|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_box_to_counter_buffer_left": {
-    "executable_initially": true,
-    "blockers_initially": [],
-    "min_clearance_per_entity_initially": {
-     "pan": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "mug": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "cup": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bowl": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "can": {
-      "min_dist": 0.04002,
-      "tau_star": 0.5264,
-      "phase_star": "transfer",
-      "part_star": "carried:box",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     }
-    },
-    "fixed_environment": {
-     "min_dist": -0.0,
-     "tau_star": 0.8457,
-     "phase_star": "lower",
-     "part_star": "carried:box|env:countertop",
-     "status": "ambiguous",
-     "conflict_magnitude": 0.0,
-     "phases_in_conflict": [],
-     "parts_in_conflict": []
-    }
-   },
-   "move_box_to_counter_left_mid": {
-    "executable_initially": true,
-    "blockers_initially": [],
-    "min_clearance_per_entity_initially": {
-     "pan": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "mug": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "cup": {
-      "min_dist": 0.025,
-      "tau_star": 0.7316,
-      "phase_star": "transfer",
-      "part_star": "carried:box",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bowl": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "can": {
-      "min_dist": 0.04094,
-      "tau_star": 0.0806,
-      "phase_star": "lift",
-      "part_star": "carried:box",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     }
-    },
-    "fixed_environment": {
-     "min_dist": -0.0,
-     "tau_star": 0.9361,
-     "phase_star": "lower",
-     "part_star": "carried:box|env:countertop",
-     "status": "ambiguous",
-     "conflict_magnitude": 0.0,
-     "phases_in_conflict": [],
-     "parts_in_conflict": []
-    }
-   },
-   "move_mug_to_counter_buffer_center": {
+   "move_box_to_B6": {
     "executable_initially": false,
     "blockers_initially": [
      "can"
@@ -3780,7 +4168,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_r": {
+     "bottle": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3790,31 +4178,36 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_l": {
+     "can": {
+      "min_dist": -0.03735,
+      "tau_star": 0.6048,
+      "phase_star": "transfer",
+      "part_star": "carried:box",
+      "status": "conflict",
+      "conflict_magnitude": 0.03735,
+      "phases_in_conflict": [
+       "lower",
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:box"
+      ]
+     },
+     "mug": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
       "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "box": {
-      "min_dist": 0.01106,
-      "tau_star": 0.9391,
-      "phase_star": "lower",
-      "part_star": "gripper",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
      "cup": {
-      "min_dist": 0.025,
-      "tau_star": 0.3327,
-      "phase_star": "transfer",
-      "part_star": "carried:mug",
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
@@ -3830,36 +4223,29 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
-      "min_dist": -0.04345,
-      "tau_star": 0.9182,
-      "phase_star": "lower",
-      "part_star": "carried:mug",
-      "status": "conflict",
-      "conflict_magnitude": 0.04345,
-      "phases_in_conflict": [
-       "lower",
-       "release",
-       "retreat"
-      ],
-      "parts_in_conflict": [
-       "carried:mug",
-       "gripper"
-      ]
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
      }
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.9391,
+     "tau_star": 0.705,
      "phase_star": "lower",
-     "part_star": "carried:mug|env:countertop",
+     "part_star": "carried:box|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_mug_to_counter_left_mid": {
+   "move_box_to_B5": {
     "executable_initially": true,
     "blockers_initially": [],
     "min_clearance_per_entity_initially": {
@@ -3873,47 +4259,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "box": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "cup": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bowl": {
+     "bottle": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -3924,82 +4270,10 @@
       "parts_in_conflict": []
      },
      "can": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     }
-    },
-    "fixed_environment": {
-     "min_dist": -0.0,
-     "tau_star": 0.8319,
-     "phase_star": "lower",
-     "part_star": "carried:mug|env:countertop",
-     "status": "ambiguous",
-     "conflict_magnitude": 0.0,
-     "phases_in_conflict": [],
-     "parts_in_conflict": []
-    }
-   },
-   "move_cup_to_upper_right_back": {
-    "executable_initially": false,
-    "blockers_initially": [
-     "bottle_r",
-     "pan"
-    ],
-    "min_clearance_per_entity_initially": {
-     "pan": {
-      "min_dist": -0.01288,
-      "tau_star": 0.9261,
-      "phase_star": "lower",
-      "part_star": "gripper",
-      "status": "conflict",
-      "conflict_magnitude": 0.01288,
-      "phases_in_conflict": [
-       "lower",
-       "release",
-       "retreat"
-      ],
-      "parts_in_conflict": [
-       "gripper"
-      ]
-     },
-     "bottle_r": {
-      "min_dist": -0.04294,
-      "tau_star": 0.9261,
-      "phase_star": "lower",
-      "part_star": "gripper",
-      "status": "conflict",
-      "conflict_magnitude": 0.04294,
-      "phases_in_conflict": [
-       "lower",
-       "release",
-       "retreat"
-      ],
-      "parts_in_conflict": [
-       "carried:cup",
-       "gripper"
-      ]
-     },
-     "bottle_l": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "box": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
+      "min_dist": 0.01364,
+      "tau_star": 0.4707,
+      "phase_star": "transfer",
+      "part_star": "carried:box",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
@@ -4015,6 +4289,16 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
      "bowl": {
       "min_dist": 0.05,
       "tau_star": 0.0,
@@ -4025,7 +4309,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
+     "cup_l": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -4037,17 +4321,103 @@
      }
     },
     "fixed_environment": {
-     "min_dist": 0.0,
-     "tau_star": 0.9261,
+     "min_dist": -0.0,
+     "tau_star": 0.7659,
      "phase_star": "lower",
-     "part_star": "carried:cup|fixture:rack1",
+     "part_star": "carried:box|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_bowl_to_counter_buffer_left": {
+   "move_can_to_B5": {
+    "executable_initially": true,
+    "blockers_initially": [],
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.04846,
+      "tau_star": 0.2747,
+      "phase_star": "lift",
+      "part_star": "carried:can",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.7582,
+     "phase_star": "lower",
+     "part_star": "carried:can|env:tray",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_can_to_B1": {
     "executable_initially": false,
     "blockers_initially": [
      "box"
@@ -4063,17 +4433,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
+     "bottle": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -4084,17 +4444,17 @@
       "parts_in_conflict": []
      },
      "box": {
-      "min_dist": -0.02675,
-      "tau_star": 0.5,
+      "min_dist": -0.01352,
+      "tau_star": 0.6096,
       "phase_star": "transfer",
-      "part_star": "carried:bowl",
+      "part_star": "gripper",
       "status": "conflict",
-      "conflict_magnitude": 0.02675,
+      "conflict_magnitude": 0.01352,
       "phases_in_conflict": [
        "transfer"
       ],
       "parts_in_conflict": [
-       "carried:bowl"
+       "gripper"
       ]
      },
      "mug": {
@@ -4117,11 +4477,21 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "can": {
-      "min_dist": 0.04,
-      "tau_star": 0.6233,
-      "phase_star": "transfer",
-      "part_star": "carried:bowl",
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
@@ -4130,19 +4500,19 @@
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.8803,
+     "tau_star": 0.7716,
      "phase_star": "lower",
-     "part_star": "carried:bowl|env:countertop",
+     "part_star": "carried:can|env:tray",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
      "parts_in_conflict": []
     }
    },
-   "move_can_to_counter_buffer_far_right": {
+   "move_mug_to_B1": {
     "executable_initially": false,
     "blockers_initially": [
-     "bowl"
+     "box"
     ],
     "min_clearance_per_entity_initially": {
      "pan": {
@@ -4155,17 +4525,7 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bottle_r": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "approach",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bottle_l": {
+     "bottle": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -4176,16 +4536,109 @@
       "parts_in_conflict": []
      },
      "box": {
-      "min_dist": 0.01785,
-      "tau_star": 0.4696,
+      "min_dist": -0.03042,
+      "tau_star": 0.5172,
       "phase_star": "transfer",
-      "part_star": "carried:can",
+      "part_star": "carried:mug",
+      "status": "conflict",
+      "conflict_magnitude": 0.03042,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:mug",
+       "gripper"
+      ]
+     },
+     "can": {
+      "min_dist": 0.02658,
+      "tau_star": 0.5862,
+      "phase_star": "transfer",
+      "part_star": "carried:mug",
       "status": "clear",
       "conflict_magnitude": 0.0,
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "mug": {
+     "cup": {
+      "min_dist": 0.01901,
+      "tau_star": 0.1955,
+      "phase_star": "lift",
+      "part_star": "carried:mug",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": -0.0,
+     "tau_star": 0.8648,
+     "phase_star": "lower",
+     "part_star": "carried:mug|env:tray",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_mug_to_B8": {
+    "executable_initially": false,
+    "blockers_initially": [
+     "cup"
+    ],
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "can": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -4196,6 +4649,23 @@
       "parts_in_conflict": []
      },
      "cup": {
+      "min_dist": -0.03261,
+      "tau_star": 0.5312,
+      "phase_star": "transfer",
+      "part_star": "carried:mug",
+      "status": "conflict",
+      "conflict_magnitude": 0.03261,
+      "phases_in_conflict": [
+       "lower",
+       "release",
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:mug",
+       "gripper"
+      ]
+     },
+     "bowl": {
       "min_dist": 0.05,
       "tau_star": 0.0,
       "phase_star": "approach",
@@ -4205,26 +4675,115 @@
       "phases_in_conflict": [],
       "parts_in_conflict": []
      },
-     "bowl": {
-      "min_dist": -0.03066,
-      "tau_star": 0.8627,
-      "phase_star": "lower",
-      "part_star": "carried:can",
-      "status": "conflict",
-      "conflict_magnitude": 0.03066,
-      "phases_in_conflict": [
-       "lower"
-      ],
-      "parts_in_conflict": [
-       "carried:can"
-      ]
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
      }
     },
     "fixed_environment": {
      "min_dist": -0.0,
-     "tau_star": 0.8627,
+     "tau_star": 0.7334,
      "phase_star": "lower",
-     "part_star": "carried:can|env:countertop",
+     "part_star": "carried:mug|env:tray",
+     "status": "ambiguous",
+     "conflict_magnitude": 0.0,
+     "phases_in_conflict": [],
+     "parts_in_conflict": []
+    }
+   },
+   "move_cup_to_U3": {
+    "executable_initially": false,
+    "blockers_initially": [
+     "box"
+    ],
+    "min_clearance_per_entity_initially": {
+     "pan": {
+      "min_dist": 0.00817,
+      "tau_star": 0.9285,
+      "phase_star": "lower",
+      "part_star": "gripper",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bottle": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "box": {
+      "min_dist": -0.02723,
+      "tau_star": 0.2975,
+      "phase_star": "transfer",
+      "part_star": "carried:cup",
+      "status": "conflict",
+      "conflict_magnitude": 0.02723,
+      "phases_in_conflict": [
+       "transfer"
+      ],
+      "parts_in_conflict": [
+       "carried:cup",
+       "gripper"
+      ]
+     },
+     "can": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.01473,
+      "tau_star": 0.1398,
+      "phase_star": "transfer",
+      "part_star": "carried:cup",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "approach",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     }
+    },
+    "fixed_environment": {
+     "min_dist": 0.0,
+     "tau_star": 0.9285,
+     "phase_star": "lower",
+     "part_star": "carried:cup|fixture:rack1",
      "status": "ambiguous",
      "conflict_magnitude": 0.0,
      "phases_in_conflict": [],
@@ -4235,85 +4794,37 @@
     "F_initial": 1,
     "min_clearance_per_entity_initially": {
      "pan": {
-      "min_dist": -0.01921,
-      "tau_star": 0.96,
-      "phase_star": "close_door",
-      "part_star": "object:pan|door",
+      "min_dist": -0.02073,
+      "tau_star": 0.0256,
+      "phase_star": "push_grasp",
+      "part_star": "object:pan|gripper",
       "status": "conflict",
-      "conflict_magnitude": 0.01921,
+      "conflict_magnitude": 0.02073,
       "phases_in_conflict": [
-       "close_door",
-       "push_rack"
+       "push_grasp"
       ],
       "parts_in_conflict": [
-       "object:pan|door",
        "object:pan|gripper"
       ]
      },
-     "bottle_r": {
+     "bottle": {
       "min_dist": -0.01722,
-      "tau_star": 0.225,
-      "phase_star": "push_rack",
-      "part_star": "object:bottle_r|env:dishwasher",
+      "tau_star": 0.7692,
+      "phase_star": "push_palm",
+      "part_star": "object:bottle|env:dishwasher",
       "status": "conflict",
       "conflict_magnitude": 0.01722,
       "phases_in_conflict": [
-       "close_door",
-       "push_rack"
+       "push_palm"
       ],
       "parts_in_conflict": [
-       "object:bottle_r|env:dishwasher"
-      ]
-     },
-     "bottle_l": {
-      "min_dist": -0.05809,
-      "tau_star": 0.3,
-      "phase_star": "push_rack",
-      "part_star": "object:bottle_l|env:dishwasher",
-      "status": "conflict",
-      "conflict_magnitude": 0.05809,
-      "phases_in_conflict": [
-       "close_door",
-       "push_rack"
-      ],
-      "parts_in_conflict": [
-       "object:bottle_l|env:dishwasher"
+       "object:bottle|env:dishwasher"
       ]
      },
      "box": {
       "min_dist": 0.05,
       "tau_star": 0.0,
-      "phase_star": "push_rack",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "mug": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "push_rack",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "cup": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "push_rack",
-      "part_star": "",
-      "status": "clear",
-      "conflict_magnitude": 0.0,
-      "phases_in_conflict": [],
-      "parts_in_conflict": []
-     },
-     "bowl": {
-      "min_dist": 0.05,
-      "tau_star": 0.0,
-      "phase_star": "push_rack",
+      "phase_star": "push_grasp",
       "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
@@ -4323,7 +4834,47 @@
      "can": {
       "min_dist": 0.05,
       "tau_star": 0.0,
-      "phase_star": "push_rack",
+      "phase_star": "push_grasp",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "mug": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_grasp",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_grasp",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "bowl": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_grasp",
+      "part_star": "",
+      "status": "clear",
+      "conflict_magnitude": 0.0,
+      "phases_in_conflict": [],
+      "parts_in_conflict": []
+     },
+     "cup_l": {
+      "min_dist": 0.05,
+      "tau_star": 0.0,
+      "phase_star": "push_grasp",
       "part_star": "",
       "status": "clear",
       "conflict_magnitude": 0.0,
@@ -4335,92 +4886,67 @@
   },
   "direct_target_blocker_details": {
    "pan": {
-    "min_dist": -0.01921,
-    "tau_star": 0.96,
-    "phase_star": "close_door",
-    "part_star": "object:pan|door",
+    "min_dist": -0.02073,
+    "tau_star": 0.0256,
+    "phase_star": "push_grasp",
+    "part_star": "object:pan|gripper",
     "status": "conflict",
-    "conflict_magnitude": 0.01921,
+    "conflict_magnitude": 0.02073,
     "phases_in_conflict": [
-     "close_door",
-     "push_rack"
+     "push_grasp"
     ],
     "parts_in_conflict": [
-     "object:pan|door",
      "object:pan|gripper"
     ]
    },
-   "bottle_r": {
+   "bottle": {
     "min_dist": -0.01722,
-    "tau_star": 0.225,
-    "phase_star": "push_rack",
-    "part_star": "object:bottle_r|env:dishwasher",
+    "tau_star": 0.7692,
+    "phase_star": "push_palm",
+    "part_star": "object:bottle|env:dishwasher",
     "status": "conflict",
     "conflict_magnitude": 0.01722,
     "phases_in_conflict": [
-     "close_door",
-     "push_rack"
+     "push_palm"
     ],
     "parts_in_conflict": [
-     "object:bottle_r|env:dishwasher"
-    ]
-   },
-   "bottle_l": {
-    "min_dist": -0.05809,
-    "tau_star": 0.3,
-    "phase_star": "push_rack",
-    "part_star": "object:bottle_l|env:dishwasher",
-    "status": "conflict",
-    "conflict_magnitude": 0.05809,
-    "phases_in_conflict": [
-     "close_door",
-     "push_rack"
-    ],
-    "parts_in_conflict": [
-     "object:bottle_l|env:dishwasher"
+     "object:bottle|env:dishwasher"
     ]
    }
   }
  },
  "quality": {
   "static_problems": [],
+  "gate_violations": [],
+  "ad_hoc_offsets": 0,
   "consulted_ambiguities": [],
   "coarse_fine": {
-   "coarse_spacing_samples": 1815,
-   "fine_spacing_samples": 7092,
+   "coarse_spacing_samples": 1265,
+   "fine_spacing_samples": 4881,
    "disagreements": [],
    "agree": true,
-   "max_min_distance_shift_coarse_vs_fine_m": 0.00356,
+   "max_min_distance_shift_coarse_vs_fine_m": 0.00225,
    "fine_consulted_ambiguities": []
   },
-  "target_robot_coverage": {
-   "waypoints": {
-    "push_0": "ok@dishwasher_center",
-    "push_8": "ok@dishwasher_center",
-    "push_16": "ok@dishwasher_center",
-    "push_24": "ok@dishwasher_center",
-    "push_32": "ok@counter_left",
-    "push_40": "ok@dishwasher_right",
-    "door_41": "no_ik",
-    "door_53": "ok@dishwasher_center",
-    "door_65": "no_ik",
-    "door_77": "no_ik",
-    "door_90": "no_ik"
-   },
-   "fully_admissible": false
+  "target_robot": {
+   "skill": "PUSH_RACK",
+   "station": "rack_push",
+   "n_waypoints": 12,
+   "fully_admissible": true
   },
   "target_gripper_vs_fixed_env": {
-   "min_dist": 0.02116,
-   "tau_star": 0.3125,
-   "phase_star": "push_rack",
+   "min_dist": 0.04081,
+   "tau_star": 0.5641,
+   "phase_star": "push_grasp",
    "part_star": "gripper|env:dishwasher",
    "status": "clear",
    "conflict_magnitude": 0.0,
    "phases_in_conflict": [],
    "parts_in_conflict": []
   },
-  "distance_glitch_retries": 1414,
-  "n_inadmissible_interventions": 0,
+  "distance_glitch_retries": 1221,
+  "n_inadmissible_interventions": 1,
+  "target_fully_admissible": true,
   "accepted": true
  },
  "constants": {
@@ -4441,10 +4967,12 @@
   "all_variant_definitions_satisfied": [
    "V2",
    "V3",
+   "V5",
+   "V6",
    "V7"
   ],
   "factorisation_spot_check": {
-   "checks": 70,
+   "checks": 52,
    "mismatches": []
   }
  }

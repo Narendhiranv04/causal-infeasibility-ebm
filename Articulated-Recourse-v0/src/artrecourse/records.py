@@ -27,11 +27,11 @@ from .primitives import APPROACH_H, COARSE_SPACING, FINE_SPACING, LIFT_CLEAR, RE
 from .sweep import CAP, CLEAR_TOL, PEN_TOL
 
 SCHEMA = "artrecourse.scene.v0"
-INPUT_KEYS = ("objects", "initial_poses", "articulation", "target_action", "placement_candidates",
-              "candidate_interventions")
+INPUT_KEYS = ("objects", "initial_poses", "initial_slots", "articulation", "target_action", "placement_topology",
+              "placement_candidates", "candidate_interventions")
 LABEL_KEYS = ("F_initial", "direct_target_blockers", "target_clearance", "per_action", "enable_edges",
               "disable_edges", "compatibility_edges", "optimal_sequences", "optimal_cost", "sequence_length",
-              "no_recourse", "sequence_proofs", "irreducible_solutions")
+              "no_recourse", "sequence_proofs", "irreducible_solutions", "state_conditioned")
 
 
 def _pl_pose(pl):
@@ -51,11 +51,15 @@ def build_record(pb: RecourseProblem, res: dict, variant: str | None, variant_ok
     cands = []
     for o in pb.obj_keys:
         for k, pl in enumerate(pb.poses[o][1:], start=1):
-            cands.append({"object": o, "pose_index": k, "slot": pl.slot, "support": pl.support, "pose": _pl_pose(pl)})
+            cands.append({"object": o, "pose_index": k, "slot": pl.slot, "orientation": pl.orient,
+                          "support": pl.support, "pose": _pl_pose(pl)})
     ivs = []
     for iv in pb.ivs:
         ivs.append({
             "id": iv.id, "object": iv.obj, "primitive": "RELOCATE", "destination_slot": iv.placement.slot,
+            "destination_orientation": iv.placement.orient, "source_slot": iv.src.slot,
+            "transfer_carry_bottom_z": round(float(iv.traj.meta["carry_bottom_z"]), 4),
+            "transfer_lips_cleared": iv.lips_crossed,
             "source_pose": _pl_pose(iv.src), "destination_pose": _pl_pose(iv.placement),
             "grasp_template": iv.grasp.to_dict(), "admissible": iv.admissible, "rejection_reasons": iv.rejection,
             "robot": {"stations": iv.robot.get("stations")} if iv.robot else None,
@@ -72,15 +76,20 @@ def build_record(pb: RecourseProblem, res: dict, variant: str | None, variant_ok
     inputs = {
         "objects": objects,
         "initial_poses": {o: _pl_pose(pb.poses[o][0]) for o in pb.obj_keys},
+        "initial_slots": {o: {"slot": pb.poses[o][0].slot, "orientation": pb.poses[o][0].orient} for o in pb.obj_keys},
         "articulation": {"door_joint": round(art["door"], 6), "rack1_joint_upper": round(art["rack1"], 6),
                          "rack0_joint_lower": round(art["rack0"], 6)},
         "target_action": {
-            "name": "CLOSE_DISHWASHER", "primitive": "PUSH_RACK(rack1_joint 0.40->0) then CLOSE_DOOR(door_joint "
-                                                     f"{art['door']:.4f}->0)",
-            "phases": t.meta["phases"], "moving_bodies": ["upper rack (rack1)", "door", "gripper",
-                                                          "objects resting on the upper rack"],
+            "name": t.meta["skill"], "atomic": True,
+            "manipulated_joint": {"PUSH_RACK": f"{t.meta.get('rack')}_joint", "CLOSE_DOOR": "door_joint"}[t.meta["skill"]],
+            "from": round(float(t.meta["from"]), 6), "to": 0.0,
+            "internal_phases": sorted(set(t.phase), key=list(t.phase).index),
+            "moving_bodies": (["upper rack (rack1)", "gripper", "objects resting on the upper rack"]
+                              if t.meta["skill"] == "PUSH_RACK" else ["door", "gripper"]),
+            "robot_station": (getattr(pb, "target_robot", {}) or {}).get("station"),
             "trajectory_ref": "inputs.npz:TARGET", "n_samples": int(t.n),
         },
+        "placement_topology": {sid: sl.to_dict() for sid, sl in pb.topo.items()},
         "placement_candidates": cands,
         "candidate_interventions": ivs,
     }
@@ -128,8 +137,8 @@ def build_record(pb: RecourseProblem, res: dict, variant: str | None, variant_ok
     arr_in["TARGET/tau"] = t.tau
     arr_in["TARGET/gripper_pos"] = t.grip_pos
     arr_in["TARGET/gripper_quat_wxyz"] = t.grip_quat
-    arr_in["TARGET/rack1_joint"] = t.joints["rack1"]
-    arr_in["TARGET/door_joint"] = t.joints["door"]
+    for k, v in t.joints.items():
+        arr_in[f"TARGET/{k}_joint"] = v
     arr_lab = {}
     for iv in pb.ivs:
         for o, profs in pb.tab[iv.id].items():

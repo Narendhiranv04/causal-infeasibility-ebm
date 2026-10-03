@@ -1,0 +1,1502 @@
+{
+ "criteria": [
+  "door opens >= 30 deg",
+  "at least one rack has >= 0.20 m of top-down reachable loading depth",
+  "atomic PUSH_RACK and CLOSE_DOOR fully IK-admissible from one base station each",
+  "score = reachable upper depth + reachable lower depth (each capped at 0.35 m) + 0.002*door angle + 1 per fully admissible atomic skill"
+ ],
+ "geometric": {
+  "Dishwasher031": {
+   "fixture_id": "Dishwasher031",
+   "dims_m": [
+    0.644,
+    0.691,
+    0.956
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.33
+    ],
+    "rack1_joint": [
+     0.0,
+     0.33
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.33,
+     "max_loading_pull_m": 0.33,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.521,
+     "rack_width_m": 0.558,
+     "top_down_reachable_depth_m": 0.143,
+     "vertical_clearance_m": 0.122,
+     "clearance_to_open_door_m": 0.0453,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.33,
+     "max_loading_pull_m": 0.17,
+     "pull_fraction": 0.52,
+     "rack_depth_m": 0.521,
+     "rack_width_m": 0.558,
+     "top_down_reachable_depth_m": 0.133,
+     "vertical_clearance_m": 0.29,
+     "clearance_to_open_door_m": 0.0101,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0106,
+   "door_top_edge_forward_m": 0.571
+  },
+  "Dishwasher032": {
+   "fixture_id": "Dishwasher032",
+   "dims_m": [
+    0.617,
+    0.66,
+    0.963
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.2
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3
+    ]
+   },
+   "door_open_angle_deg": 30.0,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3,
+     "max_loading_pull_m": 0.3,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.445,
+     "rack_width_m": 0.48,
+     "top_down_reachable_depth_m": 0.113,
+     "vertical_clearance_m": 0.078,
+     "clearance_to_open_door_m": 0.0067,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.2,
+     "max_loading_pull_m": 0.18,
+     "pull_fraction": 0.9,
+     "rack_depth_m": 0.445,
+     "rack_width_m": 0.479,
+     "top_down_reachable_depth_m": 0.152,
+     "vertical_clearance_m": 0.199,
+     "clearance_to_open_door_m": 0.0091,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0037,
+   "door_top_edge_forward_m": 0.408
+  },
+  "Dishwasher034": {
+   "fixture_id": "Dishwasher034",
+   "dims_m": [
+    0.596,
+    0.61,
+    0.809
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.7035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.3
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3
+    ]
+   },
+   "door_open_angle_deg": 40.3,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3,
+     "max_loading_pull_m": 0.27,
+     "pull_fraction": 0.9,
+     "rack_depth_m": 0.354,
+     "rack_width_m": 0.489,
+     "top_down_reachable_depth_m": 0.122,
+     "vertical_clearance_m": 0.225,
+     "clearance_to_open_door_m": 0.01,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.3,
+     "max_loading_pull_m": 0.07,
+     "pull_fraction": 0.23,
+     "rack_depth_m": 0.354,
+     "rack_width_m": 0.489,
+     "top_down_reachable_depth_m": 0.033,
+     "vertical_clearance_m": 0.23,
+     "clearance_to_open_door_m": 0.0111,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0075,
+   "door_top_edge_forward_m": 0.375
+  },
+  "Dishwasher036": {
+   "fixture_id": "Dishwasher036",
+   "dims_m": [
+    0.637,
+    0.667,
+    0.809
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.14400000000000002
+    ],
+    "rack1_joint": [
+     0.0,
+     0.27399999999999997
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.27399999999999997,
+     "max_loading_pull_m": 0.274,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.392,
+     "rack_width_m": 0.516,
+     "top_down_reachable_depth_m": 0.08,
+     "vertical_clearance_m": 0.055,
+     "clearance_to_open_door_m": 0.0143,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.14400000000000002,
+     "max_loading_pull_m": 0.124,
+     "pull_fraction": 0.86,
+     "rack_depth_m": 0.392,
+     "rack_width_m": 0.516,
+     "top_down_reachable_depth_m": 0.048,
+     "vertical_clearance_m": 0.221,
+     "clearance_to_open_door_m": 0.01,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0098,
+   "door_top_edge_forward_m": 0.389
+  },
+  "Dishwasher038": {
+   "fixture_id": "Dishwasher038",
+   "dims_m": [
+    0.6,
+    0.653,
+    0.808
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.075
+    ],
+    "rack1_joint": [
+     0.0,
+     0.21
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.21,
+     "max_loading_pull_m": 0.21,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.43,
+     "rack_width_m": 0.523,
+     "top_down_reachable_depth_m": 0.069,
+     "vertical_clearance_m": 0.238,
+     "clearance_to_open_door_m": 0.0309,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.075,
+     "max_loading_pull_m": 0.075,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.43,
+     "rack_width_m": 0.523,
+     "top_down_reachable_depth_m": 0.061,
+     "vertical_clearance_m": 0.228,
+     "clearance_to_open_door_m": 0.007,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0066,
+   "door_top_edge_forward_m": 0.38
+  },
+  "Dishwasher039": {
+   "fixture_id": "Dishwasher039",
+   "dims_m": [
+    0.66,
+    0.601,
+    0.901
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.08
+    ],
+    "rack1_joint": [
+     0.0,
+     0.27
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.27,
+     "max_loading_pull_m": 0.27,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.429,
+     "rack_width_m": 0.58,
+     "top_down_reachable_depth_m": 0.077,
+     "vertical_clearance_m": 0.08,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.08,
+     "max_loading_pull_m": 0.08,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.429,
+     "rack_width_m": 0.58,
+     "top_down_reachable_depth_m": 0.0,
+     "vertical_clearance_m": 0.354,
+     "clearance_to_open_door_m": 0.0157,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0097,
+   "door_top_edge_forward_m": 0.429
+  },
+  "Dishwasher040": {
+   "fixture_id": "Dishwasher040",
+   "dims_m": [
+    0.604,
+    0.649,
+    0.806
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.2
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3
+    ]
+   },
+   "door_open_angle_deg": 30.0,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3,
+     "max_loading_pull_m": 0.28,
+     "pull_fraction": 0.93,
+     "rack_depth_m": 0.426,
+     "rack_width_m": 0.454,
+     "top_down_reachable_depth_m": 0.105,
+     "vertical_clearance_m": 0.269,
+     "clearance_to_open_door_m": 0.0122,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.2,
+     "max_loading_pull_m": 0.14,
+     "pull_fraction": 0.7,
+     "rack_depth_m": 0.095,
+     "rack_width_m": 0.445,
+     "top_down_reachable_depth_m": 0.0,
+     "vertical_clearance_m": 0.235,
+     "clearance_to_open_door_m": 0.0094,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0157,
+   "door_top_edge_forward_m": 0.454
+  },
+  "Dishwasher042": {
+   "fixture_id": "Dishwasher042",
+   "dims_m": [
+    0.636,
+    0.684,
+    0.937
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.1525
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3435
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3435,
+     "max_loading_pull_m": 0.344,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.384,
+     "rack_width_m": 0.513,
+     "top_down_reachable_depth_m": 0.145,
+     "vertical_clearance_m": 0.081,
+     "clearance_to_open_door_m": 0.0373,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.1525,
+     "max_loading_pull_m": 0.152,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.384,
+     "rack_width_m": 0.513,
+     "top_down_reachable_depth_m": 0.071,
+     "vertical_clearance_m": 0.327,
+     "clearance_to_open_door_m": 0.0065,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0014,
+   "door_top_edge_forward_m": 0.453
+  },
+  "Dishwasher043": {
+   "fixture_id": "Dishwasher043",
+   "dims_m": [
+    0.582,
+    0.602,
+    0.828
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.182
+    ],
+    "rack1_joint": [
+     0.0,
+     0.33399999999999996
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.33399999999999996,
+     "max_loading_pull_m": 0.334,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.354,
+     "rack_width_m": 0.469,
+     "top_down_reachable_depth_m": 0.191,
+     "vertical_clearance_m": 0.157,
+     "clearance_to_open_door_m": 0.035,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.182,
+     "max_loading_pull_m": 0.182,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.354,
+     "rack_width_m": 0.469,
+     "top_down_reachable_depth_m": 0.144,
+     "vertical_clearance_m": 0.259,
+     "clearance_to_open_door_m": 0.0106,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0014,
+   "door_top_edge_forward_m": 0.38
+  },
+  "Dishwasher044": {
+   "fixture_id": "Dishwasher044",
+   "dims_m": [
+    0.649,
+    0.576,
+    0.821
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.10220000000000001
+    ],
+    "rack1_joint": [
+     0.0,
+     0.2646
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.2646,
+     "max_loading_pull_m": 0.265,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.084,
+     "rack_width_m": 0.519,
+     "top_down_reachable_depth_m": 0.029,
+     "vertical_clearance_m": 0.225,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.10220000000000001,
+     "max_loading_pull_m": 0.102,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.375,
+     "rack_width_m": 0.53,
+     "top_down_reachable_depth_m": 0.08,
+     "vertical_clearance_m": 0.277,
+     "clearance_to_open_door_m": 0.0244,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0016,
+   "door_top_edge_forward_m": 0.418
+  },
+  "Dishwasher045": {
+   "fixture_id": "Dishwasher045",
+   "dims_m": [
+    0.599,
+    0.603,
+    0.802
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.065
+    ],
+    "rack1_joint": [
+     0.0,
+     0.21
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.21,
+     "max_loading_pull_m": 0.21,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.461,
+     "rack_width_m": 0.464,
+     "top_down_reachable_depth_m": 0.06,
+     "vertical_clearance_m": 0.252,
+     "clearance_to_open_door_m": 0.0341,
+     "clearance_to_other_rack_m": 0.0498
+    },
+    "rack0": {
+     "range_m": 0.065,
+     "max_loading_pull_m": 0.065,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.459,
+     "rack_width_m": 0.473,
+     "top_down_reachable_depth_m": 0.002,
+     "vertical_clearance_m": 0.245,
+     "clearance_to_open_door_m": 0.0109,
+     "clearance_to_other_rack_m": 0.0498
+    }
+   },
+   "door_open_vs_body_m": 0.0215,
+   "door_top_edge_forward_m": 0.341
+  },
+  "Dishwasher046": {
+   "fixture_id": "Dishwasher046",
+   "dims_m": [
+    0.645,
+    0.697,
+    0.979
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.163
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3235
+    ]
+   },
+   "door_open_angle_deg": 35.7,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3235,
+     "max_loading_pull_m": 0.324,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.461,
+     "rack_width_m": 0.464,
+     "top_down_reachable_depth_m": 0.128,
+     "vertical_clearance_m": 0.296,
+     "clearance_to_open_door_m": 0.0427,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.163,
+     "max_loading_pull_m": 0.163,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.459,
+     "rack_width_m": 0.473,
+     "top_down_reachable_depth_m": 0.072,
+     "vertical_clearance_m": 0.273,
+     "clearance_to_open_door_m": 0.0101,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0066,
+   "door_top_edge_forward_m": 0.443
+  },
+  "Dishwasher048": {
+   "fixture_id": "Dishwasher048",
+   "dims_m": [
+    0.659,
+    0.735,
+    0.978
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.8235987755982987
+    ],
+    "rack0_joint": [
+     0.0,
+     0.35
+    ],
+    "rack1_joint": [
+     0.0,
+     0.35
+    ]
+   },
+   "door_open_angle_deg": 47.2,
+   "racks": {
+    "rack1": {
+     "range_m": 0.35,
+     "max_loading_pull_m": 0.35,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.447,
+     "rack_width_m": 0.593,
+     "top_down_reachable_depth_m": 0.158,
+     "vertical_clearance_m": 0.1,
+     "clearance_to_open_door_m": 0.041,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.35,
+     "max_loading_pull_m": 0.11,
+     "pull_fraction": 0.31,
+     "rack_depth_m": 0.447,
+     "rack_width_m": 0.593,
+     "top_down_reachable_depth_m": 0.074,
+     "vertical_clearance_m": 0.263,
+     "clearance_to_open_door_m": 0.0083,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.003,
+   "door_top_edge_forward_m": 0.482
+  },
+  "Dishwasher049": {
+   "fixture_id": "Dishwasher049",
+   "dims_m": [
+    0.653,
+    0.703,
+    0.972
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6035987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.09
+    ],
+    "rack1_joint": [
+     0.0,
+     0.26
+    ]
+   },
+   "door_open_angle_deg": 34.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.26,
+     "max_loading_pull_m": 0.26,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.419,
+     "rack_width_m": 0.583,
+     "top_down_reachable_depth_m": 0.059,
+     "vertical_clearance_m": 0.123,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.09,
+     "max_loading_pull_m": 0.09,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.419,
+     "rack_width_m": 0.583,
+     "top_down_reachable_depth_m": 0.0,
+     "vertical_clearance_m": 0.312,
+     "clearance_to_open_door_m": 0.0117,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0073,
+   "door_top_edge_forward_m": 0.397
+  },
+  "Dishwasher051": {
+   "fixture_id": "Dishwasher051",
+   "dims_m": [
+    0.649,
+    0.716,
+    0.969
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.2
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3
+    ]
+   },
+   "door_open_angle_deg": 35.7,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3,
+     "max_loading_pull_m": 0.3,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.33,
+     "rack_width_m": 0.481,
+     "top_down_reachable_depth_m": 0.101,
+     "vertical_clearance_m": 0.319,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.2,
+     "max_loading_pull_m": 0.2,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.33,
+     "rack_width_m": 0.481,
+     "top_down_reachable_depth_m": 0.144,
+     "vertical_clearance_m": 0.215,
+     "clearance_to_open_door_m": 0.0151,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0026,
+   "door_top_edge_forward_m": 0.493
+  },
+  "Dishwasher053": {
+   "fixture_id": "Dishwasher053",
+   "dims_m": [
+    0.65,
+    0.701,
+    0.953
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.081
+    ],
+    "rack1_joint": [
+     0.0,
+     0.258
+    ]
+   },
+   "door_open_angle_deg": 35.7,
+   "racks": {
+    "rack1": {
+     "range_m": 0.258,
+     "max_loading_pull_m": 0.258,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.429,
+     "rack_width_m": 0.58,
+     "top_down_reachable_depth_m": 0.051,
+     "vertical_clearance_m": 0.078,
+     "clearance_to_open_door_m": 0.0419,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.081,
+     "max_loading_pull_m": 0.061,
+     "pull_fraction": 0.75,
+     "rack_depth_m": 0.429,
+     "rack_width_m": 0.58,
+     "top_down_reachable_depth_m": 0.0,
+     "vertical_clearance_m": 0.319,
+     "clearance_to_open_door_m": 0.0114,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0027,
+   "door_top_edge_forward_m": 0.45
+  },
+  "Dishwasher054": {
+   "fixture_id": "Dishwasher054",
+   "dims_m": [
+    0.634,
+    0.65,
+    0.853
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6735987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.4
+    ],
+    "rack1_joint": [
+     0.0,
+     0.4
+    ]
+   },
+   "door_open_angle_deg": 38.6,
+   "racks": {
+    "rack1": {
+     "range_m": 0.4,
+     "max_loading_pull_m": 0.39,
+     "pull_fraction": 0.97,
+     "rack_depth_m": 0.458,
+     "rack_width_m": 0.481,
+     "top_down_reachable_depth_m": 0.236,
+     "vertical_clearance_m": 0.187,
+     "clearance_to_open_door_m": 0.0117,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.4,
+     "max_loading_pull_m": 0.15,
+     "pull_fraction": 0.37,
+     "rack_depth_m": 0.458,
+     "rack_width_m": 0.481,
+     "top_down_reachable_depth_m": 0.093,
+     "vertical_clearance_m": 0.296,
+     "clearance_to_open_door_m": 0.0116,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0178,
+   "door_top_edge_forward_m": 0.478
+  },
+  "Dishwasher055": {
+   "fixture_id": "Dishwasher055",
+   "dims_m": [
+    0.6,
+    0.625,
+    0.9
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5735987755982987
+    ],
+    "rack0_joint": [
+     0.0,
+     0.2
+    ],
+    "rack1_joint": [
+     0.0,
+     0.25
+    ]
+   },
+   "door_open_angle_deg": 32.9,
+   "racks": {
+    "rack1": {
+     "range_m": 0.25,
+     "max_loading_pull_m": 0.25,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.444,
+     "rack_width_m": 0.469,
+     "top_down_reachable_depth_m": 0.099,
+     "vertical_clearance_m": 0.057,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.2,
+     "max_loading_pull_m": 0.15,
+     "pull_fraction": 0.75,
+     "rack_depth_m": 0.444,
+     "rack_width_m": 0.469,
+     "top_down_reachable_depth_m": 0.089,
+     "vertical_clearance_m": 0.234,
+     "clearance_to_open_door_m": 0.0056,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0038,
+   "door_top_edge_forward_m": 0.36
+  },
+  "Dishwasher058": {
+   "fixture_id": "Dishwasher058",
+   "dims_m": [
+    0.603,
+    0.64,
+    0.898
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5735987755982987
+    ],
+    "rack0_joint": [
+     0.0,
+     0.09
+    ],
+    "rack1_joint": [
+     0.0,
+     0.24
+    ]
+   },
+   "door_open_angle_deg": 32.9,
+   "racks": {
+    "rack1": {
+     "range_m": 0.24,
+     "max_loading_pull_m": 0.24,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.442,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.046,
+     "vertical_clearance_m": 0.054,
+     "clearance_to_open_door_m": 0.05,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.09,
+     "max_loading_pull_m": 0.09,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.442,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.087,
+     "vertical_clearance_m": 0.259,
+     "clearance_to_open_door_m": 0.0444,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0392,
+   "door_top_edge_forward_m": 0.503
+  },
+  "Dishwasher059": {
+   "fixture_id": "Dishwasher059",
+   "dims_m": [
+    0.609,
+    0.606,
+    0.832
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.4886921905584123
+    ],
+    "rack0_joint": [
+     0.0,
+     0.08
+    ],
+    "rack1_joint": [
+     0.0,
+     0.25
+    ]
+   },
+   "door_open_angle_deg": 28.0,
+   "racks": {
+    "rack1": {
+     "range_m": 0.25,
+     "max_loading_pull_m": 0.24,
+     "pull_fraction": 0.96,
+     "rack_depth_m": 0.41,
+     "rack_width_m": 0.504,
+     "top_down_reachable_depth_m": 0.04,
+     "vertical_clearance_m": 0.268,
+     "clearance_to_open_door_m": 0.0132,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.08,
+     "max_loading_pull_m": 0.08,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.41,
+     "rack_width_m": 0.504,
+     "top_down_reachable_depth_m": 0.015,
+     "vertical_clearance_m": 0.296,
+     "clearance_to_open_door_m": 0.0091,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0153,
+   "door_top_edge_forward_m": 0.375
+  },
+  "Dishwasher060": {
+   "fixture_id": "Dishwasher060",
+   "dims_m": [
+    0.605,
+    0.609,
+    0.869
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.095
+    ],
+    "rack1_joint": [
+     0.0,
+     0.285
+    ]
+   },
+   "door_open_angle_deg": 30.0,
+   "racks": {
+    "rack1": {
+     "range_m": 0.285,
+     "max_loading_pull_m": 0.275,
+     "pull_fraction": 0.96,
+     "rack_depth_m": 0.461,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.096,
+     "vertical_clearance_m": 0.069,
+     "clearance_to_open_door_m": 0.0076,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.095,
+     "max_loading_pull_m": 0.085,
+     "pull_fraction": 0.89,
+     "rack_depth_m": 0.463,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.051,
+     "vertical_clearance_m": 0.317,
+     "clearance_to_open_door_m": 0.0104,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0096,
+   "door_top_edge_forward_m": 0.405
+  },
+  "Dishwasher061": {
+   "fixture_id": "Dishwasher061",
+   "dims_m": [
+    0.61,
+    0.667,
+    0.861
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5735987755982987
+    ],
+    "rack0_joint": [
+     0.0,
+     0.15
+    ],
+    "rack1_joint": [
+     0.0,
+     0.25
+    ]
+   },
+   "door_open_angle_deg": 32.9,
+   "racks": {
+    "rack1": {
+     "range_m": 0.25,
+     "max_loading_pull_m": 0.25,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.446,
+     "rack_width_m": 0.472,
+     "top_down_reachable_depth_m": 0.081,
+     "vertical_clearance_m": 0.081,
+     "clearance_to_open_door_m": 0.0119,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.15,
+     "max_loading_pull_m": 0.12,
+     "pull_fraction": 0.8,
+     "rack_depth_m": 0.446,
+     "rack_width_m": 0.472,
+     "top_down_reachable_depth_m": 0.096,
+     "vertical_clearance_m": 0.2,
+     "clearance_to_open_door_m": 0.0094,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0091,
+   "door_top_edge_forward_m": 0.471
+  },
+  "Dishwasher062": {
+   "fixture_id": "Dishwasher062",
+   "dims_m": [
+    0.603,
+    0.654,
+    0.85
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.08
+    ],
+    "rack1_joint": [
+     0.0,
+     0.25
+    ]
+   },
+   "door_open_angle_deg": 30.0,
+   "racks": {
+    "rack1": {
+     "range_m": 0.25,
+     "max_loading_pull_m": 0.25,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.466,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.074,
+     "vertical_clearance_m": 0.07,
+     "clearance_to_open_door_m": 0.0179,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.08,
+     "max_loading_pull_m": 0.07,
+     "pull_fraction": 0.88,
+     "rack_depth_m": 0.466,
+     "rack_width_m": 0.545,
+     "top_down_reachable_depth_m": 0.042,
+     "vertical_clearance_m": 0.317,
+     "clearance_to_open_door_m": 0.0131,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0071,
+   "door_top_edge_forward_m": 0.43
+  },
+  "Dishwasher063": {
+   "fixture_id": "Dishwasher063",
+   "dims_m": [
+    0.595,
+    0.589,
+    0.844
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.5535987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.14
+    ],
+    "rack1_joint": [
+     0.0,
+     0.297
+    ]
+   },
+   "door_open_angle_deg": 31.7,
+   "racks": {
+    "rack1": {
+     "range_m": 0.297,
+     "max_loading_pull_m": 0.287,
+     "pull_fraction": 0.97,
+     "rack_depth_m": 0.028,
+     "rack_width_m": 0.434,
+     "top_down_reachable_depth_m": 0.054,
+     "vertical_clearance_m": 0.293,
+     "clearance_to_open_door_m": 0.0116,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.14,
+     "max_loading_pull_m": 0.13,
+     "pull_fraction": 0.93,
+     "rack_depth_m": 0.028,
+     "rack_width_m": 0.434,
+     "top_down_reachable_depth_m": 0.0,
+     "vertical_clearance_m": 0.261,
+     "clearance_to_open_door_m": 0.0091,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.01,
+   "door_top_edge_forward_m": 0.465
+  },
+  "Dishwasher067": {
+   "fixture_id": "Dishwasher067",
+   "dims_m": [
+    0.645,
+    0.684,
+    0.975
+   ],
+   "joint_ranges": {
+    "door_joint": [
+     0.0,
+     0.6235987755982988
+    ],
+    "rack0_joint": [
+     0.0,
+     0.13699999999999998
+    ],
+    "rack1_joint": [
+     0.0,
+     0.3154
+    ]
+   },
+   "door_open_angle_deg": 35.7,
+   "racks": {
+    "rack1": {
+     "range_m": 0.3154,
+     "max_loading_pull_m": 0.315,
+     "pull_fraction": 1.0,
+     "rack_depth_m": 0.41,
+     "rack_width_m": 0.504,
+     "top_down_reachable_depth_m": 0.075,
+     "vertical_clearance_m": 0.321,
+     "clearance_to_open_door_m": 0.0392,
+     "clearance_to_other_rack_m": 0.05
+    },
+    "rack0": {
+     "range_m": 0.13699999999999998,
+     "max_loading_pull_m": 0.127,
+     "pull_fraction": 0.93,
+     "rack_depth_m": 0.41,
+     "rack_width_m": 0.504,
+     "top_down_reachable_depth_m": 0.038,
+     "vertical_clearance_m": 0.295,
+     "clearance_to_open_door_m": 0.0113,
+     "clearance_to_other_rack_m": 0.05
+    }
+   },
+   "door_open_vs_body_m": 0.0388,
+   "door_top_edge_forward_m": 0.567
+  }
+ },
+ "geometric_ranking": [
+  "Dishwasher054",
+  "Dishwasher043",
+  "Dishwasher031",
+  "Dishwasher048",
+  "Dishwasher032",
+  "Dishwasher051",
+  "Dishwasher042",
+  "Dishwasher046",
+  "Dishwasher055",
+  "Dishwasher061",
+  "Dishwasher034",
+  "Dishwasher060",
+  "Dishwasher038",
+  "Dishwasher058",
+  "Dishwasher036",
+  "Dishwasher067",
+  "Dishwasher044",
+  "Dishwasher062",
+  "Dishwasher040",
+  "Dishwasher039",
+  "Dishwasher045",
+  "Dishwasher049",
+  "Dishwasher053",
+  "Dishwasher063",
+  "Dishwasher059"
+ ],
+ "robot_shortlist": [
+  "Dishwasher054",
+  "Dishwasher043",
+  "Dishwasher031",
+  "Dishwasher048",
+  "Dishwasher032",
+  "Dishwasher051"
+ ],
+ "robot": {
+  "Dishwasher054": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.39,
+    "best_station": [
+     -0.15,
+     -0.885,
+     0.75
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 2,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.15,
+    "best_station": null,
+    "coverage": 0.0,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.885,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 17,
+    "n_waypoints": 12
+   }
+  },
+  "Dishwasher043": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.334,
+    "best_station": [
+     -0.35,
+     -0.8,
+     0.25
+    ],
+    "coverage": 0.5,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.182,
+    "best_station": [
+     -0.35,
+     -0.8,
+     0.25
+    ],
+    "coverage": 0.167,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.8,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 19,
+    "n_waypoints": 12
+   }
+  },
+  "Dishwasher031": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.33,
+    "best_station": [
+     -0.35,
+     -0.927,
+     0.42
+    ],
+    "coverage": 0.5,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.17,
+    "best_station": [
+     -0.15,
+     -0.927,
+     0.42
+    ],
+    "coverage": 0.167,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.927,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 23,
+    "n_waypoints": 12
+   }
+  },
+  "Dishwasher048": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.35,
+    "best_station": [
+     -0.35,
+     -0.861,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 14,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.11,
+    "best_station": null,
+    "coverage": 0.0,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.861,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 20,
+    "n_waypoints": 12
+   }
+  },
+  "Dishwasher032": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.3,
+    "best_station": [
+     -0.35,
+     -0.815,
+     0.25
+    ],
+    "coverage": 0.5,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.18,
+    "best_station": [
+     -0.35,
+     -0.815,
+     0.25
+    ],
+    "coverage": 0.25,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.815,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 23,
+    "n_waypoints": 12
+   }
+  },
+  "Dishwasher051": {
+   "PUSH_RACK_upper": {
+    "applicable": true,
+    "from_pull_m": 0.3,
+    "best_station": [
+     -0.35,
+     -0.879,
+     0.42
+    ],
+    "coverage": 0.417,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "PUSH_RACK_lower": {
+    "applicable": true,
+    "from_pull_m": 0.2,
+    "best_station": [
+     -0.35,
+     -0.879,
+     0.42
+    ],
+    "coverage": 0.167,
+    "n_fully_admissible_stations": 0,
+    "n_waypoints": 12
+   },
+   "CLOSE_DOOR": {
+    "applicable": true,
+    "contact_fraction": 0.6,
+    "best_station": [
+     -0.35,
+     -0.879,
+     0.25
+    ],
+    "coverage": 1.0,
+    "n_fully_admissible_stations": 28,
+    "n_waypoints": 12
+   }
+  }
+ },
+ "final_scores": {
+  "Dishwasher054": 2.406,
+  "Dishwasher043": 1.404,
+  "Dishwasher031": 1.345,
+  "Dishwasher048": 2.326,
+  "Dishwasher032": 1.325,
+  "Dishwasher051": 1.316
+ },
+ "selected": "Dishwasher054",
+ "runtime_s": 193.8
+}

@@ -11,7 +11,9 @@ real assets. Every label comes from MuJoCo geometry that is then re-verified exa
 ```bash
 python assets/download_assets.py          # ~130 MB subset of RoboCasa + Menagerie + 1 GSO model
 python scripts/preview_assets.py          # validate assets, previews, write assets/asset_manifest.json
+python scripts/audit_fixtures.py          # dishwasher audit -> out/fixture_audit.{json,md}
 python scripts/build_canonical.py         # 8 canonical scenes -> canonical/V0..V7
+python scripts/build_canonical.py --compose   # canonical/comparison.png + summary.json
 python scripts/inspect_scene.py V5        # compact oracle summary of one scene
 python -m pytest tests -q                 # full test suite (~10 min, builds 3 scenes)
 # after approval only:
@@ -34,57 +36,80 @@ Visual meshes are used only for rendering: they don't collide and have no mass. 
 collision uses the source convex decompositions. Primitive collision boxes and cylinders are
 converted to exact convex meshes, so every pair goes through the same convex distance path.
 
-### Why the upper rack
+### Fixture selection (v0.1 audit)
 
-The dishwasher door's real maximum opening is 38.6°. At that angle a fully pulled lower rack
-would pass 17.5 cm into the door, which is a physically impossible configuration. A fully
-pulled upper rack clears the door by 3.9 mm. Scenes therefore use the door at its maximum,
-the **upper rack in its pulled loading position** and the lower rack in.
+`scripts/audit_fixtures.py` measured all 25 RoboCasa dishwashers and wrote the results to
+`out/fixture_audit.{json,md}`. Per fixture it records:
 
-### Target action
+- dimensions and joint ranges;
+- the largest pull of each rack that keeps 5 mm from the fully opened door;
+- how much of each pulled rack is reachable from above, in front of the tub and the
+  countertop edge;
+- clearances and self-collision;
+- for the shortlist, a search for a single base station from which the atomic skills are
+  fully IK-admissible.
 
-`CLOSE_DISHWASHER` has two phases, both using the real joints:
+**Dishwasher054 is selected:**
 
-1. τ ∈ [0, 0.5]: `PUSH_RACK` moves `rack1_joint` from 0.40 to 0. Everything resting on the
-   rack rides along. The hand grasps the front-wall edge, then switches to a palm push near
-   the end, where the hand would otherwise hit the tub ceiling.
-2. τ ∈ [0.5, 1]: `CLOSE_DOOR` moves `door_joint` from 0.6736 to 0. The closed hand pushes the
-   door's outer face.
+| Property | Value |
+|---|---|
+| Door opening | 38.6° |
+| Upper rack loading pull | 0.39 m |
+| Upper rack reachable depth | 0.236 m (largest of all fixtures) |
+| `PUSH_RACK(upper)` | fully admissible |
+| `CLOSE_DOOR` | fully admissible (17 stations) |
 
-Physical failure modes this produces:
+**No fixture has a usable lower rack.** No RoboCasa door opens past 47°, so at most 0.14 m
+of the lower rack is ever reachable, and `PUSH_RACK(lower)` is not admissible anywhere. The
+lower rack is therefore measured (L1–L4) but used only as static context.
 
-- **Door hit:** a skillet handle sticking out of the rack front is hit by the closing door.
-- **Ceiling jam:** an item taller than the 0.187 m tub clearance (bottles, utensil holder)
-  jams against the tub ceiling.
-- **Side or back hit:** items overhanging the rack sides or back hit the tub walls.
+### Target action: atomic, one per scene
+
+Each scene prescribes one next action, and the oracle query is F(s, a_target).
+
+- **`PUSH_RACK(rack)`:** the real slide joint goes from the loading pull to 0. Internally
+  the hand grasps the top of the front wall, then switches to a palm push once the hand would
+  reach the tub frame. Objects resting on the rack ride along.
+- **`CLOSE_DOOR`:** the real hinge goes from its open value to 0, with the closed hand
+  pushing the door's outer face.
+
+Acceptance gate: the target must be fully IK-admissible from one base station, checking
+every waypoint, self-collision, and arm against the fixed environment (the manipulated body
+excepted). All canonical scenes use `PUSH_RACK(upper)`. `CLOSE_DOOR` is implemented and
+admissible, but it has no object-recourse story with this fixture: when both racks are in,
+nothing the robot can reach lies in the door's sweep.
+
+### Placement topology
+
+Every pose is a **named slot + named orientation template**, defined in `topology.py`;
+canonical scenes contain no free offsets. Slot metadata (`inputs.placement_topology`)
+records: id, support, semantic type, exact pose, footprint, capacity 1, allowed categories,
+orientation templates, reachability and overlaps.
+
+| Slots | Location | Notes |
+|---|---|---|
+| U1, U2 / U3, U4 | Front and back rows of the left / right bays | Cups, mugs, bottles. Rows split the top-down reachable depth. |
+| U5 | Tine field | Bowls and the utensil holder. Skillet templates: `handle_out`, `handle_left`, `handle_right`. |
+| B1–B4 (front), B5–B8 (back) | Narrow cells of one visible 2 × 4 drying tray beside the dishwasher | |
+| BW1–BW4 | Whole tray columns | Bowls and the utensil holder; overlap their two narrow cells. |
+| L1–L4 | Lower rack | Never a destination. |
 
 ### Relocation primitive
 
-`RELOCATE` runs these phases in order:
+`RELOCATE` keeps the same deterministic phases as before. The carry height is now
+**derived**: the object's bottom clears, by 3 cm, the highest support-boundary lip that the
+straight transfer crosses. Lips are the rack walls and tine plates, the tray rims and the
+countertop edge. It no longer uses the fixed 13 cm.
 
-1. Top-down approach (10 cm).
-2. Grasp.
-3. Vertical lift until the object's bottom is 13 cm above the higher of the two supports
-   (this clears the 11.7 cm rack walls).
-4. Straight transfer with interpolated yaw.
-5. Lower.
-6. Release.
-7. Retreat (10 cm).
+Consequently, transfers from the rack to the tray's back row pass low over the front row. A
+measured corridor table (bottle leaving U3) shows the effect:
 
-Each category has a deterministic, ordered list of grasp templates: rim azimuths, positions
-along a handle, or finger yaw. The first candidate that is clear of the **fixed**
-environment and robot-admissible is used. The trajectory is therefore a pure function of
-source pose, destination pose, category geometry and the fixture.
+- an object on B1 blocks B5 and B6;
+- on B2, it blocks B3, B7 and B8;
+- on B3, it blocks B4 and B8.
 
-### Robot admissibility
-
-The robot is a filter only and never produces a recourse label. Every waypoint needs a
-collision-free IK solution, checking self-collision and arm against the fixed environment.
-
-- The (pre-grasp, grasp) waypoints share one base station, and so do (place, retreat).
-- The base may move while the object is held high.
-- The target articulation is the same in every scene, so its robot coverage is reported but
-  is not a per-scene filter. See Problems below.
+Each conflict and dependency edge records its moving part: `gripper`, `carried_object`,
+`articulated_fixture` or `rack_borne_object`.
 
 ## Oracle
 
@@ -125,7 +150,19 @@ plans.
   identity, a sweep/occupancy/occupancy+sweep cause, the phase, τ\* and the distance.
 
 **Variants** are decided structurally from the oracle output (`variants.py`,
-`configs/variants.yaml`), never from how the scene was generated.
+`configs/variants.yaml`), never from how the scene was generated. The v0.1 gates add:
+
+- **V3:** the destination slot is statically free before the prerequisite repair.
+- **V4:** the two chains use different mechanisms (occupancy plus swept volume).
+- **V5:** the direct blocker is not the first object moved.
+- **V7:** at most 6 dependency edges; 1–5 real resource conflicts (destinations shared or
+  overlapping between different objects); at least 2 mechanisms; an alternative branch.
+- **V4, V5, V7:** at least one carried-object swept-volume edge.
+
+**State-conditioned export (`labels.state_conditioned`).** For every BFS-expanded state up
+to the optimal depth, the export records the executable set, F, and each legal one-step
+intervention's enable and disable effects. These are training pairs of the form
+(s, I_p, I_q).
 
 ## Record schema (`oracle.json` / `scene.json`)
 
@@ -149,7 +186,7 @@ The record lists both key sets explicitly, and a test checks that no label key l
 
 ## Canonical scenes (`canonical/V*/`)
 
-Each scene directory contains `scene.png`, `dependency_graph.png`, `failed_action.mp4`, `repair.mp4`, `oracle.json`,
+Each scene directory contains `scene.png`, `placement_map.png`, `dependency_graph.png`, `failed_action.mp4`, `repair.mp4`, `oracle.json`,
 `sweep_target.png`, one `sweep_step*.png` per repair step, the observations
 `obs_front/obs_oblique/depth_front/mask_front.png`, and the `.npz` arrays. The physical
 stories are in `src/artrecourse/canonical.py` and in each `oracle.json`.
@@ -174,8 +211,9 @@ src/artrecourse/
   quality.py     coarse/fine agreement, ambiguity gates
   records.py     record schema with inputs/labels separation
   render.py      observations, ghosted sweeps, dependency panels, videos
+  topology.py    named semantic slots + orientation templates (v0.1)
   canonical.py   the 8 hand-designed scenes
   generator.py   randomized generation (not yet run)
-scripts/       preview_assets, build_canonical, inspect_scene, generate_v0
+scripts/       preview_assets, audit_fixtures, build_canonical, inspect_scene, generate_v0
 tests/         test_assets, test_geometry, test_oracle
 ```

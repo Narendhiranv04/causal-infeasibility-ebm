@@ -24,6 +24,11 @@ TCP_OFFSET = 0.1034           # hand origin -> fingertip pad centre along hand z
 FINGER_BASE_Z = 0.0584        # finger body origin in hand frame
 ARM_JOINTS = [f"joint{i}" for i in range(1, 8)]
 Q_HOME = np.array([0.0, -0.3, 0.0, -2.2, 0.0, 2.0, 0.785])
+Q_SEEDS = [Q_HOME,
+           np.array([0.0, 0.3, 0.0, -1.9, 0.0, 2.2, 0.785]),      # forward / low reach, top-down
+           np.array([0.0, 0.2, 0.0, -1.6, 0.0, 0.3, 0.785]),      # forward, horizontal approach
+           np.array([0.0, -0.6, 0.0, -2.6, 0.0, 1.9, 0.785]),     # high, close
+           np.array([0.0, 0.6, 0.0, -1.2, 0.0, 1.0, 0.785])]      # long horizontal reach
 
 
 def load_panda_spec() -> mujoco.MjSpec:
@@ -97,8 +102,9 @@ class PandaKinematics:
 
     def solve(self, pos, R, q0=None, iters=150, tol_p=2e-3, tol_r=2e-2, seeds=6, rng=None) -> IKResult:
         rng = rng or np.random.default_rng(0)
-        starts = [Q_HOME if q0 is None else np.asarray(q0, float)]
-        starts += [np.clip(Q_HOME + rng.normal(0, 0.6, 7), self.lo, self.hi) for _ in range(seeds - 1)]
+        starts = ([] if q0 is None else [np.asarray(q0, float)]) + [np.clip(q, self.lo, self.hi) for q in Q_SEEDS]
+        starts += [np.clip(Q_SEEDS[k % len(Q_SEEDS)] + rng.normal(0, 0.5, 7), self.lo, self.hi)
+                   for k in range(max(0, seeds - 1))]
         best = None
         for q in starts:
             q = q.copy()

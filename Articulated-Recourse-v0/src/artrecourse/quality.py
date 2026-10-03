@@ -50,13 +50,19 @@ def coarse_fine_check(pb: RecourseProblem, res: dict) -> dict:
 def quality_report(pb: RecourseProblem, res: dict, fine: dict | None) -> dict:
     q = {
         "static_problems": pb.problems,
+        "gate_violations": pb.gate_violations,
+        "ad_hoc_offsets": sum(tuple(o.dxy) != (0.0, 0.0) for o in pb.spec.objects)
+        + sum(tuple(i.dxy) != (0.0, 0.0) for i in pb.spec.interventions),
         "consulted_ambiguities": res["consulted_ambiguities"],
         "coarse_fine": fine,
-        "target_robot_coverage": getattr(pb, "target_robot", None),
+        "target_robot": {k: v for k, v in (getattr(pb, "target_robot", None) or {}).items() if k != "ik"},
         "target_gripper_vs_fixed_env": pb.target_env.to_dict(),
         "distance_glitch_retries": pb.eng.glitches,
         "n_inadmissible_interventions": sum(not iv.admissible for iv in pb.ivs),
     }
-    q["accepted"] = bool(not pb.problems and not res["consulted_ambiguities"]
+    tr = getattr(pb, "target_robot", None)
+    q["target_fully_admissible"] = bool(tr and tr["fully_admissible"]) if tr is not None else None
+    q["accepted"] = bool(not pb.problems and not pb.gate_violations and q["target_fully_admissible"] is not False
+                         and not res["consulted_ambiguities"]
                          and (fine is None or (fine["agree"] and not fine["fine_consulted_ambiguities"])))
     return q

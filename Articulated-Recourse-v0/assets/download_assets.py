@@ -179,6 +179,8 @@ def main(argv=None):
     wanted: dict[str, list[str]] = {}
     fx = cfg["fixture"]
     wanted.setdefault(fx["archive"], []).append(fx["member_prefix"])
+    for fid in fx.get("audit_pool", []):
+        wanted[fx["archive"]].append(f"fixtures/dishwashers/{fid}/")
     wanted.setdefault("textures", []).extend(cfg["textures"].values())
     default_archive = cfg["objects"]["archive"]
     gso_models = []

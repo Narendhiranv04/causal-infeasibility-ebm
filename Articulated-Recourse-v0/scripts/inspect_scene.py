@@ -27,7 +27,8 @@ def summarize(spec: SceneSpec, with_robot=True, verbose=True):
     scene = {"objects": spec.objects, "candidate_interventions": pb.ivs}
     ok, why = check_variant(spec.variant_requested, r, scene) if spec.variant_requested else (None, [])
     print(f"== {spec.scene_id} [{spec.variant_requested}] {'PASS' if ok else 'FAIL'} {why} "
-          f"({time.time() - t:.1f}s) problems={pb.problems}")
+          f"({time.time() - t:.1f}s) problems={pb.problems} gates={pb.gate_violations} "
+          f"target_admissible={getattr(pb, 'target_robot', {}).get('fully_admissible')}")
     if verbose:
         for iv in pb.ivs:
             if not iv.admissible:
@@ -45,7 +46,7 @@ def summarize(spec: SceneSpec, with_robot=True, verbose=True):
         for p in r["sequence_proofs"][:1]:
             for e in p["edges"]:
                 c = e["cause"]
-                print(f"     edge {e['from']} -> {e['to']} | blocker {e['blocker']} | {c.get('type')} "
+                print(f"     edge {e['from']} -> {e['to']} | blocker {e['blocker']} | {c.get('type')}/{c.get('mechanism')} "
                       f"phase={c.get('phase_star')} d={c.get('min_dist')}")
         print("   irreducible plans", [(s["length"], s["interventions"]) for s in r["irreducible_solutions"]][:6])
         print("   compatibility", {k: len(v) for k, v in r["compatibility_edges"].items()},

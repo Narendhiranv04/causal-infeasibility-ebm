@@ -5,14 +5,11 @@
   "accepted": true,
   "L": 1,
   "blockers": [
-   "pan"
+   "holder"
   ],
   "sequences": [
    [
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_pan_to_upper_tines_handle_right"
+    "move_holder_to_BW1"
    ]
   ]
  },
@@ -23,24 +20,16 @@
   "L": 2,
   "blockers": [
    "bottle",
-   "pan"
+   "holder"
   ],
   "sequences": [
    [
-    "move_bottle_to_counter_buffer_center",
-    "move_pan_to_upper_tines_handle_left"
+    "move_bottle_to_B3",
+    "move_holder_to_BW1"
    ],
    [
-    "move_bottle_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_pan_to_upper_tines_handle_left",
-    "move_bottle_to_counter_buffer_center"
-   ],
-   [
-    "move_pan_to_upper_tines_handle_left",
-    "move_bottle_to_counter_buffer_right"
+    "move_holder_to_BW1",
+    "move_bottle_to_B3"
    ]
   ]
  },
@@ -54,12 +43,8 @@
   ],
   "sequences": [
    [
-    "move_bowl_to_counter_buffer_left",
-    "move_bottle_to_counter_buffer_center"
-   ],
-   [
-    "move_can_to_counter_buffer_far_right",
-    "move_bottle_to_counter_buffer_right"
+    "move_cup_to_U1",
+    "move_bottle_to_B1"
    ]
   ]
  },
@@ -73,20 +58,20 @@
   ],
   "sequences": [
    [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_to_counter_buffer_far_right"
+    "move_cup_to_U1",
+    "move_bottle_to_B5"
    ],
    [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_to_counter_buffer_right"
+    "move_cup_to_U1",
+    "move_bottle_to_B6"
    ],
    [
-    "move_box_to_counter_left_mid",
-    "move_bottle_to_counter_buffer_far_right"
+    "move_cup_to_U2",
+    "move_bottle_to_B5"
    ],
    [
-    "move_box_to_counter_left_mid",
-    "move_bottle_to_counter_buffer_right"
+    "move_cup_to_U2",
+    "move_bottle_to_B6"
    ]
   ]
  },
@@ -96,81 +81,45 @@
   "accepted": true,
   "L": 4,
   "blockers": [
-   "bottle_l",
-   "bottle_r"
+   "bottle",
+   "holder"
   ],
   "sequences": [
    [
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_far_right"
+    "move_box_to_B3",
+    "move_bottle_to_B7",
+    "move_cup_to_U1",
+    "move_holder_to_BW1"
    ],
    [
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right"
+    "move_box_to_B3",
+    "move_cup_to_U1",
+    "move_bottle_to_B7",
+    "move_holder_to_BW1"
    ],
    [
-    "move_box_l_to_counter_left_near",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_far",
-    "move_bottle_r_to_counter_buffer_far_right"
+    "move_box_to_B3",
+    "move_cup_to_U1",
+    "move_holder_to_BW1",
+    "move_bottle_to_B7"
    ],
    [
-    "move_box_l_to_counter_left_near",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_far",
-    "move_bottle_r_to_counter_buffer_right"
+    "move_cup_to_U1",
+    "move_box_to_B3",
+    "move_bottle_to_B7",
+    "move_holder_to_BW1"
    ],
    [
-    "move_box_l_to_counter_left_near",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_far_right",
-    "move_bottle_l_to_counter_left_far"
+    "move_cup_to_U1",
+    "move_box_to_B3",
+    "move_holder_to_BW1",
+    "move_bottle_to_B7"
    ],
    [
-    "move_box_l_to_counter_left_near",
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_far"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_far_right",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far",
-    "move_bottle_r_to_counter_buffer_far_right"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_l_to_counter_left_far",
-    "move_bottle_r_to_counter_buffer_right"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_r_to_counter_buffer_far_right",
-    "move_bottle_l_to_counter_left_far"
-   ],
-   [
-    "move_box_r_to_counter_buffer_left",
-    "move_box_l_to_counter_left_near",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_far"
+    "move_cup_to_U1",
+    "move_holder_to_BW1",
+    "move_box_to_B3",
+    "move_bottle_to_B7"
    ]
   ]
  },
@@ -180,13 +129,18 @@
   "accepted": true,
   "L": 3,
   "blockers": [
-   "bottle_a"
+   "bottle"
   ],
   "sequences": [
    [
-    "move_bottle_c_to_counter_buffer_left",
-    "move_box_to_counter_buffer_center",
-    "move_bottle_a_to_counter_buffer_far_right"
+    "move_can_to_B5",
+    "move_cup_to_U1",
+    "move_bottle_to_B3"
+   ],
+   [
+    "move_can_to_B5",
+    "move_cup_to_U1",
+    "move_bottle_to_B7"
    ]
   ]
  },
@@ -196,12 +150,12 @@
   "accepted": true,
   "L": 2,
   "blockers": [
-   "bottle_a"
+   "bottle"
   ],
   "sequences": [
    [
-    "move_bowl_to_counter_buffer_left",
-    "move_bottle_a_to_counter_buffer_center"
+    "move_cup_to_U2",
+    "move_bottle_to_B5"
    ]
   ]
  },
@@ -209,48 +163,21 @@
   "variant": "V7",
   "pass": true,
   "accepted": true,
-  "L": 4,
+  "L": 3,
   "blockers": [
-   "bottle_l",
-   "bottle_r",
+   "bottle",
    "pan"
   ],
   "sequences": [
    [
-    "move_bottle_l_to_counter_left_mid",
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_left"
+    "move_box_to_B5",
+    "move_bottle_to_B3",
+    "move_pan_to_U5_handle_left"
    ],
    [
-    "move_bottle_l_to_counter_left_mid",
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_right"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_mid",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_l_to_counter_left_mid",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_pan_to_upper_tines_handle_right"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_mid",
-    "move_pan_to_upper_tines_handle_left"
-   ],
-   [
-    "move_box_to_counter_buffer_left",
-    "move_bottle_r_to_counter_buffer_right",
-    "move_bottle_l_to_counter_left_mid",
-    "move_pan_to_upper_tines_handle_right"
+    "move_box_to_B5",
+    "move_bottle_to_B3",
+    "move_pan_to_U5_handle_right"
    ]
   ]
  }

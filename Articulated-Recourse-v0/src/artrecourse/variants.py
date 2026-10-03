@@ -76,8 +76,9 @@ def check_variant(variant: str, res: dict, scene: dict) -> tuple[bool, list[str]
         need(any(e["cause"]["destination_occupied"] for e in edges_any), "no occupancy dependency edge")
     elif variant == "V3":
         need(L >= 2, f"optimal length {L} < 2")
-        need(any(e["cause"]["swept_volume"] and not e["cause"]["destination_occupied"] for e in edges_any),
-             "no pure swept-volume dependency edge (destination free, trajectory blocked)")
+        need(any(e["cause"]["swept_volume"] and not e["cause"]["destination_occupied"]
+                 and e.get("destination_slot_free_before_prerequisite", False) for e in edges_any),
+             "no pure swept-volume dependency edge with a statically free destination slot")
     elif variant == "V4":
         need(L >= 3, f"optimal length {L} < 3")
         ok = False
@@ -90,6 +91,8 @@ def check_variant(variant: str, res: dict, scene: dict) -> tuple[bool, list[str]
             if len(es) >= 2 and len(comps) >= 2 and len(objs) >= 4:
                 ok = True
         need(ok, "no optimal sequence with >= 2 distinct dependency chains over >= 4 objects")
+        need(any(_two_mechanisms(res, i) for i in range(len(proofs))),
+             "the two chains do not use physically distinct mechanisms (need occupancy + swept volume)")
     elif variant == "V5":
         need(L == 3, f"optimal length {L} != 3")
         ok = False
@@ -101,9 +104,11 @@ def check_variant(variant: str, res: dict, scene: dict) -> tuple[bool, list[str]
             chain = g.has_edge(s[0], s[1]) and g.has_edge(s[1], s[2]) and g.has_edge(s[2], "TARGET")
             sweeps = sum(g.edges[a, b]["cause"]["swept_volume"] for a, b in ((s[0], s[1]), (s[1], s[2]))
                          if g.has_edge(a, b))
-            if chain and sweeps >= 2:
+            first_obj = res["intervention_object"][s[0]]
+            if chain and sweeps >= 2 and first_obj not in D:
                 ok = True
-        need(ok, "no optimal sequence forming a C->B->A->target chain with >= 2 swept-volume edges")
+        need(ok, "no optimal sequence forming a C->B->A->target chain with >= 2 swept-volume edges "
+                 "whose first corrective object is not a direct target blocker")
     elif variant == "V6":
         sols = res["irreducible_solutions"]
         lens = {s["length"] for s in sols}
@@ -121,9 +126,37 @@ def check_variant(variant: str, res: dict, scene: dict) -> tuple[bool, list[str]
         need(n_comp >= 1, "no compatibility / destination-conflict edge")
         need(not all(e["cause"]["destination_occupied"] and not e["cause"]["swept_volume"] for e in edges_any),
              "all dependencies are occupancy-only")
+        need(len(edges_any) <= 6, f"{len(edges_any)} meaningful edges > 6")
+        need(1 <= n_real_compat(res) <= 5, f"{n_real_compat(res)} real compatibility/resource conflicts not in [1, 5]")
+        mech = {e["cause"]["mechanism"] for e in edges_any} | ({"resource_competition"} if n_real_compat(res) else set())
+        need(len(mech) >= 2, f"mechanisms {sorted(mech)}: fewer than 2")
+        need(len(res["irreducible_solutions"]) >= 2 or len({tuple(sorted(x)) for x in res["optimal_sequences"]}) >= 2,
+             "no alternative repair branch")
     else:
         raise KeyError(variant)
+    if variant in ("V4", "V5", "V6", "V7") and variant != "V6":
+        need(any(e["cause"]["mechanism"] == "carried_object" for e in edges_any),
+             "no carried-object swept-volume dependency (only gripper / occupancy)")
     return not why, why
+
+
+def n_real_compat(res) -> int:
+    """Resource competition: distinct pairs of DIFFERENT objects' candidate interventions whose
+    destinations overlap physically or use the same / overlapping capacity-1 slot.
+    (Source/destination overlaps are occupancy relations, already directed enable edges; they
+    are reported in compatibility_edges['final_placement_collision'] but not counted here.)"""
+    pairs = set()
+    for k in ("destination_overlap", "support_incompatibility"):
+        for e in res["compatibility_edges"][k]:
+            pairs.add((e[0], e[1]))
+    return len(pairs)
+
+
+def _two_mechanisms(res, i) -> bool:
+    es = repair_edges(res, i)
+    occ = any(e["cause"]["destination_occupied"] for e in es)
+    swp = any(e["cause"]["swept_volume"] and not e["cause"]["destination_occupied"] for e in es)
+    return occ and swp
 
 
 def classify_all(res: dict, scene: dict) -> dict:

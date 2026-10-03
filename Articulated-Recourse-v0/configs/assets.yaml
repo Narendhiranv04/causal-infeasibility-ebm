@@ -33,6 +33,13 @@ fixture:
   # Selection rationale (see README): articulated hinge door, two prismatic racks with
   # 0.40 m travel, box collision geoms, clean articulation (the fully pulled upper rack
   # does not intersect the fully opened door, unlike Dishwasher031/034/048).
+  # v0.1 fixture audit: every RoboCasa dishwasher is fetched and measured
+  # (scripts/audit_fixtures.py -> out/fixture_audit.{json,md}); `id` is the selected one.
+  audit_pool: [Dishwasher031, Dishwasher032, Dishwasher034, Dishwasher036, Dishwasher038, Dishwasher039,
+               Dishwasher040, Dishwasher042, Dishwasher043, Dishwasher044, Dishwasher045, Dishwasher046,
+               Dishwasher048, Dishwasher049, Dishwasher051, Dishwasher053, Dishwasher054, Dishwasher055,
+               Dishwasher058, Dishwasher059, Dishwasher060, Dishwasher061, Dishwasher062, Dishwasher063,
+               Dishwasher067]
   door_joint: door_joint
   upper_rack_joint: rack1_joint
   lower_rack_joint: rack0_joint

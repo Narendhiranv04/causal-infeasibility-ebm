@@ -32,125 +32,46 @@ from .quality import coarse_fine_check, quality_report
 from .records import build_record, write_record
 from .variants import check_variant, repair_edges
 
-RACK_BAYS = ["upper_left_front", "upper_left_back", "upper_right_front", "upper_right_back"]
-COUNTER_R = ["counter_buffer_left", "counter_buffer_center", "counter_buffer_right", "counter_buffer_far_right"]
-COUNTER_L = ["counter_left_near", "counter_left_mid", "counter_left_far"]
-
-
-def by_cat(cat):
-    return sorted(a for a, x in selected_assets().items() if x.category == cat)
-
-
-def _j(rng, s=0.02):
-    return (float(rng.uniform(-s, s)), float(rng.uniform(-s, s)))
-
-
 class Proposer:
-    """Variant-biased layout families. Each returns a SceneSpec (or None)."""
+    """v0.1 proposer: canonical layout families on the named slot topology, with the assets
+    re-drawn within each category from the accepted pool and 0-2 distractors on free slots
+    compatible with their category. No free offsets (slot-local jitter is a later option)."""
+
+    DISTRACTOR_SLOTS = {"cup": ["U1", "U2", "U4", "B4", "B8"], "can": ["B4", "B8"], "mug": ["B4", "B8"]}
 
     def __init__(self, rng: np.random.Generator):
         self.rng = rng
         self.cats = {c: by_cat(c) for c in ("mug", "cup", "bowl", "plate", "pan", "bottle", "can", "box")}
 
-    def pick(self, cat):
-        return str(self.rng.choice(self.cats[cat]))
-
-    # -- building blocks -------------------------------------------------------------
-    def pan_out(self, objs, ivs, key="pan"):
-        objs.append(O(key, self.pick("pan") if self.rng.random() < 0.3 else "pan/pan_2", "upper_center_back", -90,
-                      (float(self.rng.uniform(-0.01, 0.01)), -0.005)))
-        ivs += [I(key, "upper_tines_handle_left", 180), I(key, "upper_tines_handle_right", 0)]
-
-    def tall_bottle(self, objs, ivs, key, bay, dests):
-        objs.append(O(key, self.pick("bottle"), bay, 0, _j(self.rng, 0.008)))
-        ivs += [I(key, d, 0) for d in dests]
-
-    def corridor_box(self, objs, ivs, key, side="right", dests=None):
-        if side == "right":
-            objs.append(O(key, self.pick("box"), "counter_buffer_right", 0,
-                          (-0.07 + float(self.rng.uniform(-0.02, 0.02)), -0.055 + float(self.rng.uniform(-0.01, 0.01)))))
-        else:
-            objs.append(O(key, self.pick("box"), "counter_left_near", 0,
-                          (-0.10 + float(self.rng.uniform(-0.02, 0.02)), -0.075 + float(self.rng.uniform(-0.01, 0.01)))))
-        ivs += [I(key, d, 0) for d in (dests or (["counter_buffer_left", "counter_left_mid"] if side == "right"
-                                                 else ["counter_left_near"]))]
-
-    def distractors(self, objs, ivs, n, free_slots):
-        cats = ["mug", "cup", "bowl", "can", "plate"]
-        for k in range(n):
-            if not free_slots:
-                return
-            slot = free_slots.pop(int(self.rng.integers(len(free_slots))))
-            cat = str(self.rng.choice(cats))
-            yaw = 90 if cat == "mug" else 0
-            objs.append(O(f"{cat}{k}", self.pick(cat), slot, yaw, _j(self.rng, 0.01)))
-            if free_slots:
-                ivs.append(I(f"{cat}{k}", str(self.rng.choice(free_slots)), yaw))
-
-    # -- families -----------------------------------------------------------------------
     def propose(self, variant: str) -> SceneSpec:
-        rng = self.rng
-        objs, ivs = [], []
-        free = COUNTER_L.copy()
-        if variant == "V0":
-            self.pan_out(objs, ivs)
-            free += COUNTER_R
-        elif variant == "V1":
-            self.pan_out(objs, ivs)
-            self.tall_bottle(objs, ivs, "bottle", "upper_right_front", ["counter_buffer_center", "counter_buffer_right"])
-            free += ["counter_buffer_far_right"]
-        elif variant in ("V2", "V6"):
-            self.tall_bottle(objs, ivs, "bottle", "upper_right_back", ["counter_buffer_center", "counter_buffer_right"])
-            objs.append(O("occupant", self.pick(str(rng.choice(["bowl", "can", "plate"]))), "counter_buffer_center", 0,
-                          _j(rng, 0.01)))
-            ivs.append(I("occupant", "counter_buffer_left", 0))
-            if variant == "V6":
-                self.corridor_box(objs, ivs, "box", dests=["counter_buffer_far_right"])
-                objs.append(O("bottle_c", self.pick("bottle"), "counter_buffer_right", 0, (-0.03, 0.04)))
-                ivs.append(I("bottle_c", "counter_buffer_left", 0, (-0.04, 0.03)))
-        elif variant == "V3":
-            self.tall_bottle(objs, ivs, "bottle", "upper_right_back", ["counter_buffer_far_right", "counter_buffer_right"])
-            self.corridor_box(objs, ivs, "box")
-        elif variant == "V4":
-            self.tall_bottle(objs, ivs, "bottle_r", "upper_right_back", ["counter_buffer_far_right", "counter_buffer_right"])
-            self.corridor_box(objs, ivs, "box_r", "right", ["counter_buffer_left"])
-            self.tall_bottle(objs, ivs, "bottle_l", "upper_left_back", ["counter_left_far", "counter_left_mid"])
-            self.corridor_box(objs, ivs, "box_l", "left")
-            free = []
-        elif variant == "V5":
-            self.tall_bottle(objs, ivs, "bottle_a", "upper_right_back", ["counter_buffer_far_right", "counter_buffer_right"])
-            self.corridor_box(objs, ivs, "box", "right", ["counter_buffer_center", "counter_left_mid"])
-            objs.append(O("bottle_c", self.pick("bottle"), "counter_buffer_right", 0,
-                          (-0.07 + float(rng.uniform(-0.01, 0.01)), 0.04)))
-            ivs.append(I("bottle_c", "counter_buffer_left", 0))
-        elif variant == "V7":
-            self.pan_out(objs, ivs)
-            self.tall_bottle(objs, ivs, "bottle_r", "upper_right_back", ["counter_buffer_far_right", "counter_buffer_right"])
-            self.tall_bottle(objs, ivs, "bottle_l", "upper_left_back", ["counter_buffer_right", "counter_left_mid"])
-            self.corridor_box(objs, ivs, "box")
-            free = ["counter_left_near", "counter_left_far", "counter_buffer_far_right"]
-        elif variant == "C0":   # hard negative: something close to the sweep, but feasible
-            objs.append(O("pan", "pan/pan_2", "upper_tines_handle_left", 180, _j(rng, 0.005)))
-            objs.append(O("cup", self.pick("cup"), str(rng.choice(["upper_left_front", "upper_left_back"])), 0, _j(rng, 0.01)))
-            ivs.append(I("cup", "counter_buffer_center", 0))
-            free += COUNTER_R
-        elif variant == "C1":   # no recourse in catalogue: blocker whose only destinations are blocked/invalid
-            self.tall_bottle(objs, ivs, "bottle", "upper_right_back", ["counter_buffer_center"])
-            objs.append(O("occupant", self.pick("bowl"), "counter_buffer_center", 0, _j(rng, 0.01)))
-            ivs.append(I("occupant", "counter_buffer_right", 0))
-            objs.append(O("occupant2", self.pick("can"), "counter_buffer_right", 0, _j(rng, 0.01)))
-        n_extra = int(rng.integers(max(0, 6 - len(objs)), max(1, 10 - len(objs))))
-        if variant == "V7":
-            n_extra = max(n_extra, 7 - len(objs))
-        self.distractors(objs, ivs, min(n_extra, 9 - len(objs)), [f for f in free if f not in {o.slot for o in objs}])
-        return SceneSpec("", objs, ivs, variant_requested=variant)
+        from .canonical import ALL
+
+        base = ALL.get(variant, ALL["V0"])()
+        assets = selected_assets()
+        objs = []
+        for o in base.objects:
+            cat = assets[o.asset_id].category
+            pool = self.cats.get(cat, [o.asset_id])
+            objs.append(O(o.key, str(self.rng.choice(pool)), o.slot, o.orient))
+        used = {o.slot for o in objs}
+        ivs = list(base.interventions)
+        for k in range(int(self.rng.integers(0, 3))):
+            cat = str(self.rng.choice(list(self.DISTRACTOR_SLOTS)))
+            free = [sl for sl in self.DISTRACTOR_SLOTS[cat] if sl not in used]
+            if not free or len(objs) >= 9:
+                break
+            sl = str(self.rng.choice(free))
+            used.add(sl)
+            objs.append(O(f"{cat}_d{k}", str(self.rng.choice(self.cats[cat])), sl,
+                          "handle_back" if cat == "mug" else "upright"))
+        return SceneSpec("", objs, ivs, variant_requested=variant, target=base.target, articulation=base.articulation)
 
 
 def signature(spec: SceneSpec) -> str:
     d = spec.to_dict()
-    key = json.dumps({"objects": sorted((o["asset_id"], o["slot"], o["yaw_deg"], tuple(np.round(o["dxy"], 4)))
+    key = json.dumps({"objects": sorted((o["asset_id"], o["slot"], o["orient"], tuple(np.round(o["dxy"], 4)))
                                         for o in d["objects"]),
-                      "ivs": sorted((i["obj"], i["slot"], i["yaw_deg"], tuple(np.round(i["dxy"], 4)))
+                      "ivs": sorted((i["obj"], i["slot"], i["orient"], tuple(np.round(i["dxy"], 4)))
                                     for i in d["interventions"])}, sort_keys=True, default=str)
     return hashlib.sha1(key.encode()).hexdigest()[:16]
 

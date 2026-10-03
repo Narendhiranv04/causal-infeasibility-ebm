@@ -5,7 +5,7 @@ world:
   dishwasher_pos: [0.0, 0.0, 0.4276]      # RoboCasa Dishwasher054, base on the floor
   articulation:                           # scene articulation state (real joint values)
     door: max                             # door_joint upper limit (0.6736 rad = 38.6 deg)
-    upper_rack: max                       # rack1_joint fully pulled (0.40 m): loading position
+    upper_rack: 0.39                      # rack1_joint loading pull: largest pull with >= 5 mm to the open door (audit)
     lower_rack: 0.0                       # rack0 stays in (a pulled lower rack would hit the door)
   countertop: {x: [-0.95, 1.20], y: [-0.33, 0.36], z: [0.870, 0.910]}
   cabinets:
@@ -16,6 +16,8 @@ world:
   # an IK reach study. The base may reposition between the pick and place halves of a
   # relocation. Reachability is an admissibility filter only.
   robot_stations:
+    rack_push:  {pos: [-0.15, -0.885, 0.75], yaw_deg: 90}    # audited: PUSH_RACK(upper) fully admissible
+    door_close: {pos: [-0.35, -0.885, 0.25], yaw_deg: 90}    # audited: CLOSE_DOOR fully admissible
     dishwasher_center: {pos: [0.00, -0.92, 0.42], yaw_deg: 90}
     dishwasher_right:  {pos: [0.36, -0.92, 0.42], yaw_deg: 90}
     counter:           {pos: [0.62, -0.82, 0.55], yaw_deg: 90}

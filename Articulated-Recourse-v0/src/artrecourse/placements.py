@@ -41,12 +41,10 @@ def _world_aabb(m, d, g):
     return w.min(0), w.max(0)
 
 
-def measure_supports(scene: Scene) -> dict[str, Support]:
+def _rack_supports(scene, rack: str, prefix: str) -> tuple[dict, float]:
     m, d = scene.model, scene.data
-    scene.set_articulation()
-    scene.forward()
-    boxes = [_world_aabb(m, d, g) for g in scene.idx.articulated["rack1"]]
-    floor = tines = None
+    boxes = [_world_aabb(m, d, g) for g in scene.idx.articulated[rack]]
+    floor = None
     tines, walls_x, walls_y = [], [], []
     for lo, hi in boxes:
         ext = hi - lo
@@ -63,18 +61,35 @@ def measure_supports(scene: Scene) -> dict[str, Support]:
     walls_y.sort(key=lambda b: b[0][1])
     y_lo, y_hi = walls_y[0][1][1], walls_y[-1][0][1]
     sup = {
-        "rack_left_bay": Support("rack_left_bay", float(floor[1][2]), (float(walls_x[0][1][0]), float(tines[0][0][0])),
-                                 (float(y_lo), float(y_hi)), "bay"),
-        "rack_right_bay": Support("rack_right_bay", float(floor[1][2]), (float(tines[-1][1][0]), float(walls_x[-1][0][0])),
-                                  (float(y_lo), float(y_hi)), "bay"),
-        "rack_tines": Support("rack_tines", float(max(t[1][2] for t in tines)),
-                              (float(walls_x[0][1][0]), float(walls_x[-1][0][0])), (float(y_lo), float(y_hi)), "tines",
-                              tuple(float((t[0][0] + t[1][0]) / 2) for t in tines)),
+        f"{prefix}_left_bay": Support(f"{prefix}_left_bay", float(floor[1][2]),
+                                      (float(walls_x[0][1][0]), float(tines[0][0][0])), (float(y_lo), float(y_hi)), "bay"),
+        f"{prefix}_right_bay": Support(f"{prefix}_right_bay", float(floor[1][2]),
+                                       (float(tines[-1][1][0]), float(walls_x[-1][0][0])), (float(y_lo), float(y_hi)), "bay"),
+        f"{prefix}_tines": Support(f"{prefix}_tines", float(max(t[1][2] for t in tines)),
+                                   (float(walls_x[0][1][0]), float(walls_x[-1][0][0])), (float(y_lo), float(y_hi)),
+                                   "tines", tuple(float((t[0][0] + t[1][0]) / 2) for t in tines)),
     }
+    return sup, float(max(b[1][2] for b in walls_x + walls_y))
+
+
+def measure_supports(scene: Scene) -> dict[str, Support]:
+    scene.set_articulation()
+    scene.forward()
+    sup, walls_top = _rack_supports(scene, "rack1", "rack")
+    try:
+        lower, _ = _rack_supports(scene, "rack0", "lower")
+        sup.update(lower)
+    except Exception:  # noqa: BLE001  (fixtures whose lower rack is not a wire basket)
+        pass
     ct = scene.world["countertop"]
     sup["counter"] = Support("counter", float(ct["z"][1]), (float(ct["x"][0]) + 0.02, float(ct["x"][1]) - 0.02),
                              (float(ct["y"][0]), float(ct["y"][1]) - 0.02), "counter")
-    sup["_rack_walls_top"] = float(max(b[1][2] for b in walls_x + walls_y))
+    from .topology import TRAY
+
+    rt = TRAY["rim_t"]
+    sup["staging_tray"] = Support("staging_tray", float(ct["z"][1] + TRAY["base"]),
+                                  (TRAY["x"][0] + rt, TRAY["x"][1] - rt), (TRAY["y"][0] + rt, TRAY["y"][1] - rt), "counter")
+    sup["_rack_walls_top"] = walls_top
     return sup
 
 
@@ -85,6 +100,7 @@ class Placement:
     support: str
     pos: np.ndarray       # canonical-frame origin (anchor on the bottom plane), world
     yaw: float
+    orient: str = ""      # named orientation template (v0.1)
 
     @property
     def quat(self):
@@ -94,7 +110,7 @@ class Placement:
         return pose7(self.pos, self.quat)
 
     def key(self):
-        return f"{self.slot}@{np.degrees(self.yaw):.0f}"
+        return f"{self.slot}:{self.orient}" if self.orient else f"{self.slot}@{np.degrees(self.yaw):.0f}"
 
 
 def footprint(meta: dict, pos, yaw) -> tuple[np.ndarray, np.ndarray]:

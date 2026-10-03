@@ -53,17 +53,33 @@ def test_original_and_destination_pose_differ(problems):
                 assert np.linalg.norm(iv.placement.pos - iv.src.pos) > 0.01 or abs(iv.placement.yaw - iv.src.yaw) > 0.05
 
 
+def test_transfer_height_is_derived_from_lips(problems):
+    """Carry height = highest support-boundary lip crossed + 3 cm, never the old fixed 13 cm."""
+    from artrecourse.primitives import TRANSFER_MARGIN
+
+    pb, _ = problems["V3"]
+    for iv in pb.ivs:
+        if not iv.admissible:
+            continue
+        zs = max(pb.sup[iv.src.support].z, pb.sup[iv.placement.support].z)
+        cb = iv.traj.meta["carry_bottom_z"]
+        assert cb >= zs + TRANSFER_MARGIN - 1e-9
+        assert cb <= zs + 0.25 + TRANSFER_MARGIN
+        if iv.placement.support == "staging_tray" and iv.src.support != "staging_tray":
+            assert "env:tray" in iv.lips_crossed or "env:countertop" in iv.lips_crossed
+
+
 def test_swept_collision_and_blocker_identity_deterministic(problems):
     pb, res = problems["V3"]
-    iv = pb.iv_by_id["move_bottle_to_counter_buffer_far_right"]
+    iv = pb.iv_by_id["move_bottle_to_B5"]
     ms = pb.eng.moving_set(iv.traj)
-    g, p, R = pb.eng.object_geoms_at("box", *pb.pose_tuple("box", 0))
+    g, p, R = pb.eng.object_geoms_at("cup", *pb.pose_tuple("cup", 0))
     a = pb.eng.profile(ms, g, p, R)
     b = pb.eng.profile(ms, g, p, R)
     assert a.min_dist == b.min_dist and a.tau_star == b.tau_star and a.part_star == b.part_star
     assert a.status == "conflict"
     ok, bl = pb.exec_info(iv, pb.s0)
-    assert not ok and [o for o, _ in bl] == ["box"]
+    assert not ok and [o for o, _ in bl] == ["cup"]
 
 
 def test_apply_intervention_produces_exact_pose(problems):

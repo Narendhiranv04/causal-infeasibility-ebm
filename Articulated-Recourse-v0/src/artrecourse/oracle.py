@@ -40,7 +40,10 @@ def conflict_type(pb: RecourseProblem, iv, blocker_obj: str, blocker_pose: int) 
     sweep = bool(set(pr.phases_in_conflict) & sweep_phases) or gripper_hit or (
         not occupancy and pr.status != "clear")
     kind = "occupancy+sweep" if occupancy and sweep else ("occupancy" if occupancy else "sweep")
+    from .interventions import mechanism_of
+
     return {"type": kind, "swept_volume": sweep, "destination_occupied": occupancy,
+            "mechanism": "occupancy" if (occupancy and not sweep) else mechanism_of(pr.part_star),
             "final_pose_distance": round(float(occ_dist), 5), **pr.to_dict()}
 
 
@@ -82,6 +85,7 @@ def bfs(pb: RecourseProblem, max_depth=MAX_DEPTH):
             seqs.extend(back(g, goal_depth))
         seqs = sorted(seqs)
     n_states = sum(len(l) for l in layers)
+    pb._bfs_layers = layers
     return goal_depth, seqs, n_states
 
 
@@ -152,8 +156,9 @@ def compatibility_labels(pb: RecourseProblem):
         d2 = pb.eng.static_distance(q.obj, pb.pose_tuple(q.obj, q.pose_idx), p.obj, pb.pose_tuple(p.obj, 0))
         if min(d1, d2) <= -PEN_TOL:
             out["final_placement_collision"].append(pair + [round(float(min(d1, d2)), 4)])
-        if p.placement.slot == q.placement.slot:
-            out["support_incompatibility"].append(pair + [p.placement.slot])
+        sp, sq = p.placement.slot, q.placement.slot
+        if sp == sq or sq in pb.topo[sp].overlaps:
+            out["support_incompatibility"].append(pair + [f"{sp}/{sq}"])
     return out
 
 
@@ -170,7 +175,12 @@ def sequence_proof(pb: RecourseProblem, seq: list[str]) -> dict:
             if not ok_cf:
                 bj = pb.iv_by_id[seq[j]]
                 if any(o == bj.obj for o, _ in bl):
+                    slot = iv.placement.slot
+                    occ = [pb.slot_occupant(cf, sl, exclude=iv.obj)
+                           for sl in (slot,) + tuple(pb.topo[slot].overlaps)]
                     edges.append({"from": seq[j], "to": ivk, "blocker": bj.obj,
+                                  "destination_slot": slot,
+                                  "destination_slot_free_before_prerequisite": not any(occ),
                                   "proof": {f"{ivk} executable without {seq[j]}": False,
                                             f"{ivk} executable after {seq[j]}": True},
                                   "cause": conflict_type(pb, iv, bj.obj, cf[pb.obj_index(bj.obj)])})
@@ -184,7 +194,40 @@ def sequence_proof(pb: RecourseProblem, seq: list[str]) -> dict:
             edges.append({"from": seq[j], "to": "TARGET", "blocker": bj.obj,
                           "proof": {f"TARGET feasible without {seq[j]}": False, "TARGET feasible after sequence": True},
                           "cause": {"type": "target_blocker" if pr.status != "clear" else "indirect", **pr.to_dict()}})
-    return {"sequence": seq, "edges": edges, "final_F": pb.F(final)}
+    return {"sequence": seq, "edges": edges, "final_F": pb.F(final),
+            "target_blocking_mechanisms": {o: __import__("artrecourse.interventions", fromlist=["mechanism_of"])
+                                           .mechanism_of(pr.part_star) for o, pr in pb.target_info(pb.s0)[1]}}
+
+
+def state_conditioned_export(pb: RecourseProblem) -> list[dict]:
+    """For every state expanded by BFS (up to the accepted optimal depth): executable set, F,
+    and the local directed effects of each legal one-step intervention p on every other
+    intervention q:  enable  = not exec(q, s) and exec(q, do(p, s));
+                     disable = exec(q, s) and not exec(q, do(p, s)).
+    Same oracle definition as the s0 labels, conditioned on s (training pairs (s, I_p, I_q))."""
+    out = []
+    for depth, layer in enumerate(getattr(pb, "_bfs_layers", [])):
+        for s in sorted(layer):
+            ex = {iv.id: pb.executable(iv, s) for iv in pb.ivs}
+            rec = {"depth": depth, "state": list(s),
+                   "state_slots": {o: f"{pb.poses[o][k].slot}:{pb.poses[o][k].orient}" for o, k in zip(pb.obj_keys, s)},
+                   "F": pb.F(s), "executable": sorted(k for k, v in ex.items() if v), "effects": []}
+            for p in pb.ivs:
+                if not ex[p.id]:
+                    continue
+                s1 = pb.apply(s, p)
+                en, dis = [], []
+                for q in pb.ivs:
+                    if q.obj == p.obj:
+                        continue
+                    a = pb.executable(q, s1)
+                    if a and not ex[q.id]:
+                        en.append(q.id)
+                    elif ex[q.id] and not a:
+                        dis.append(q.id)
+                rec["effects"].append({"p": p.id, "enables": en, "disables": dis, "F_after": pb.F(s1)})
+            out.append(rec)
+    return out
 
 
 def solve(pb: RecourseProblem) -> dict:
@@ -216,4 +259,5 @@ def solve(pb: RecourseProblem) -> dict:
         "target_clearance": {o: round(float(pb.ttab[o][0].min_dist), 5) for o in pb.obj_keys},
         "intervention_object": {iv.id: iv.obj for iv in pb.ivs},
         "consulted_ambiguities": pb.consulted_ambiguities(),
+        "state_conditioned": state_conditioned_export(pb),
     }

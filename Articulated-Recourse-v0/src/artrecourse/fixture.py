@@ -1,4 +1,4 @@
-"""RoboCasa Dishwasher054 fixture: loading, naming and articulation checks.
+"""RoboCasa dishwasher fixtures: loading, naming and articulation checks.
 
 The fixture MJCF is loaded unmodified from the RoboCasa lightwheel asset archive (same
 file RoboCasa's ``Dishwasher`` fixture class consumes). We only (a) make file paths
@@ -16,17 +16,20 @@ import numpy as np
 from . import CACHE, ROOT
 from .assets import COLLISION_GROUP, VISUAL_GROUP, _absolutize, load_asset_config
 
-FIXTURE_ID = "Dishwasher054"
+FIXTURE_ID = load_asset_config()["fixture"]["id"]
+PRIMITIVES: dict = {}   # fixture id -> {geom name: (body, type, pos, quat, size)} before convexification
 
 
-def fixture_xml() -> Path:
+def fixture_xml(fid: str | None = None) -> Path:
     fx = load_asset_config()["fixture"]
-    return CACHE / "robocasa" / fx["archive"] / fx["member_prefix"] / "model.xml"
+    fid = fid or fx["id"]
+    return CACHE / "robocasa" / fx["archive"] / "fixtures" / "dishwashers" / fid / "model.xml"
 
 
-def load_fixture_spec() -> tuple[mujoco.MjSpec, dict]:
+def load_fixture_spec(fid: str | None = None) -> tuple[mujoco.MjSpec, dict]:
     """Returns (spec, regions) where regions maps region name -> (body, pos, size)."""
-    path = fixture_xml()
+    fid = fid or FIXTURE_ID
+    path = fixture_xml(fid)
     spec = mujoco.MjSpec.from_file(str(path))
     _absolutize(spec, path.parent)
     regions = {}
@@ -48,6 +51,9 @@ def load_fixture_spec() -> tuple[mujoco.MjSpec, dict]:
         g.group = COLLISION_GROUP
     for a in list(spec.actuators):
         spec.delete(a)
+    PRIMITIVES[fid] = {g.name: (g.parent.name, int(g.type), np.array(g.pos, float), np.array(g.quat, float),
+                                np.array(g.size, float))
+                       for g in spec.worldbody.find_all(mujoco.mjtObj.mjOBJ_GEOM) if g.group == COLLISION_GROUP}
     convexify_primitives(spec, "fx")
     return spec, regions
 
@@ -156,3 +162,46 @@ def fixture_report(render_dir: Path | None = None) -> dict:
                     "pulled LOWER rack would penetrate the door (negative clearance above), so v0 scenes keep the "
                     "lower rack in and use the upper rack in its fully pulled loading position.")
     return rep
+
+
+_BOUNDS: dict = {}
+
+
+def fixture_bounds(fid: str | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """Collision AABB (fixture frame) with door closed and racks in."""
+    fid = fid or FIXTURE_ID
+    if fid not in _BOUNDS:
+        from .assets import geom_local_points
+
+        spec, _ = load_fixture_spec(fid)
+        m = spec.compile()
+        d = mujoco.MjData(m)
+        mujoco.mj_kinematics(m, d)
+        pts = [d.geom_xpos[g] + geom_local_points(m, g) @ d.geom_xmat[g].reshape(3, 3).T
+               for g in range(m.ngeom) if m.geom_group[g] == COLLISION_GROUP]
+        pts = np.concatenate(pts)
+        _BOUNDS[fid] = (pts.min(0), pts.max(0))
+    return _BOUNDS[fid]
+
+
+def adapt_world(world: dict, fid: str | None = None) -> dict:
+    """Fit the kitchen shell around the fixture: base on the floor, front face at
+    y = FRONT_Y, cabinets flush with its sides, countertop just above its top."""
+    import copy
+
+    fid = fid or FIXTURE_ID
+    w = copy.deepcopy(world)
+    lo, hi = fixture_bounds(fid)
+    front_y = -0.28
+    pos = np.array([-(lo[0] + hi[0]) / 2, front_y - lo[1], -lo[2] + 0.0005])
+    w["dishwasher_pos"] = pos.round(5).tolist()
+    half_w = (hi[0] - lo[0]) / 2 + 0.004
+    top = hi[2] + pos[2]
+    back = hi[1] + pos[1]
+    ct_bottom = max(0.87, top + 0.012)
+    w["countertop"] = {"x": [-0.95, 1.20], "y": [front_y - 0.05, back + 0.03], "z": [ct_bottom, ct_bottom + 0.04]}
+    w["cabinets"] = [{"x": [-0.95, -half_w], "y": [front_y - 0.02, back + 0.03], "z": [0.0, ct_bottom]},
+                     {"x": [half_w, 1.20], "y": [front_y - 0.02, back + 0.03], "z": [0.0, ct_bottom]}]
+    w["wall"] = {"x": [-3.0, 3.0], "y": [back + 0.03, back + 0.05], "z": [0.0, 2.4]}
+    w["fixture_id"] = fid
+    return w

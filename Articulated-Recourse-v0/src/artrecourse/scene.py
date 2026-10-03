@@ -82,14 +82,20 @@ CAMERAS = {
     "oblique": ((1.75, -1.75, 1.85), (0.10, -0.32, 0.62)),
     "top": ((0.05, -0.62, 2.75), (0.05, -0.40, 0.60)),
     "closeup": ((-0.55, -1.55, 1.45), (0.02, -0.42, 0.60)),
+    "topo": ((0.36, -0.48, 2.35), (0.36, -0.36, 0.55)),
+    "workspace": ((0.66, -0.80, 1.62), (0.66, -0.22, 0.93)),     # staging tray, from the front, steep
 }
 
 
 class Scene:
     """Compiled MuJoCo model for one scene (fixed object set)."""
 
-    def __init__(self, objects: list[ObjectInstance], with_robot: bool = True, world: dict | None = None):
-        self.world = world or load_world_config()["world"]
+    def __init__(self, objects: list[ObjectInstance], with_robot: bool = True, world: dict | None = None,
+                 fixture_id: str | None = None):
+        from .fixture import FIXTURE_ID, adapt_world
+
+        self.fixture_id = fixture_id or (world or {}).get("fixture_id") or FIXTURE_ID
+        self.world = adapt_world(world or load_world_config()["world"], self.fixture_id)
         self.objects = {o.key: o for o in objects}
         self.with_robot = with_robot
         self.spec = mujoco.MjSpec()
@@ -148,8 +154,28 @@ class Scene:
             _box_mesh(s, f"env_{name}_mesh", half)
             wb.add_geom(name=f"env_{name}", type=mujoco.mjtGeom.mjGEOM_MESH, meshname=f"env_{name}_mesh", pos=c,
                         group=COLLISION_GROUP, rgba=[0.5, 0.5, 0.5, 0])
+        # staging tray (temporary buffer B1..B3): base + 4 rims, visible and collidable
+        from .topology import TRAY
+
+        s.add_material(name="mat_tray", rgba=[0.55, 0.62, 0.66, 1], specular=0.3, shininess=0.4)
+        ct = w["countertop"]["z"][1]
+        tx, ty = TRAY["x"], TRAY["y"]
+        cx, cy = (tx[0] + tx[1]) / 2, (ty[0] + ty[1]) / 2
+        hx, hy = (tx[1] - tx[0]) / 2, (ty[1] - ty[0]) / 2
+        rt, rh, bt = TRAY["rim_t"], TRAY["rim_h"], TRAY["base"]
+        parts = {"base": ([cx, cy, ct + bt / 2], [hx, hy, bt / 2]),
+                 "rim_front": ([cx, ty[0] + rt / 2, ct + bt + rh / 2], [hx, rt / 2, rh / 2]),
+                 "rim_back": ([cx, ty[1] - rt / 2, ct + bt + rh / 2], [hx, rt / 2, rh / 2]),
+                 "rim_left": ([tx[0] + rt / 2, cy, ct + bt + rh / 2], [rt / 2, hy, rh / 2]),
+                 "rim_right": ([tx[1] - rt / 2, cy, ct + bt + rh / 2], [rt / 2, hy, rh / 2])}
+        for pn, (pc, ph) in parts.items():
+            wb.add_geom(name=f"tray_{pn}_vis", type=mujoco.mjtGeom.mjGEOM_BOX, pos=pc, size=ph, material="mat_tray",
+                        contype=0, conaffinity=0, group=VISUAL_GROUP)
+            _box_mesh(s, f"env_tray_{pn}_mesh", ph)
+            wb.add_geom(name=f"env_tray_{pn}", type=mujoco.mjtGeom.mjGEOM_MESH, meshname=f"env_tray_{pn}_mesh",
+                        pos=pc, group=COLLISION_GROUP, rgba=[0.5, 0.5, 0.5, 0])
         # dishwasher
-        fx_spec, self.fixture_regions = load_fixture_spec()
+        fx_spec, self.fixture_regions = load_fixture_spec(self.fixture_id)
         frame = wb.add_frame(pos=w["dishwasher_pos"])
         frame.attach_body(fx_spec.body("object"), DW, "")
         # objects (mocap)
@@ -188,7 +214,9 @@ class Scene:
 
         for g in col:
             bn, gn = body_name(g), m.geom(g).name
-            if gn.startswith("env_"):
+            if gn.startswith("env_tray"):
+                ix.env_groups.setdefault("tray", []).append(g)
+            elif gn.startswith("env_"):
                 ix.env_groups.setdefault(gn[4:], []).append(g)
             elif bn.startswith(DW):
                 part = bn[len(DW):]
@@ -232,16 +260,28 @@ class Scene:
         return False
 
     # ------------------------------------------------------------------ state setters
-    def articulation_targets(self) -> dict:
-        a = self.world["articulation"]
+    def resolve_articulation(self, a: dict) -> dict:
+        """{door|rack0|rack1: value or 'max'} -> joint values."""
         out = {}
-        for k, jk in (("door", "door"), ("upper_rack", "rack1"), ("lower_rack", "rack0")):
-            v = a[k]
+        for jk in ("door", "rack0", "rack1"):
+            v = a.get(jk, 0.0)
             out[jk] = float(self.idx.joint_range[jk][1]) if v == "max" else float(v)
         return out
 
+    def set_scene_articulation(self, a: dict):
+        """Fix the scene's (static) articulation state, e.g. {'door': 'max', 'rack1': 0.4}."""
+        self._art = self.resolve_articulation(a)
+
+    def articulation_state(self) -> dict:
+        if getattr(self, "_art", None) is None:
+            a = self.world["articulation"]
+            self._art = self.resolve_articulation({"door": a["door"], "rack1": a["upper_rack"], "rack0": a["lower_rack"]})
+        return dict(self._art)
+
+    articulation_targets = articulation_state
+
     def set_articulation(self, door=None, rack0=None, rack1=None):
-        t = self.articulation_targets()
+        t = self.articulation_state()
         d = self.data
         d.qpos[self.idx.joint_qadr["door"]] = t["door"] if door is None else door
         d.qpos[self.idx.joint_qadr["rack0"]] = t["rack0"] if rack0 is None else rack0

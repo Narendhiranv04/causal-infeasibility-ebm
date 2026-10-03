@@ -1,18 +1,18 @@
-"""Hand-designed canonical scenes, one per core variant (V0-V7).
+"""Hand-designed canonical scenes V0-V7 (v0.1).
 
-Each spec only fixes WHAT is in the scene (assets, exact initial poses, candidate
-interventions). Whether it really is V_k is decided by the oracle on the resulting
-MuJoCo geometry (variants.check_variant); the physical story is documentation.
+Every object pose is an exact named slot + named orientation template (topology.py); there
+are NO free offsets. Target in every scene: the atomic PUSH_RACK of the upper rack (pulled to
+its loading position under the open door). Whether a scene is V_k is decided by the oracle.
 
-Recurring geometry (pulled-out upper rack, world frame):
-  * a skillet resting on the tines with its handle pointing out of the rack front
-    (yaw -90) protrudes ~9 cm past the rack: once the rack is pushed in, the closing
-    door hits the handle;
-  * a 0.20 m water bottle standing in a rack bay is taller than the 0.187 m clearance
-    under the tub ceiling: pushing the rack in jams it against the ceiling;
-  * relocations to the counter travel with the object's bottom 13 cm above the counter
-    (just above the rack walls), so tall items standing on the counter between the rack
-    and a far counter slot block the transfer corridor (destination may be free).
+Physical vocabulary (all measured, see out/fixture_audit.md):
+  * tub-ceiling jam: an item taller than the 0.187 m clearance between the upper rack floor and
+    the tub ceiling (0.20 m water bottle, 0.175 m utensil holder on the 77 mm tine plates);
+  * push-hand conflict: a skillet with its handle out over the front wall sits exactly where the
+    robot's hand grasps the wall to push the rack;
+  * transfer corridor: a relocation lifts the object just over every lip it crosses (rack walls,
+    countertop edge, tray rim) + 3 cm. Leaving the rack for the tray's back row therefore passes
+    low over the front row: anything standing there blocks the carried object;
+  * occupancy: a capacity-1 slot holding another object.
 """
 
 from __future__ import annotations
@@ -21,199 +21,103 @@ from .interventions import InterventionSpec as I
 from .interventions import ObjSpec as O
 from .interventions import SceneSpec
 
-PAN_OUT = dict(slot="upper_center_back", yaw_deg=-90, dxy=(0.0, -0.005))   # handle sticks out of the rack front
-BOX_IN_CORRIDOR = dict(slot="counter_buffer_right", yaw_deg=0, dxy=(-0.07, -0.055))  # box at (0.70, -0.26)
+HOLDER = "utensil_holder/BIA_Cordon_Bleu_White_Porcelain_Utensil_Holder_900028"
 
 
 def v0() -> SceneSpec:
     return SceneSpec(
-        "canonical_V0", split="canonical", variant_requested="V0",
-        story="The skillet's handle sticks out of the front of the pulled upper rack. Once the rack is pushed "
-              "in, the closing door hits the handle. Turning the skillet so the handle lies across the rack "
-              "(one relocation) makes CLOSE_DISHWASHER feasible.",
-        objects=[
-            O("pan", "pan/pan_2", **PAN_OUT),
-            O("mug", "mug/mug_1", "counter_buffer_left", 90),
-            O("cup", "cup/cup_3", "counter_buffer_center", 0),
-            O("can", "can/can_2", "counter_left_near", 0),
-            O("bowl", "bowl/bowl_2", "counter_buffer_far_right", 0),
-        ],
-        interventions=[
-            I("pan", "upper_tines_handle_left", 180),
-            I("pan", "upper_tines_handle_right", 0),
-            I("mug", "counter_buffer_right", 90),
-            I("can", "counter_left_mid", 0),
-        ])
+        "canonical_V0", variant_requested="V0",
+        story="A porcelain utensil holder stands on the upper rack's tine field. On top of the tines it is taller "
+              "than the tub opening, so pushing the rack in jams it against the tub ceiling. One relocation onto "
+              "the drying tray's free first column fixes it.",
+        objects=[O("holder", HOLDER, "U5"), O("cup", "cup/cup_3", "U1"), O("can", "can/can_2", "B2"),
+                 O("mug", "mug/mug_1", "B3"), O("bowl", "bowl/bowl_2", "BW4")],
+        interventions=[I("holder", "BW1"), I("holder", "BW2"), I("cup", "B7"), I("mug", "B7")])
 
 
 def v1() -> SceneSpec:
     return SceneSpec(
-        "canonical_V1", split="canonical", variant_requested="V1",
-        story="Two independent blockers: the skillet handle protrudes into the door's sweep and a 0.20 m water "
-              "bottle in the right bay would jam against the tub ceiling while the rack is pushed in. Both "
-              "must move, in either order; neither relocation affects the other.",
-        objects=[
-            O("pan", "pan/pan_2", **PAN_OUT),
-            O("bottle", "bottle/water_bottle_1", "upper_right_front", 0, (0.016, -0.02)),
-            O("mug", "mug/mug_1", "counter_buffer_left", 90),
-            O("can", "can/can_2", "counter_buffer_far_right", 0),
-        ],
-        interventions=[
-            I("pan", "upper_tines_handle_left", 180),
-            I("bottle", "counter_buffer_center", 0),
-            I("bottle", "counter_buffer_right", 0),
-            I("mug", "counter_left_near", 90),
-        ])
+        "canonical_V1", variant_requested="V1",
+        story="Two independent blockers, both too tall for the tub: a 0.20 m water bottle in the right bay and a "
+              "porcelain utensil holder on the tine field. Each goes to its own tray cell; neither move affects the "
+              "other, so either order works.",
+        objects=[O("bottle", "bottle/water_bottle_1", "U3"), O("holder", HOLDER, "U5"),
+                 O("cup", "cup/cup_3", "B8"), O("bowl", "bowl/bowl_0", "L1")],
+        interventions=[I("bottle", "B3"), I("holder", "BW1"), I("cup", "U2")])
 
 
 def v2() -> SceneSpec:
     return SceneSpec(
-        "canonical_V2", split="canonical", variant_requested="V2",
-        story="The water bottle in the right bay jams the rack. Both reachable buffer poses for it are occupied "
-              "(a bowl at the counter centre, a can at the counter right). One occupant must be moved aside "
-              "first: destination occupancy creates the dependency.",
-        objects=[
-            O("bottle", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("bowl", "bowl/bowl_2", "counter_buffer_center", 0),
-            O("can", "can/can_2", "counter_buffer_right", 0),
-            O("mug", "mug/mug_1", "upper_left_front", 90),
-        ],
-        interventions=[
-            I("bottle", "counter_buffer_center", 0),
-            I("bottle", "counter_buffer_right", 0),
-            I("bowl", "counter_buffer_left", 0),
-            I("can", "counter_buffer_far_right", 0),
-            I("mug", "counter_left_near", 90),
-        ])
+        "canonical_V2", variant_requested="V2",
+        story="The water bottle must leave the rack, but the tray's front row is full: a cup on B1, a cereal box on "
+              "B2, a can on B3. The bottle's buffer cell B1 is visibly OCCUPIED by the cup; loading the cup into the "
+              "rack frees exactly that cell. (Cell B3 would need the can moved and is behind the box anyway.)",
+        objects=[O("bottle", "bottle/water_bottle_1", "U3"), O("cup", "cup/cup_3", "B1"),
+                 O("box", "box/boxed_food_2", "B2"), O("can", "can/can_2", "B3")],
+        interventions=[I("bottle", "B1"), I("bottle", "B3"), I("cup", "U1"), I("cup", "U2"), I("can", "B7")])
 
 
 def v3() -> SceneSpec:
     return SceneSpec(
-        "canonical_V3", split="canonical", variant_requested="V3",
-        story="The water bottle jams the rack. Its buffer poses at the right end of the counter are FREE, but "
-              "the bottle is carried 13 cm above the counter and its transfer corridor passes through a tall "
-              "cereal box. Moving the box out of the corridor makes the exact bottle relocation executable: a "
-              "swept-volume dependency, not an occupied destination.",
-        objects=[
-            O("bottle", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("box", "box/boxed_food_2", **BOX_IN_CORRIDOR),
-            O("mug", "mug/mug_1", "upper_left_front", 90),
-            O("can", "can/can_2", "counter_left_near", 0),
-        ],
-        interventions=[
-            I("bottle", "counter_buffer_far_right", 0),
-            I("bottle", "counter_buffer_right", 0),
-            I("box", "counter_buffer_left", 0),
-            I("box", "counter_left_mid", 0),
-            I("mug", "counter_buffer_center", 90),
-        ])
+        "canonical_V3", variant_requested="V3",
+        story="The water bottle must leave the rack. The back-row cells B5 and B6 are visibly EMPTY, but the bottle "
+              "is carried just over the tray rim and its path into the back row crosses the front-left cell B1, "
+              "where a cup stands. Loading the cup into the rack clears the path; the SAME bottle relocation to the "
+              "SAME empty cell then succeeds. No destination is occupied.",
+        objects=[O("bottle", "bottle/water_bottle_1", "U3"), O("cup", "cup/cup_3", "B1"),
+                 O("box", "box/boxed_food_2", "B4")],
+        interventions=[I("bottle", "B6"), I("bottle", "B5"), I("cup", "U1"), I("cup", "U2"), I("box", "B8")])
 
 
 def v4() -> SceneSpec:
     return SceneSpec(
-        "canonical_V4", split="canonical", variant_requested="V4",
-        story="Two independent dependency chains in one scene. Right: a cereal box stands in the corridor of "
-              "the water bottle (right bay) -> box, then bottle. Left (mirror image): a second box stands in "
-              "the corridor of the tall bottle (left bay) -> box, then bottle. Both bottles jam the rack.",
-        objects=[
-            O("bottle_r", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("box_r", "box/boxed_food_2", **BOX_IN_CORRIDOR),
-            O("bottle_l", "bottle/water_bottle_3", "upper_left_back", 0),
-            O("box_l", "box/boxed_food_6", "counter_left_near", 0, (-0.10, -0.075)),
-            O("mug", "mug/mug_1", "upper_right_front", 90),
-        ],
-        interventions=[
-            I("bottle_r", "counter_buffer_far_right", 0),
-            I("bottle_r", "counter_buffer_right", 0),
-            I("box_r", "counter_buffer_left", 0),
-            I("bottle_l", "counter_left_far", 0),
-            I("bottle_l", "counter_left_mid", 0),
-            I("box_l", "counter_left_near", 0),
-            I("mug", "counter_buffer_far_right", 90),
-        ])
+        "canonical_V4", variant_requested="V4",
+        story="Two different dependency chains. Swept volume: the water bottle's path to the back cell B7 crosses the "
+              "cereal box on B2, which is slid to B3 first. Occupancy: the utensil holder (too tall for the tub) "
+              "needs the tray's first column, where a cup stands on B5; the cup is loaded into the rack first.",
+        objects=[O("bottle", "bottle/water_bottle_1", "U3"), O("box", "box/boxed_food_2", "B2"),
+                 O("holder", HOLDER, "U5"), O("cup", "cup/cup_3", "B5")],
+        interventions=[I("bottle", "B7"), I("box", "B3"), I("holder", "BW1"), I("cup", "U1")])
 
 
 def v5() -> SceneSpec:
     return SceneSpec(
-        "canonical_V5", split="canonical", variant_requested="V5",
-        story="A clean three-object chain. A tall bottle standing right behind the cereal box blocks the "
-              "top-down grasp of the box (the hand would hit it). The box stands in the transfer corridor of "
-              "the water bottle, and the water bottle jams the rack. Bottle(counter) -> box -> water bottle -> "
-              "close.",
-        objects=[
-            O("bottle_a", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("box", "box/boxed_food_2", **BOX_IN_CORRIDOR),
-            O("bottle_c", "bottle/water_bottle_0", "counter_buffer_right", 0, (-0.07, 0.04)),
-            O("mug", "mug/mug_1", "upper_left_front", 90),
-        ],
-        interventions=[
-            I("bottle_a", "counter_buffer_far_right", 0),
-            I("bottle_a", "counter_buffer_right", 0),
-            I("box", "counter_buffer_center", 0),
-            I("box", "counter_left_mid", 0),
-            I("bottle_c", "counter_buffer_left", 0),
-            I("bottle_c", "counter_left_near", 0),
-            I("mug", "counter_left_far", 90),
-        ])
+        "canonical_V5", variant_requested="V5",
+        story="A three-object chain where the blocker is NOT the first thing the robot can move. The water bottle "
+              "(tub-ceiling jam) must reach the back cell B7; its path crosses the cup on B2. The cup's own path into "
+              "the rack crosses the can on B1. So: can to the back row, cup into the rack, bottle onto the tray, then "
+              "push the rack.",
+        objects=[O("bottle", "bottle/water_bottle_1", "U3"), O("cup", "cup/cup_3", "B2"),
+                 O("can", "can/can_2", "B1")],
+        interventions=[I("bottle", "B7"), I("bottle", "B3"), I("cup", "U1"), I("can", "B5")])
 
 
 def v6() -> SceneSpec:
     return SceneSpec(
-        "canonical_V6", split="canonical", variant_requested="V6",
-        story="Branching recourse. Path A (2 moves): the bowl occupying the counter centre is moved aside, then "
-              "the water bottle goes to the centre. Path B (3 moves): the tall bottle behind the cereal box is "
-              "moved so the box can be grasped, the box leaves the corridor, then the water bottle goes to the "
-              "counter right. The oracle must prefer the shorter coordinated plan.",
-        objects=[
-            O("bottle_a", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("bowl", "bowl/bowl_2", "counter_buffer_center", 0, (-0.03, 0.0)),
-            O("box", "box/boxed_food_2", "counter_buffer_right", 0, (-0.03, -0.065)),
-            O("bottle_c", "bottle/water_bottle_0", "counter_buffer_right", 0, (-0.03, 0.04)),
-            O("mug", "mug/mug_1", "upper_left_front", 90),
-        ],
-        interventions=[
-            I("bottle_a", "counter_buffer_center", 0),
-            I("bottle_a", "counter_buffer_right", 0),
-            I("bowl", "counter_buffer_left", 0),
-            I("box", "counter_buffer_far_right", 0),
-            I("bottle_c", "counter_buffer_left", 0, (-0.04, 0.03)),
-            I("mug", "counter_left_far", 90),
-        ])
+        "canonical_V6", variant_requested="V6",
+        story="Two ways to clear the water bottle in the left bay. Short (occupancy, 2 moves): load the cup standing "
+              "on back cell B5 into the rack and put the bottle there. Long (swept volume, 3 moves): the free front "
+              "cell B3 is reached over the cereal box on B2; the box can only slide back to B6, where a can stands, "
+              "so the can moves to B7 first.",
+        objects=[O("bottle", "bottle/water_bottle_1", "U1"), O("cup", "cup/cup_3", "B5"),
+                 O("box", "box/boxed_food_2", "B2"), O("can", "can/can_2", "B6")],
+        interventions=[I("bottle", "B5"), I("bottle", "B3"), I("cup", "U2"), I("box", "B6"), I("can", "B7")])
 
 
 def v7() -> SceneSpec:
     return SceneSpec(
-        "canonical_V7", split="canonical", variant_requested="V7",
-        story="Dense scene, three objects block CLOSE_DISHWASHER: the skillet handle (door), a 0.20 m water bottle "
-              "(right bay) and a 0.25 m bottle (left bay) (tub ceiling). The cereal box on the counter stands in "
-              "the transfer corridors of BOTH bottles; the tall bottle also stands under the skillet's "
-              "handle-across pose and in its swing. Minimal recourse: box -> water bottle -> tall bottle -> "
-              "skillet (or the skillet turned right once the water bottle is gone).",
-        objects=[
-            O("pan", "pan/pan_2", **PAN_OUT),
-            O("bottle_r", "bottle/water_bottle_1", "upper_right_back", 0),
-            O("bottle_l", "bottle/water_bottle_3", "upper_left_back", 0),
-            O("box", "box/boxed_food_2", **BOX_IN_CORRIDOR),
-            O("mug", "mug/mug_1", "counter_left_far", 90, (-0.04, 0.0)),
-            O("cup", "cup/cup_3", "counter_left_near", 0),
-            O("bowl", "bowl/bowl_2", "counter_buffer_far_right", 0),
-            O("can", "can/can_2", "counter_buffer_center", 0, (0.0, 0.025)),
-        ],
-        interventions=[
-            I("pan", "upper_tines_handle_left", 180),
-            I("pan", "upper_tines_handle_right", 0),
-            I("bottle_r", "counter_buffer_far_right", 0),
-            I("bottle_r", "counter_buffer_right", 0),
-            I("bottle_l", "counter_buffer_right", 0),
-            I("bottle_l", "counter_left_mid", 0),
-            I("box", "counter_buffer_left", 0),
-            I("box", "counter_left_mid", 0),
-            I("mug", "counter_buffer_center", 90),
-            I("mug", "counter_left_mid", 90),
-            I("cup", "upper_right_back", 0),
-            I("bowl", "counter_buffer_left", 0),
-            I("can", "counter_buffer_far_right", 0),
-        ])
+        "canonical_V7", variant_requested="V7",
+        story="Dense scene, two blockers: the skillet's handle sits where the push-hand grasps the rack, and the "
+              "water bottle in the left-front bay would jam the tub ceiling. Turning the skillet either way needs the "
+              "bottle gone (its handle swings over it, or its pan body lands on it). The bottle's tray cells lie behind "
+              "the cereal box on B2, and the box can only slide back to B6, where a can stands. Lower-rack bowls and "
+              "cups are context.",
+        objects=[O("pan", "pan/pan_2", "U5", "handle_out"), O("bottle", "bottle/water_bottle_1", "U1"),
+                 O("box", "box/boxed_food_2", "B2"), O("can", "can/can_2", "B6"), O("mug", "mug/mug_1", "B4"),
+                 O("cup", "cup/cup_3", "B8"), O("bowl", "bowl/bowl_0", "L1"), O("cup_l", "cup/cup_4", "L3")],
+        interventions=[I("pan", "U5", "handle_left"), I("pan", "U5", "handle_right"),
+                       I("bottle", "B3"), I("bottle", "B7"), I("bottle", "B8"), I("box", "B6"), I("box", "B5"),
+                       I("can", "B5"), I("can", "B1"), I("mug", "B1"), I("mug", "B8"), I("cup", "U3")])
 
 
 ALL = {"V0": v0, "V1": v1, "V2": v2, "V3": v3, "V4": v4, "V5": v5, "V6": v6, "V7": v7}

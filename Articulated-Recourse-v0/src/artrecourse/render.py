@@ -19,6 +19,7 @@ RED = np.array([0.92, 0.12, 0.10, 1.0], np.float32)
 ORANGE = np.array([1.0, 0.55, 0.05, 1.0], np.float32)
 GHOST = np.array([0.15, 0.65, 0.95, 0.16], np.float32)
 GREEN = np.array([0.20, 0.80, 0.30, 1.0], np.float32)
+MAGENTA = np.array([0.95, 0.10, 0.85, 1.0], np.float32)
 
 
 # ----------------------------------------------------------------------------- io helpers
@@ -191,9 +192,7 @@ class SceneRenderer:
         """Set the scene to sample i of a trajectory (relocation or target)."""
         sc, pb = self.sc, self.pb
         if traj.joints:   # target: rack + door articulate, rack-resting objects ride along
-            r1 = traj.joints["rack1"][i]
-            sc.set_articulation(door=traj.joints["door"][i], rack1=r1)
-            r0 = sc.articulation_targets()["rack1"]
+            sc.set_articulation(**{k: v[i] for k, v in traj.joints.items()})
             for o, (pos, yaw) in traj.carried.items():
                 sc.set_object_canonical(o, pos[i], yaw[i])
         else:
@@ -210,14 +209,14 @@ class SceneRenderer:
         return st.get(key) or "dishwasher_center"
 
     def action_frames(self, traj, iv=None, cam="oblique", highlight=None, n_frames=60, stop_index=None,
-                      title=None, show_robot=True):
+                      title=None, show_robot=True, station=None):
         idx = np.unique(np.linspace(0, (traj.n - 1) if stop_index is None else stop_index, n_frames).astype(int))
         frames = []
         for i in idx:
             self.apply_sample(traj, i, iv=iv)
             ok = False
             if show_robot:
-                st = self.station_for(iv, traj.phase[i]) if iv is not None else "dishwasher_center"
+                st = self.station_for(iv, traj.phase[i]) if iv is not None else (station or "dishwasher_center")
                 from .geom import quat_to_mat as q2m
 
                 ok = self.pose_robot(traj.grip_pos[i], q2m(traj.grip_quat[i]), traj.opening[i], st)
@@ -234,7 +233,8 @@ class SceneRenderer:
         return frames
 
     # ------------------------------------------------------------------ swept-volume debug render
-    def sweep_image(self, traj, state, iv=None, blockers=(), tau_star=None, cam="oblique", k=6, title=None):
+    def sweep_image(self, traj, state, iv=None, blockers=(), tau_star=None, cam="oblique", k=6, title=None,
+                    dest_slot=None, extra_lines=()):
         """Ghosted swept volume: moving geometry at every k-th tau (translucent), the tau* pose
         solid orange, blockers red."""
         sc = self.sc
@@ -257,11 +257,76 @@ class SceneRenderer:
             ghosts += self.capture_geoms([g for g in moving if g in blk], RED)   # carried blockers at tau*
         self.set_state(state)
         mujoco.mj_kinematics(self.m, self.d)
+        if dest_slot is not None:
+            ghosts += slot_ghosts(self.pb.topo, outline=dest_slot, only=[dest_slot])
         img = self.render(cam, highlight={b: RED for b in blockers}, ghosts=ghosts, robot=False)
         lines = [title] if title else []
+        lines += list(extra_lines)
+        if dest_slot is not None:   # second panel: the same state, no ghosts, destination outlined
+            mujoco.mj_kinematics(self.m, self.d)
+            plain = self.render("workspace", highlight={b: RED for b in blockers},
+                                ghosts=slot_ghosts(self.pb.topo, outline=dest_slot, only=[dest_slot]), robot=False)
+            plain = caption(plain, [f"magenta = destination slot {dest_slot}", "red = blocking object (counterfactual state)"])
+            return hstack(caption(img, lines), plain)
         if tau_star is not None:
             lines.append(f"ghosts: swept volume (every {k} samples)   orange: tau*={tau_star:.2f}   red: blocker(s)")
         return caption(img, lines)
+
+
+# ----------------------------------------------------------------------------- placement topology
+SLOT_RGBA = {"upper_rack": np.array([0.15, 0.45, 0.95, 0.30], np.float32),
+             "lower_rack": np.array([0.45, 0.45, 0.45, 0.22], np.float32),
+             "temporary_buffer": np.array([0.20, 0.75, 0.35, 0.30], np.float32)}
+
+
+def slot_ghosts(topo, outline=None, outline_rgba=MAGENTA, skip_wide=True, only=None, skip_unreachable=True):
+    """Translucent slot footprints (+ an opaque outline for `outline`) as ghost primitives."""
+    out = []
+    eye = np.eye(3)
+    for sid, sl in topo.items():
+        if only is not None and sid not in only:
+            continue
+        if skip_wide and sid.startswith("BW") and sid != outline:
+            continue
+        if skip_unreachable and not sl.reachable:
+            continue
+        cx, cy = sl.center
+        hx, hy = sl.half_extent
+        z = sl.z + 0.0015
+        if sid == outline:
+            t = 0.009
+            for (px, py, sx, sy) in ((cx, cy - hy, hx, t), (cx, cy + hy, hx, t), (cx - hx, cy, t, hy), (cx + hx, cy, t, hy)):
+                out.append((int(mujoco.mjtGeom.mjGEOM_BOX), -1, np.array([sx, sy, 0.004]), np.array([px, py, z + 0.003]),
+                            eye.copy(), outline_rgba))
+        else:
+            out.append((int(mujoco.mjtGeom.mjGEOM_BOX), -1, np.array([hx * 0.94, hy * 0.94, 0.0015]), np.array([cx, cy, z]),
+                        eye.copy(), SLOT_RGBA[sl.semantic]))
+    return out
+
+
+def project(model, data, cam: str, pts, w, h):
+    c = model.camera(cam).id
+    pos, R = data.cam_xpos[c], data.cam_xmat[c].reshape(3, 3)
+    f = (h / 2) / np.tan(np.radians(model.cam_fovy[c]) / 2)
+    out = []
+    for p in np.atleast_2d(pts):
+        v = R.T @ (np.asarray(p) - pos)
+        out.append((int(w / 2 + f * v[0] / -v[2]), int(h / 2 - f * v[1] / -v[2])))
+    return out
+
+
+def label_slots(img, model, data, cam, topo, w, h, skip_wide=True):
+    import cv2
+
+    img = np.ascontiguousarray(img).copy()
+    for sid, sl in topo.items():
+        if (skip_wide and sid.startswith("BW")) or not sl.reachable:
+            continue
+        (u, v), = project(model, data, cam, [[sl.center[0], sl.center[1], sl.z + 0.01]], w, h)
+        col = (255, 255, 255) if sl.semantic != "lower_rack" else (200, 200, 200)
+        cv2.putText(img, sid, (u - 10, v + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.42, (0, 0, 0), 3, cv2.LINE_AA)
+        cv2.putText(img, sid, (u - 10, v + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.42, col, 1, cv2.LINE_AA)
+    return img
 
 
 # ----------------------------------------------------------------------------- dependency graph panel

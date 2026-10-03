@@ -30,11 +30,12 @@ from .geom import mat_to_quat, quat_from_yaw, rot_z, wrap_angle
 
 APPROACH_H = 0.10
 RETREAT_H = 0.10
-LIFT_CLEAR = 0.13
+LIFT_CLEAR = 0.13          # v0 fallback only; v0.1 derives the carry height (transfer_bottom)
+TRANSFER_MARGIN = 0.03     # v0.1: safety margin above the highest lip crossed by the transfer
+LIP_MAX = 0.25             # geometry more than this above the higher support is a ceiling (passed under)
 COARSE_SPACING = 0.01
 FINE_SPACING = 0.0025
-DOOR_PUSH_BELOW_TOP = 0.25
-PUSH_SWITCH_Y = -0.37   # world y of the rack front wall where the push switches grasp -> palm
+DOOR_CONTACT_FRACTION = 0.6   # CLOSE_DOOR contact point, fraction of door length from the hinge
 
 
 @dataclass
@@ -96,6 +97,29 @@ def grasp_candidates(category: str, meta: dict, verts_canon: np.ndarray | None =
     raise KeyError(category)
 
 
+def transfer_bottom(src_xy, dst_xy, src_z, dst_z, radius, lips) -> tuple[float, list]:
+    """Deterministic carry height (object bottom) for RELOCATE.
+
+    lips: list of (name, xmin, xmax, ymin, ymax, ztop) static geometry boxes. The carried object
+    (footprint radius `radius`) is lifted so that its bottom clears, by TRANSFER_MARGIN, every lip
+    whose xy box comes within `radius` of the straight source->destination segment, among lips
+    lower than (higher support + LIP_MAX). Rack walls, tine plates, tray rims and the countertop
+    edge are therefore cleared; nothing else (other objects are what the oracle checks)."""
+    zs = max(src_z, dst_z)
+    a, b = np.asarray(src_xy, float), np.asarray(dst_xy, float)
+    pts = a[None] + np.linspace(0, 1, 60)[:, None] * (b - a)[None]
+    best, crossed = zs, []
+    for name, x0, x1, y0, y1, zt in lips:
+        if zt >= zs + LIP_MAX or zt <= zs:
+            continue
+        dx = np.maximum(np.maximum(x0 - pts[:, 0], 0), pts[:, 0] - x1)
+        dy = np.maximum(np.maximum(y0 - pts[:, 1], 0), pts[:, 1] - y1)
+        if np.min(np.hypot(dx, dy)) < radius:
+            crossed.append(name)
+            best = max(best, zt)
+    return best + TRANSFER_MARGIN, sorted(set(crossed))
+
+
 def grasp_template(category: str, meta: dict, verts_canon: np.ndarray | None = None) -> GraspTemplate:
     return grasp_candidates(category, meta, verts_canon)[0]
 
@@ -152,13 +176,14 @@ def _segments_to_samples(segs, spacing):
 
 
 def relocate(obj: str, meta: dict, category: str, src_pos, src_yaw, dst_pos, dst_yaw, src_support_z, dst_support_z,
-             grasp: GraspTemplate, spacing=COARSE_SPACING) -> Trajectory:
+             grasp: GraspTemplate, spacing=COARSE_SPACING, carry_bottom: float | None = None) -> Trajectory:
     src_pos, dst_pos = np.asarray(src_pos, float), np.asarray(dst_pos, float)
     g = grasp.local_pos
     tcp_src = src_pos + rot_z(src_yaw) @ g
     tcp_dst = dst_pos + rot_z(dst_yaw) @ g
     fy_src, fy_dst = src_yaw + grasp.finger_axis_local, dst_yaw + grasp.finger_axis_local
-    carry_bottom = max(src_support_z, dst_support_z) + LIFT_CLEAR
+    if carry_bottom is None:
+        carry_bottom = max(src_support_z, dst_support_z) + LIFT_CLEAR
     lift_dz = carry_bottom - src_pos[2]
     tcp_lift = tcp_src + [0, 0, lift_dz]
     tcp_above_dst = tcp_dst + [0, 0, carry_bottom - dst_pos[2]]
@@ -203,95 +228,139 @@ def relocate(obj: str, meta: dict, category: str, src_pos, src_yaw, dst_pos, dst
                       meta={"object": obj, "carry_bottom_z": carry_bottom, "spacing": spacing})
 
 
-def close_dishwasher(scene, rack_objects: dict, spacing=COARSE_SPACING) -> Trajectory:
-    """Target action. rack_objects: obj -> (canonical pos, yaw) for objects resting on the
-    upper rack (they translate with it during the push)."""
+def _box_world(scene, gname):
+    """World AABB of a fixture collision geom (frame independent)."""
+    from .assets import geom_local_points
+
+    m, d = scene.model, scene.data
+    g = m.geom(gname).id
+    p = d.geom_xpos[g] + geom_local_points(m, g) @ d.geom_xmat[g].reshape(3, 3).T
+    return p.min(0), p.max(0)
+
+
+def rack_front_wall(scene, rack: str):
+    """World AABB of the rack's front wall at the current articulation (thin in y, wide in x)."""
+    best = None
+    for g in scene.idx.articulated[rack]:
+        lo, hi = _box_world(scene, scene.model.geom(g).name)
+        if hi[1] - lo[1] < 0.03 and hi[0] - lo[0] > 0.3 and (best is None or lo[1] < best[0][1]):
+            best = (lo, hi)
+    return best
+
+
+def tub_front_y(scene) -> float:
+    """Front plane of the tub opening (minimum y of the static fixture body, door excluded)."""
+    m, d = scene.model, scene.data
+    from .assets import geom_local_points
+
+    ys = []
+    for g in scene.idx.env_groups["dishwasher"]:
+        p = d.geom_xpos[g] + geom_local_points(m, g) @ d.geom_xmat[g].reshape(3, 3).T
+        ys.append(p[:, 1].min())
+    return float(np.percentile(ys, 25))
+
+
+def push_rack(scene, rack: str, rack_objects: dict, spacing=COARSE_SPACING) -> Trajectory:
+    """ATOMIC target skill PUSH_RACK(rack): the real prismatic joint goes from its loading pull
+    to 0. The hand first grasps the top edge of the rack's front wall (fingers straddle the
+    wall; there is no room for a palm in front of a pulled rack under an open door) and, once
+    the hand would reach the tub's front frame, re-contacts the wall's outer face and palm-pushes
+    the rest. Objects resting on the rack translate with it."""
     import mujoco
 
     m, d = scene.model, scene.data
-    t = scene.articulation_targets()
-    r0, q0 = t["rack1"], t["door"]
-    # push phase: palm on the rack front wall (outer face centre), approach +y, fingers closed
+    st = scene.articulation_state()
+    r0 = st[rack]
     scene.set_articulation()
-    scene.forward()
-    front = None
-    for g in scene.idx.articulated["rack1"]:
-        from .assets import geom_local_points
-
-        p = d.geom_xpos[g] + geom_local_points(m, g) @ d.geom_xmat[g].reshape(3, 3).T
-        lo, hi = p.min(0), p.max(0)
-        if hi[1] - lo[1] < 0.02 and hi[0] - lo[0] > 0.4 and (front is None or lo[1] < front[0][1]):
-            front = (lo, hi)
-    lo, hi = front
-    # Stage A1: top-down grasp on the front wall's top edge (fingers straddle the 12 mm wall)
-    # while the rack is far out -- there is no room for a palm push there (only ~6 cm
-    # separate the pulled rack from the open door plate). Stage A2: once the wall is
-    # PUSH_SWITCH_Y from the tub ceiling the hand would hit the ceiling, so the robot
-    # re-contacts the wall's outer face and palm-pushes the remaining distance.
+    mujoco.mj_kinematics(m, d)
+    lo, hi = rack_front_wall(scene, rack)
+    front = tub_front_y(scene)
     wall_y0 = (lo[1] + hi[1]) / 2
     grasp_tcp0 = np.array([(lo[0] + hi[0]) / 2, wall_y0, hi[2] - 0.012])
     palm_tcp0 = np.array([(lo[0] + hi[0]) / 2, lo[1] - 0.004, (lo[2] + hi[2]) / 2])
     R_grasp = tcp_rotation(0.0)
     zax, yax = np.array([0.0, 1.0, 0.0]), np.array([1.0, 0.0, 0.0])
     R_palm = np.stack([np.cross(yax, zax), yax, zax], 1)
-    r_switch = max(0.0, r0 - (PUSH_SWITCH_Y - wall_y0))
-    n_push = max(2, int(np.ceil(r0 / spacing)) + 1)
-    rack_vals = np.linspace(r0, 0.0, n_push)
-    door_top_arc = 0.72 * q0
-    n_door = max(2, int(np.ceil(door_top_arc / spacing)) + 1)
-    door_vals = np.linspace(q0, 0.0, n_door)
-    P, Q, W, PH, J1, JD = [], [], [], [], [], []
-    for r in rack_vals:
+    switch_y = front - 0.115          # hand (+-0.104 m along y) must stay in front of the tub frame
+    r_switch = max(0.0, r0 - (switch_y - wall_y0))
+    vals = np.linspace(r0, 0.0, max(2, int(np.ceil(r0 / spacing)) + 1))
+    P, Q, W, PH = [], [], [], []
+    for r in vals:
         if r >= r_switch:
             P.append(grasp_tcp0 + [0, r0 - r, 0])
             Q.append(mat_to_quat(R_grasp))
             W.append(0.014)
+            PH.append("push_grasp")
         else:
             P.append(palm_tcp0 + [0, r0 - r, 0])
             Q.append(mat_to_quat(R_palm))
             W.append(0.0)
-        PH.append("push_rack")
-        J1.append(r)
-        JD.append(q0)
-    # Door contact point in the door BODY frame (the convexified door_main mesh geom is expressed
-    # in its principal-inertia frame, whose axes MuJoCo may permute). Values are the RoboCasa
-    # door_main box (local centre (-0.0008, -0.2744, -0.0438), half-size (0.316, 0.0035, 0.3594)).
-    bd = m.body("dw_door").id
-    door_outer_y = -0.27445 - 0.00351
-    door_top_z = -0.04382 + 0.35936
-    contact_local = np.array([-0.0008, door_outer_y - 0.004, door_top_z - DOOR_PUSH_BELOW_TOP])
-    for q in door_vals:
-        scene.set_articulation(door=q, rack1=0.0)
-        mujoco.mj_kinematics(m, d)
-        R = d.xmat[bd].reshape(3, 3)
-        p = d.xpos[bd] + R @ contact_local
-        z = R[:, 1]           # approach: into the door (door +y)
-        y = R[:, 0]           # finger axis along the door width
-        P.append(p)
-        Q.append(mat_to_quat(np.stack([np.cross(y, z), y, z], 1)))
-        W.append(0.0)
-        PH.append("close_door")
-        J1.append(0.0)
-        JD.append(q)
-    scene.set_articulation()
-    P = np.array(P)
-    n1 = len(rack_vals)
-    tau = np.concatenate([np.linspace(0, 0.5, n1), np.linspace(0.5, 1.0, len(door_vals) + 1)[1:]])
+            PH.append("push_palm")
+    n = len(vals)
+    joints = {k: np.full(n, v) for k, v in st.items()}
+    joints[rack] = vals
     carried, mask = {}, {}
     for k, (pos, yaw) in rack_objects.items():
         pos = np.asarray(pos, float)
-        cp = np.array([pos + [0, r0 - r, 0] for r in J1])
-        carried[k] = (cp, np.full(len(J1), yaw))
-        mask[k] = np.ones(len(J1), bool)
+        carried[k] = (np.array([pos + [0, r0 - r, 0] for r in vals]), np.full(n, yaw))
+        mask[k] = np.ones(n, bool)
     from .geom import quat_to_mat
 
-    wp = {f"push_{i}": (P[i], quat_to_mat(Q[i])) for i in np.linspace(0, n1 - 1, 6).astype(int)}
-    for i in np.linspace(n1, len(P) - 1, 5).astype(int):
-        wp[f"door_{i}"] = (P[i], quat_to_mat(Q[i]))
-    return Trajectory("close_dishwasher", tau, PH, P, np.array(Q), np.array(W), carried=carried, carry_mask=mask,
-                      joints={"rack1": np.array(J1), "door": np.array(JD)}, waypoints=wp,
-                      meta={"spacing": spacing, "phases": {"push_rack": [0.0, 0.5], "close_door": [0.5, 1.0]},
-                            "rack_objects": sorted(rack_objects)})
+    wp = {f"wp_{i}": (np.array(P[i]), quat_to_mat(Q[i])) for i in np.unique(np.linspace(0, n - 1, 12).astype(int))}
+    return Trajectory("PUSH_RACK", np.linspace(0, 1, n), PH, np.array(P), np.array(Q), np.array(W),
+                      carried=carried, carry_mask=mask, joints=joints, waypoints=wp,
+                      meta={"skill": "PUSH_RACK", "rack": rack, "from": r0, "to": 0.0, "spacing": spacing,
+                            "switch_rack_value": r_switch, "manipulated": rack})
+
+
+def close_door(scene, contact_fraction=DOOR_CONTACT_FRACTION, spacing=COARSE_SPACING) -> Trajectory:
+    """ATOMIC target skill CLOSE_DOOR: the real hinge goes from its open value to 0 while the
+    closed hand pushes the door's outer face at `contact_fraction` of the door length from the
+    hinge (centred across the width), moving rigidly with the door."""
+    import mujoco
+
+    from .fixture import PRIMITIVES
+
+    m, d = scene.model, scene.data
+    st = scene.articulation_state()
+    q0 = st["door"]
+    prim = PRIMITIVES[scene.fixture_id]
+    _, _, gpos, _, gsize = prim["door_main"]       # RoboCasa door_main box, door-body frame
+    jpos = m.jnt_pos[m.joint("dw_door_joint").id]
+    outer_y = gpos[1] - gsize[1]
+    z_low, z_high = gpos[2] - gsize[2], gpos[2] + gsize[2]
+    contact_local = np.array([gpos[0], outer_y - 0.004, z_low + contact_fraction * (z_high - z_low)])
+    _ = jpos
+    length = (contact_fraction * (z_high - z_low))
+    vals = np.linspace(q0, 0.0, max(2, int(np.ceil(length * q0 / spacing)) + 1))
+    bd = m.body("dw_door").id
+    P, Q = [], []
+    for q in vals:
+        scene.set_articulation(door=q)
+        mujoco.mj_kinematics(m, d)
+        R = d.xmat[bd].reshape(3, 3)
+        P.append(d.xpos[bd] + R @ contact_local)
+        z, y = R[:, 1], R[:, 0]
+        Q.append(mat_to_quat(np.stack([np.cross(y, z), y, z], 1)))
+    scene.set_articulation()
+    n = len(vals)
+    joints = {k: np.full(n, v) for k, v in st.items()}
+    joints["door"] = vals
+    from .geom import quat_to_mat
+
+    wp = {f"wp_{i}": (np.array(P[i]), quat_to_mat(Q[i])) for i in np.unique(np.linspace(0, n - 1, 12).astype(int))}
+    return Trajectory("CLOSE_DOOR", np.linspace(0, 1, n), ["close_door"] * n, np.array(P), np.array(Q),
+                      np.zeros(n), joints=joints, waypoints=wp,
+                      meta={"skill": "CLOSE_DOOR", "from": q0, "to": 0.0, "contact_fraction": contact_fraction,
+                            "spacing": spacing, "manipulated": "door"})
+
+
+def target_trajectory(scene, target: dict, rack_objects: dict, spacing=COARSE_SPACING) -> Trajectory:
+    if target["skill"] == "PUSH_RACK":
+        return push_rack(scene, target["rack"], rack_objects, spacing)
+    if target["skill"] == "CLOSE_DOOR":
+        return close_door(scene, target.get("contact_fraction", DOOR_CONTACT_FRACTION), spacing)
+    raise KeyError(target)
 
 
 def yaw_quat(yaw):

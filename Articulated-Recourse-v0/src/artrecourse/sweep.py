@@ -134,7 +134,7 @@ class SweepEngine:
         for i in range(N):
             sc.set_gripper(traj.grip_pos[i], quat=traj.grip_quat[i], opening=traj.opening[i])
             if traj.joints:
-                sc.set_articulation(door=traj.joints["door"][i], rack1=traj.joints["rack1"][i])
+                sc.set_articulation(**{k: v[i] for k, v in traj.joints.items()})
             else:
                 sc.set_articulation()
             for k in carried:
