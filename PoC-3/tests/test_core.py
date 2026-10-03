@@ -21,12 +21,12 @@ LAYOUT = {  # plan3.md section 45 + approved Stage-4.5 / 4.6A-C diagnostic excep
                 "s7_verdict.py", "s45_diagnostic.py", "s46a_error_audit.py",
                 "s46b_relational_pair.py", "s46c_feasibility_supervision.py",
                 "s46c1_gate_diagnosis.py", "s46c2_dense_f_full.py",
-                "s46c3_full_train_fit.py"},
+                "s46c3_full_train_fit.py", "s46c4_fitted_generalization.py"},
     "tests": {"test_core.py", "test_features.py", "test_dataset.py", "test_model.py", "test_training.py",
               "test_inference.py", "test_metrics.py", "test_relational.py", "test_s46a.py",
               "test_s46b.py", "test_feasibility.py", "test_s46c.py",
               "test_s46c1.py", "test_s46c2.py",
-              "test_s46c3.py"},
+              "test_s46c3.py", "test_s46c4.py"},
 }
 HARD_MAX_LINES = 500
 
